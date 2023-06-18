@@ -43,7 +43,7 @@ jobs:
           start: npm run start
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
-          command: npx run cypress
+          command: npx cypress run
 
   # build:
   #   runs-on: ubuntu-latest
