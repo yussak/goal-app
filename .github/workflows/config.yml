@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   backend_build_and_test:
-    name: frontend build and test
+    name: backend build and test
     runs-on: ubuntu-latest
     steps:
       - name: check out code
@@ -33,6 +33,7 @@ jobs:
       - name: frontend install & build
         run: |
           cd frontend
+          pwd
           npm install
           npm run build
 
