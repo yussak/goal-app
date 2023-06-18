@@ -2,8 +2,8 @@ name: CI
 on: [push]
 
 jobs:
-  backend_test:
-    name: backend test
+  backend_build_and_test:
+    name: frontend build and test
     runs-on: ubuntu-latest
     steps:
       - name: check out code
@@ -18,6 +18,30 @@ jobs:
           cd backend
           go build .
           go test -v
+
+  frontend_build_and_test:
+    name: frontend build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.16.0"
+
+      - name: frontend install & build
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: frontend test
+        uses: cypress-io/github-action@v3
+        with:
+          start: npm run start
+          wait-on: "http://localhost:3000"
+          command: npm run cypress
 
   # build:
   #   runs-on: ubuntu-latest
