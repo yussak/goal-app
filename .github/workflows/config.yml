@@ -42,7 +42,8 @@ jobs:
           working-directory: ./frontend
           start: npm run start
           wait-on: "http://localhost:3000"
-          command: npm run cypress
+          wait-on-timeout: 120
+          command: npx run cypress
 
   # build:
   #   runs-on: ubuntu-latest
