@@ -31,15 +31,15 @@ jobs:
           node-version: "18.16.0"
 
       - name: frontend install & build
+        working-directory: ./frontend
         run: |
-          cd frontend
-          pwd
           npm install
           npm run build
 
       - name: frontend test
         uses: cypress-io/github-action@v3
         with:
+          working-directory: ./frontend
           start: npm run start
           wait-on: "http://localhost:3000"
           command: npm run cypress
