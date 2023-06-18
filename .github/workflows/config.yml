@@ -16,7 +16,7 @@ jobs:
       - name: Go build & test
         run: |
           cd backend
-          go build .
+          go build -v
           go test -v
 
   # build:
