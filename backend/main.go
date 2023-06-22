@@ -3,12 +3,12 @@ package main
 import (
 	"log"
 	"net/http"
+
+	"github.com/YusukeSakuraba/goal-app/controller"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, world!\n"))
-	})
-
+	http.HandleFunc("/goal", controller.AddGoal)
+	
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

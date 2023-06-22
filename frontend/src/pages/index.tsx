@@ -1,6 +1,21 @@
-import Head from 'next/head'
+import { Box, Button, Stack, TextField } from "@mui/material";
+import axios from "axios";
+import Head from "next/head";
+import { useState } from "react";
 
 export default function Home() {
+  const [title, setTitle] = useState<string>("");
+  const [text, setText] = useState<string>("");
+
+  const addGoal = async () => {
+    const goal = {
+      title: title,
+      text: text,
+    };
+    const body = new URLSearchParams(goal);
+    await axios.post("http://localhost:8080/goal", body);
+  };
+
   return (
     <>
       <Head>
@@ -10,8 +25,27 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-          main
+        <h2>目標を追加する</h2>
+        <Box component="form" noValidate autoComplete="off">
+          <Stack spacing={2} direction="row">
+            <TextField
+              id="outlined-read-only-input"
+              label="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <TextField
+              id="outlined-read-only-input"
+              label="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <Button onClick={addGoal} variant="contained">
+              追加
+            </Button>
+          </Stack>
+        </Box>
       </main>
     </>
-  )
+  );
 }
