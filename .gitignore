@@ -2,3 +2,5 @@
 /mysql
 
 .env
+
+backend/tmp
