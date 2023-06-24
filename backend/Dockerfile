@@ -15,6 +15,7 @@ RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@la
 RUN go get github.com/oklog/ulid/v2
 RUN go get github.com/go-sql-driver/mysql
 RUN go get github.com/joho/godotenv
+RUN go install github.com/cosmtrek/air@latest
 
 RUN go mod download
 
@@ -22,4 +23,5 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["go","run","main.go"]
+# CMD ["go","run","main.go"]
+CMD ["air", "-c", ".air.toml"]
