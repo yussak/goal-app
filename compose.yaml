@@ -5,6 +5,12 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DBNAME: ${DB_DBNAME}
+    env_file:
+      - .env
     tty: true
     volumes:
       - ./backend:/app
