@@ -13,7 +13,9 @@ export default function Home() {
       text: text,
     };
     const body = new URLSearchParams(goal);
-    await axios.post("http://localhost:8080/goal", body);
+    await axios.post("http://localhost:8080/goal", body).then((res) => {
+      console.log(res.data);
+    });
   };
 
   return (
@@ -26,6 +28,7 @@ export default function Home() {
       </Head>
       <main>
         <h2>目標を追加する</h2>
+        {/* TODO:コンポーネントに分割 */}
         <Box component="form" noValidate autoComplete="off">
           <Stack spacing={2} direction="row">
             <TextField
@@ -45,6 +48,8 @@ export default function Home() {
             </Button>
           </Stack>
         </Box>
+        {/* TODO:goal一覧リスト作成 */}
+        {/* {goals ? <p>aru</p> : <p>null</p>} */}
       </main>
     </>
   );

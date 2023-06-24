@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fmt"
+	"encoding/json"
 	"math/rand"
 	"net/http"
 	"time"
@@ -39,11 +39,15 @@ import (
 	}
 
 	sql := `INSERT INTO Goal(id, title, text) VALUES(?, ?, ?)`
-	result, err := db.DB.Exec(sql, req.ID, req.Title, req.Text)
+	_, err = db.DB.Exec(sql, req.ID, req.Title, req.Text)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Fprintf(w, "Successfully inserted goal with ID %s", result)
+
+	err = json.NewEncoder(w).Encode(req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
