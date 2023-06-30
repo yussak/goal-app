@@ -11,7 +11,7 @@ import (
 	"github.com/oklog/ulid"
 )
 
-	func AddGoal(w http.ResponseWriter, r *http.Request) {
+func AddGoal(w http.ResponseWriter, r *http.Request) {
 	// TODO:ここに書くべきじゃないと思うので確認
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
