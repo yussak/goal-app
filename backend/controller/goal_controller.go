@@ -11,6 +11,38 @@ import (
 	"github.com/oklog/ulid"
 )
 
+func FetchGoals(w http.ResponseWriter, r *http.Request) {
+	// TODO:ここに書くべきじゃないと思うので確認
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
+	goals := []model.Goal{}
+	
+	rows, err := db.DB.Query("SELECT id, title, text FROM Goal")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var goal model.Goal
+		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		goals = append(goals, goal)
+	}
+
+	err = json.NewEncoder(w).Encode(goals)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
 func AddGoal(w http.ResponseWriter, r *http.Request) {
 	// TODO:ここに書くべきじゃないと思うので確認
 	w.Header().Set("Access-Control-Allow-Headers", "*")

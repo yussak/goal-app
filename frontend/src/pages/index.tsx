@@ -1,11 +1,20 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  // TODO:型追加
+  const [goals, setGoals] = useState<any>([]);
+
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/goals").then(({ data }) => {
+      setGoals(data);
+    });
+  }, []);
 
   const addGoal = async () => {
     const goal = {
@@ -49,7 +58,22 @@ export default function Home() {
           </Stack>
         </Box>
         {/* TODO:goal一覧リスト作成 */}
-        {/* {goals ? <p>aru</p> : <p>null</p>} */}
+        {goals ? (
+          <ul>
+            {goals.map((goal, index) => {
+              return (
+                <li key={index}>
+                  <p>
+                    title: {goal.title}
+                    text: {goal.text}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p>null</p>
+        )}
       </main>
     </>
   );
