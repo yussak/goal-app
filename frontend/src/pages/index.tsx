@@ -23,7 +23,13 @@ export default function Home() {
     };
     const body = new URLSearchParams(goal);
     await axios.post("http://localhost:8080/goal", body).then((res) => {
-      console.log(res.data);
+      getGoals();
+    });
+  };
+
+  const getGoals = async () => {
+    await axios.get("http://localhost:8080/goals").then(({ data }) => {
+      setGoals(data);
     });
   };
 
