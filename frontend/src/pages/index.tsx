@@ -24,6 +24,8 @@ export default function Home() {
 
     axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", body).then((res) => {
       getGoals();
+      setTitle("");
+      setText("");
     });
   };
 
