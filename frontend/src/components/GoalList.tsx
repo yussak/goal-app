@@ -13,7 +13,7 @@ const GoalList = ({ goals }) => {
       })}
     </ul>
   ) : (
-    <p>null</p>
+    <p>目標はありません</p>
   );
 };
 
