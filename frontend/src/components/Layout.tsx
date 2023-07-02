@@ -1,5 +1,7 @@
 import Head from "next/head";
 import Sidebar from "./Sidebar";
+import Header from "./Header";
+
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -13,6 +15,7 @@ const Layout = ({ children }: LayoutProps) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Header />
       <div className="layout">
         <Sidebar />
         <main>{children}</main>
