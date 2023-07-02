@@ -15,9 +15,25 @@ func main() {
 		log.Fatalf("Error initializing database: %v", err)
 	}
 
-	http.HandleFunc("/goal", controller.AddGoal)
-	http.HandleFunc("/goals", controller.FetchGoals)
-	http.HandleFunc("/goal/", controller.DeleteGoal)
+	http.HandleFunc("/goal", corsMiddleware(controller.AddGoal))
+	http.HandleFunc("/goals", corsMiddleware(controller.FetchGoals))
+	http.HandleFunc("/goal/", corsMiddleware(controller.DeleteGoal))
 	
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Content-Type", "application/json")
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next(w, r)
+	}
 }

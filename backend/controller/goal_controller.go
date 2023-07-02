@@ -15,11 +15,6 @@ import (
 )
 
 func FetchGoals(w http.ResponseWriter, r *http.Request) {
-	// TODO:ここに書くべきじゃないと思うので確認
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-
 	goals := []model.Goal{}
 	
 	rows, err := db.DB.Query("SELECT id, title, text FROM Goal")
@@ -47,11 +42,6 @@ func FetchGoals(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddGoal(w http.ResponseWriter, r *http.Request) {
-	// TODO:ここに書くべきじゃないと思うので確認
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-
 	// デバッグ用に残す
 	// fmt.Println("goal title is: ",r.FormValue("title"))
 	// fmt.Println("goal text is: ",r.FormValue("text"))
@@ -88,12 +78,6 @@ func AddGoal(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteGoal(w http.ResponseWriter, r *http.Request) {
-	// TODO:ここに書くべきじゃないと思うので確認
-	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
-
 	// デバッグ用に残す
 	log.Println("DeleteGoal called with URL:", r.URL.Path)
 
