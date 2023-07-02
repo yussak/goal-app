@@ -3,7 +3,9 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -24,12 +26,20 @@ func InitDB() (*sql.DB, error) {
 		return nil, err
 	}
 
-	err = DB.Ping()
-	if err != nil {
-		fmt.Println("Error pinging database:",err)
-		return nil, err
+	// 接続リトライ（これがないとconnection refusedになることがある）
+	for i := 0; i < 5; i++ {
+		err = DB.Ping()
+		if err == nil {
+			break
+		}
+		log.Println("Error pinging database: " + err.Error())
+		time.Sleep(time.Second * 5)
 	}
 
-	fmt.Println("Connection has been established!")
+	if err != nil {
+		log.Fatal("Could not connect to the database: " + err.Error())
+	}
+
+	log.Println("Connection has been established!")
 	return DB, nil
 }
