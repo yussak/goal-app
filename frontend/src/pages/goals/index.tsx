@@ -54,7 +54,7 @@ export default function GoalIndex() {
 
   return (
     <>
-      <h2>目標を追加する</h2>
+      <h2>{t("goal_index.title")}</h2>
       <p>{t("test")}</p>
 
       <GoalForm
