@@ -21,19 +21,16 @@ export default function Home() {
     };
     const body = new URLSearchParams(goal);
 
-    await axios
-      .post(process.env.NEXT_PUBLIC_API_URL + "/goal", body)
-      .then((res) => {
-        getGoals();
-      });
+    axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", body).then((res) => {
+      getGoals();
+    });
   };
 
+  // thenを使う場合はasync/awaitは不要ということ（理解できてないので調べる）
   const getGoals = async () => {
-    await axios
-      .get(process.env.NEXT_PUBLIC_API_URL + "/goals")
-      .then(({ data }) => {
-        setGoals(data);
-      });
+    axios.get(process.env.NEXT_PUBLIC_API_URL + "/goals").then(({ data }) => {
+      setGoals(data);
+    });
   };
 
   return (
