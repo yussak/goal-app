@@ -15,7 +15,7 @@ export default function Home() {
     getGoals();
   }, []);
 
-  const addGoal = async () => {
+  const addGoal = () => {
     const goal = {
       title: title,
       text: text,
@@ -28,7 +28,7 @@ export default function Home() {
   };
 
   // thenを使う場合はasync/awaitは不要ということ（理解できてないので調べる）
-  const getGoals = async () => {
+  const getGoals = () => {
     axios.get(process.env.NEXT_PUBLIC_API_URL + "/goals").then(({ data }) => {
       setGoals(data);
     });
