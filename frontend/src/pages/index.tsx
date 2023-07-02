@@ -11,9 +11,11 @@ export default function Home() {
   const [text, setText] = useState<string>("");
 
   useEffect(() => {
-    axios.get("http://localhost:8080/goals").then(({ data }) => {
+    axios.get(process.env.NEXT_PUBLIC_API_URL + "/goals").then(({ data }) => {
       setGoals(data);
     });
+    // TODO:以下だけに書き換える
+    // getGoals();
   }, []);
 
   const addGoal = async () => {
@@ -22,15 +24,20 @@ export default function Home() {
       text: text,
     };
     const body = new URLSearchParams(goal);
-    await axios.post("http://localhost:8080/goal", body).then((res) => {
-      getGoals();
-    });
+
+    await axios
+      .post(process.env.NEXT_PUBLIC_API_URL + "/goal", body)
+      .then((res) => {
+        getGoals();
+      });
   };
 
   const getGoals = async () => {
-    await axios.get("http://localhost:8080/goals").then(({ data }) => {
-      setGoals(data);
-    });
+    await axios
+      .get(process.env.NEXT_PUBLIC_API_URL + "/goals")
+      .then(({ data }) => {
+        setGoals(data);
+      });
   };
 
   return (
