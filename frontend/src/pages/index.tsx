@@ -40,7 +40,7 @@ export default function Home() {
       });
   };
 
-  const deleteGoal = (id) => {
+  const deleteGoal = (id: string) => {
     axios
       .delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}`)
       .then((res) => {
