@@ -54,19 +54,17 @@ export default function GoalIndex() {
 
   return (
     <>
-      <div>
-        <h2>目標を追加する</h2>
-        <p>{t("test")}</p>
+      <h2>目標を追加する</h2>
+      <p>{t("test")}</p>
 
-        <GoalForm
-          setTitle={setTitle}
-          setText={setText}
-          addGoal={addGoal}
-          title={title}
-          text={text}
-        />
-        <GoalList goals={goals} onDelete={deleteGoal} />
-      </div>
+      <GoalForm
+        setTitle={setTitle}
+        setText={setText}
+        addGoal={addGoal}
+        title={title}
+        text={text}
+      />
+      <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
 }
