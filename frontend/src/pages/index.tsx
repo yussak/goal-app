@@ -3,10 +3,10 @@ import axios from "axios";
 import Head from "next/head";
 import GoalForm from "@/components/form/GoalForm";
 import GoalList from "@/components/GoalList";
+import { Goal } from "@/types";
 
 export default function Home() {
-  // TODO:型追加
-  const [goals, setGoals] = useState<any>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
 
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
