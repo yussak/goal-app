@@ -55,7 +55,6 @@ export default function GoalIndex() {
   return (
     <>
       <h2>{t("goal_index.title")}</h2>
-      <p>{t("test")}</p>
 
       <GoalForm
         setTitle={setTitle}
