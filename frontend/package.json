@@ -22,6 +22,7 @@
     "eslint-config-next": "13.4.6",
     "i18next": "^23.2.6",
     "next": "13.4.6",
+    "next-auth": "^4.22.1",
     "next-i18next": "^14.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
