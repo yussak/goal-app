@@ -7,7 +7,7 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function GoalIndex() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [goals, setGoals] = useState<Goal[]>([]);
 
   const [title, setTitle] = useState<string>("");
@@ -52,18 +52,12 @@ export default function GoalIndex() {
       });
   };
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
-
   return (
     <>
       <div>
         <h2>目標を追加する</h2>
         <p>{t("test")}</p>
-        {/* TODO:コンポーネントに切り出す（ヘッダーが良さそう） */}
-        <button onClick={() => changeLanguage("en")}>{t("english")}</button>
-        <button onClick={() => changeLanguage("ja")}>{t("japanese")}</button>
+
         <GoalForm
           setTitle={setTitle}
           setText={setText}

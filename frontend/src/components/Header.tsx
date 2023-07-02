@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export default function Header() {
   return (
@@ -6,6 +7,7 @@ export default function Header() {
       <Link href="/">Home</Link>
       <Link href="/about">About</Link>
       <Link href="/goals">Goals</Link>
+      <LanguageSwitcher />
     </header>
   );
 }
