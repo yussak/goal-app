@@ -1,16 +1,19 @@
 import { useTranslation } from "next-i18next";
+import { ChangeEvent } from "react";
+
+type Language = "ja" | "en";
 
 export const LanguageSwitcher: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+  const changeLanguage = (event: ChangeEvent<HTMLSelectElement>) => {
+    i18n.changeLanguage(event.target.value as Language);
   };
 
   return (
-    <>
-      <button onClick={() => changeLanguage("en")}>{t("english")}</button>
-      <button onClick={() => changeLanguage("ja")}>{t("japanese")}</button>
-    </>
+    <select defaultValue={i18n.language} onChange={changeLanguage}>
+      <option value="ja">{t("日本語")}</option>
+      <option value="en">{t("english")}</option>
+    </select>
   );
 };
