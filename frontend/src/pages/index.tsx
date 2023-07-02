@@ -28,10 +28,19 @@ export default function Home() {
   };
 
   // thenを使う場合はasync/awaitは不要ということ（理解できてないので調べる）
+  // try-catchだとasync awaitはいるのか。どちらにすべきか確認する
   const getGoals = () => {
     axios.get(process.env.NEXT_PUBLIC_API_URL + "/goals").then(({ data }) => {
       setGoals(data);
     });
+  };
+
+  const deleteGoal = (id) => {
+    axios
+      .delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}`)
+      .then((res) => {
+        getGoals();
+      });
   };
 
   return (
@@ -51,7 +60,7 @@ export default function Home() {
           title={title}
           text={text}
         />
-        <GoalList goals={goals} />
+        <GoalList goals={goals} onDelete={deleteGoal} />
       </main>
     </>
   );

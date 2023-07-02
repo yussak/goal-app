@@ -17,6 +17,7 @@ func main() {
 
 	http.HandleFunc("/goal", controller.AddGoal)
 	http.HandleFunc("/goals", controller.FetchGoals)
+	http.HandleFunc("/goal/", controller.DeleteGoal)
 	
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

@@ -2,8 +2,11 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
@@ -47,7 +50,7 @@ func AddGoal(w http.ResponseWriter, r *http.Request) {
 	// TODO:ここに書くべきじゃないと思うので確認
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Contetn-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
 
 	// デバッグ用に残す
 	// fmt.Println("goal title is: ",r.FormValue("title"))
@@ -82,4 +85,30 @@ func AddGoal(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func DeleteGoal(w http.ResponseWriter, r *http.Request) {
+	// TODO:ここに書くべきじゃないと思うので確認
+	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
+
+	// デバッグ用に残す
+	log.Println("DeleteGoal called with URL:", r.URL.Path)
+
+	id := strings.TrimPrefix(r.URL.Path, "/goal/")
+	fmt.Println(id)
+	if id == "" {
+		http.Error(w, "ID must be provided", http.StatusBadRequest)
+		return
+	}
+
+	_, err := db.DB.Exec("DELETE FROM Goal WHERE id = ?", id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }

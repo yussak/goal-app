@@ -1,4 +1,4 @@
-const GoalList = ({ goals }) => {
+const GoalList = ({ goals, onDelete }) => {
   return goals ? (
     <ul>
       {goals.map((goal, index) => {
@@ -7,6 +7,7 @@ const GoalList = ({ goals }) => {
             <p>
               title: {goal.title}
               text: {goal.text}
+              <button onClick={() => onDelete(goal.id)}>delete</button>
             </p>
           </li>
         );
