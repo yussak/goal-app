@@ -11,11 +11,7 @@ export default function Home() {
   const [text, setText] = useState<string>("");
 
   useEffect(() => {
-    axios.get(process.env.NEXT_PUBLIC_API_URL + "/goals").then(({ data }) => {
-      setGoals(data);
-    });
-    // TODO:以下だけに書き換える
-    // getGoals();
+    getGoals();
   }, []);
 
   const addGoal = async () => {
