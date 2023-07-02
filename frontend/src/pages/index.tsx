@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Head from "next/head";
-import { useEffect, useState } from "react";
 import GoalForm from "@/components/form/GoalForm";
 
 export default function Home() {
