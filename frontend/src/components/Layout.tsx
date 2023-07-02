@@ -1,8 +1,10 @@
 import Head from "next/head";
 import Sidebar from "./Sidebar";
+interface LayoutProps {
+  children: React.ReactNode;
+}
 
-// TODO:chilrenの型を変える
-const Layout: React.FC = ({ children }: any) => {
+const Layout = ({ children }: LayoutProps) => {
   return (
     <div>
       <Head>
