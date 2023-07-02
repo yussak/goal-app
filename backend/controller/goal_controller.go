@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -95,4 +96,29 @@ func DeleteGoal(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func FetchGoalDetail(w http.ResponseWriter, r *http.Request) {
+	// queryじゃなくpathだとFormValueだと撮れない（よく調べたい）
+	id := strings.TrimPrefix(r.URL.Path, "/goals/")
+
+	row := db.DB.QueryRow("SELECT id, title, text FROM Goal WHERE id = ?", id)
+
+    var goal model.Goal
+    err := row.Scan(&goal.ID, &goal.Title, &goal.Text)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            http.Error(w, "No goal with the provided ID.", http.StatusNotFound)
+            return
+        }
+
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    err = json.NewEncoder(w).Encode(goal)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
 }

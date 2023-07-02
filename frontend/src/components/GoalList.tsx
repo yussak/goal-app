@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const GoalList = ({ goals, onDelete }) => {
   return goals ? (
     <ul>
@@ -8,7 +10,9 @@ const GoalList = ({ goals, onDelete }) => {
               title: {goal.title}
               text: {goal.text}
               <button onClick={() => onDelete(goal.id)}>delete</button>
+              <Link href={`/goals/${goal.id}`}>detail</Link>
             </p>
+            <p>id: {goal.id}</p>
           </li>
         );
       })}

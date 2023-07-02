@@ -18,6 +18,7 @@ func main() {
 	http.HandleFunc("/goal", corsMiddleware(controller.AddGoal))
 	http.HandleFunc("/goals", corsMiddleware(controller.FetchGoals))
 	http.HandleFunc("/goal/", corsMiddleware(controller.DeleteGoal))
+	http.HandleFunc("/goals/", corsMiddleware(controller.FetchGoalDetail))
 	
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
