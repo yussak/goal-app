@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Head from "next/head";
 import GoalForm from "@/components/form/GoalForm";
+import GoalList from "@/components/GoalList";
 
 export default function Home() {
   // TODO:型追加
@@ -50,23 +51,7 @@ export default function Home() {
           title={title}
           text={text}
         />
-        {/* TODO:goal一覧リスト作成 */}
-        {goals ? (
-          <ul>
-            {goals.map((goal, index) => {
-              return (
-                <li key={index}>
-                  <p>
-                    title: {goal.title}
-                    text: {goal.text}
-                  </p>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p>null</p>
-        )}
+        <GoalList goals={goals} />
       </main>
     </>
   );
