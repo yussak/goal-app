@@ -1,7 +1,7 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import GoalForm from "@/components/form/GoalForm";
 
 export default function Home() {
   // TODO:型追加
@@ -43,26 +43,13 @@ export default function Home() {
       </Head>
       <main>
         <h2>目標を追加する</h2>
-        {/* TODO:コンポーネントに分割 */}
-        <Box component="form" noValidate autoComplete="off">
-          <Stack spacing={2} direction="row">
-            <TextField
-              id="outlined-read-only-input"
-              label="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <TextField
-              id="outlined-read-only-input"
-              label="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-            <Button onClick={addGoal} variant="contained">
-              追加
-            </Button>
-          </Stack>
-        </Box>
+        <GoalForm
+          setTitle={setTitle}
+          setText={setText}
+          addGoal={addGoal}
+          title={title}
+          text={text}
+        />
         {/* TODO:goal一覧リスト作成 */}
         {goals ? (
           <ul>
