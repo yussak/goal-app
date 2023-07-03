@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const GoalList = ({ goals, onDelete }) => {
-  return goals ? (
+  return goals && goals.length > 0 ? (
     <ul>
       {goals.map((goal, index) => {
         return (
@@ -18,6 +18,7 @@ const GoalList = ({ goals, onDelete }) => {
       })}
     </ul>
   ) : (
+    // TODO:goalがなくても以下テキストが出ないので修正
     <p>目標はありません</p>
   );
 };
