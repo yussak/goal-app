@@ -20,6 +20,8 @@ func main() {
 	http.HandleFunc("/goal/", corsMiddleware(controller.DeleteGoal))
 	http.HandleFunc("/goals/", corsMiddleware(controller.FetchGoalDetail))
 	
+	http.HandleFunc("/goal_comment", corsMiddleware(controller.AddGoalComment))
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
