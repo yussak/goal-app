@@ -21,6 +21,7 @@ func main() {
 	http.HandleFunc("/goals/", corsMiddleware(controller.FetchGoalDetail))
 	
 	http.HandleFunc("/goal_comment", corsMiddleware(controller.AddGoalComment))
+	http.HandleFunc("/goal_comments", corsMiddleware(controller.FetchGoalComments))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { Goal } from "@/types";
+import { Goal, GoalComment } from "@/types";
 import GoalCommentForm from "@/components/form/GoalCommentForm";
+import GoalCommentList from "@/components/GoalCommentList";
 
 export default function GoalDetail() {
   const [goal, setGoal] = useState<Goal | null>(null);
+  const [comments, setComments] = useState<GoalComment[]>([]);
 
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
@@ -15,11 +17,13 @@ export default function GoalDetail() {
 
   useEffect(() => {
     if (!router.isReady) return;
+    // TODO: getGoal的なのに切り出す
     axios
       .get(process.env.NEXT_PUBLIC_API_URL + `/goals/${id}`)
       .then(({ data }) => {
         setGoal(data);
       });
+    getComments();
   }, [router.isReady]);
 
   const addComment = () => {
@@ -33,8 +37,20 @@ export default function GoalDetail() {
     axios
       .post(process.env.NEXT_PUBLIC_API_URL + "/goal_comment", body)
       .then((res) => {
+        getComments();
         setTitle("");
         setText("");
+      });
+  };
+
+  const getComments = () => {
+    axios
+      .get(process.env.NEXT_PUBLIC_API_URL + "/goal_comments")
+      .then(({ data }) => {
+        setComments(data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -55,6 +71,7 @@ export default function GoalDetail() {
           title={title}
           text={text}
         />
+        <GoalCommentList comments={comments} />
       </div>
     </>
   );
