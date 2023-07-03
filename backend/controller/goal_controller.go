@@ -18,7 +18,7 @@ import (
 func FetchGoals(w http.ResponseWriter, r *http.Request) {
 	goals := []model.Goal{}
 	
-	rows, err := db.DB.Query("SELECT id, title, text FROM Goals")
+	rows, err := db.DB.Query("SELECT id, title, text FROM goals")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -64,7 +64,7 @@ func AddGoal(w http.ResponseWriter, r *http.Request) {
 		Text: r.FormValue("text"),
 	}
 
-	sql := `INSERT INTO Goals(id, title, text) VALUES(?, ?, ?)`
+	sql := `INSERT INTO goals(id, title, text) VALUES(?, ?, ?)`
 	_, err = db.DB.Exec(sql, req.ID, req.Title, req.Text)
 
 	if err != nil {
@@ -89,7 +89,7 @@ func DeleteGoal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := db.DB.Exec("DELETE FROM Goals WHERE id = ?", id)
+	_, err := db.DB.Exec("DELETE FROM goals WHERE id = ?", id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -102,7 +102,7 @@ func FetchGoalDetail(w http.ResponseWriter, r *http.Request) {
 	// queryじゃなくpathだとFormValueだと撮れない（よく調べたい）
 	id := strings.TrimPrefix(r.URL.Path, "/goals/")
 
-	row := db.DB.QueryRow("SELECT id, title, text FROM Goals WHERE id = ?", id)
+	row := db.DB.QueryRow("SELECT id, title, text FROM goals WHERE id = ?", id)
 
     var goal model.Goal
     err := row.Scan(&goal.ID, &goal.Title, &goal.Text)
