@@ -18,7 +18,6 @@ const GoalList = ({ goals, onDelete }) => {
       })}
     </ul>
   ) : (
-    // TODO:goalがなくても以下テキストが出ないので修正
     <p>目標はありません</p>
   );
 };
