@@ -17,14 +17,17 @@ export default function GoalDetail() {
 
   useEffect(() => {
     if (!router.isReady) return;
-    // TODO: getGoal的なのに切り出す
+    getGoalDetails();
+    getComments();
+  }, [router.isReady]);
+
+  const getGoalDetails = () => {
     axios
       .get(process.env.NEXT_PUBLIC_API_URL + `/goals/${id}`)
       .then(({ data }) => {
         setGoal(data);
       });
-    getComments();
-  }, [router.isReady]);
+  };
 
   const addComment = () => {
     const comment = {
