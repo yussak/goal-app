@@ -11,6 +11,8 @@ COPY go.mod go.sum ./
 
 # TODO:install get統一したい
 # 「事前にビルドされたバイナリをダウンロードして使用」したい
+
+# TODO:ここでgo getする意味ない気がする。importを書いた上でgo mod tidyして初めてインストールされる（ここで書いてもインストールされない）気がする
 RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 RUN go get github.com/oklog/ulid/v2
 RUN go get github.com/go-sql-driver/mysql
