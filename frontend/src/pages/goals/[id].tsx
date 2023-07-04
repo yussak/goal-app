@@ -32,7 +32,6 @@ export default function GoalDetail() {
       title: title,
       text: text,
     };
-    // const body = new URLSearchParams(comment);
 
     axios
       .post(process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments`, comment)
