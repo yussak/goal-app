@@ -1,22 +1,22 @@
 package controller
 
 import (
-	"encoding/json"
 	"math/rand"
 	"net/http"
 	"time"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 	"github.com/YusukeSakuraba/goal-app/model"
+	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
 )
 
-func FetchGoalComments(w http.ResponseWriter, r *http.Request) {
+func FetchGoalComments(c *gin.Context) {
 	goal_comments := []model.GoalComment{}
 	
 	rows, err := db.DB.Query("SELECT id, goal_id, title, text FROM goal_comments")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	defer rows.Close()
@@ -25,53 +25,36 @@ func FetchGoalComments(w http.ResponseWriter, r *http.Request) {
 		var goal_comment model.GoalComment
 		err = rows.Scan(&goal_comment.ID, &goal_comment.GoalID, &goal_comment.Title, &goal_comment.Text)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		goal_comments = append(goal_comments, goal_comment)
 	}
 
-	err = json.NewEncoder(w).Encode(goal_comments)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	c.JSON(http.StatusOK, goal_comments)
 }
 
-func AddGoalComment(w http.ResponseWriter, r *http.Request) {
-	// デバッグ用に残す
-	// fmt.Println("goal title is: ",r.FormValue("title"))
-	// fmt.Println("goal id is: ",r.FormValue("goal_id"))
-	// fmt.Println("goal text is: ",r.FormValue("text"))
-
-	err := r.ParseForm()
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
+func AddGoalComment(c *gin.Context) {
 	t := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
 	id := ulid.MustNew(ulid.Timestamp(t), entropy)
 
-	req := model.GoalComment {
-		ID:     id.String(),
-		GoalID:   r.FormValue("goal_id"),
-		Title:   r.FormValue("title"),
-		Text: r.FormValue("text"),
+	var req model.GoalComment
+	err := c.Bind(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
+
+	req.ID = id.String()
 
 	sql := `INSERT INTO goal_comments(id, goal_id, title, text) VALUES(?, ?, ?, ?)`
 	_, err = db.DB.Exec(sql, req.ID, req.GoalID, req.Title, req.Text)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	err = json.NewEncoder(w).Encode(req)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	c.JSON(http.StatusOK, req)
 }
