@@ -47,6 +47,7 @@ func AddGoalComment(c *gin.Context) {
 	}
 
 	req.ID = id.String()
+	req.GoalID = c.Param("id")
 
 	sql := `INSERT INTO goal_comments(id, goal_id, title, text) VALUES(?, ?, ?, ?)`
 	_, err = db.DB.Exec(sql, req.ID, req.GoalID, req.Title, req.Text)

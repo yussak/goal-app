@@ -32,10 +32,10 @@ export default function GoalDetail() {
       title: title,
       text: text,
     };
-    const body = new URLSearchParams(comment);
+    // const body = new URLSearchParams(comment);
 
     axios
-      .post(process.env.NEXT_PUBLIC_API_URL + "/goal_comment", body)
+      .post(process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments`, comment)
       .then((res) => {
         getComments();
         setTitle("");
@@ -45,7 +45,7 @@ export default function GoalDetail() {
 
   const getComments = () => {
     axios
-      .get(process.env.NEXT_PUBLIC_API_URL + "/goal_comments")
+      .get(process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments`)
       .then(({ data }) => {
         setComments(data);
       })
