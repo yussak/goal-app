@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
+
 	"github.com/YusukeSakuraba/goal-app/controller"
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 )
@@ -15,29 +17,33 @@ func main() {
 		log.Fatalf("Error initializing database: %v", err)
 	}
 
-	http.HandleFunc("/goal", corsMiddleware(controller.AddGoal))
-	http.HandleFunc("/goals", corsMiddleware(controller.FetchGoals))
-	http.HandleFunc("/goal/", corsMiddleware(controller.DeleteGoal))
-	http.HandleFunc("/goals/", corsMiddleware(controller.FetchGoalDetail))
-	
-	http.HandleFunc("/goal_comment", corsMiddleware(controller.AddGoalComment))
-	http.HandleFunc("/goal_comments", corsMiddleware(controller.FetchGoalComments))
+	r := gin.Default()
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	r.Use(corsMiddleware())
+
+	r.POST("/goal", controller.AddGoal)
+	r.GET("/goals", controller.FetchGoals)
+	r.DELETE("/goal/:id", controller.DeleteGoal)
+	r.GET("/goals/:id", controller.FetchGoalDetail)
+
+	r.POST("/goal_comment", controller.AddGoalComment)
+	r.GET("/goals/:id/comments", controller.FetchGoalComments)
+
+	r.Run(":8080")
 }
 
-func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		w.Header().Set("Content-Type", "application/json")
+func corsMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		c.Writer.Header().Set("Content-Type", "application/json")
 
-		if r.Method == "OPTIONS" {
-			w.WriteHeader(http.StatusOK)
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusOK)
 			return
 		}
 
-		next(w, r)
+		c.Next()
 	}
 }
