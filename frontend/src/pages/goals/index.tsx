@@ -22,9 +22,8 @@ export default function GoalIndex() {
       title: title,
       text: text,
     };
-    const body = new URLSearchParams(goal);
 
-    axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", body).then((res) => {
+    axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", goal).then((res) => {
       getGoals();
       setTitle("");
       setText("");
