@@ -13,8 +13,9 @@ import (
 
 func FetchGoalComments(c *gin.Context) {
 	goal_comments := []model.GoalComment{}
+	goal_id := c.Param("id")
 	
-	rows, err := db.DB.Query("SELECT id, goal_id, title, text FROM goal_comments")
+	rows, err := db.DB.Query("SELECT id, goal_id, title, text FROM goal_comments WHERE goal_id = ?", goal_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
