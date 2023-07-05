@@ -56,6 +56,16 @@ export default function GoalDetail() {
       });
   };
 
+  const deleteComment = (comment_id: string) => {
+    axios
+      .delete(
+        process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments/${comment_id}`
+      )
+      .then((res) => {
+        getComments();
+      });
+  };
+
   return (
     <>
       <div>
@@ -73,7 +83,7 @@ export default function GoalDetail() {
           title={title}
           text={text}
         />
-        <GoalCommentList comments={comments} />
+        <GoalCommentList comments={comments} onDelete={deleteComment} />
       </div>
     </>
   );

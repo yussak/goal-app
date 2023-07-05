@@ -11,6 +11,7 @@ const GoalCommentList = ({ comments, onDelete }) => {
             </p>
             <p>id: {comment.id}</p>
             <p>goal_id: {comment.goal_id}</p>
+            <button onClick={() => onDelete(comment.id)}>delete</button>
           </li>
         );
       })}

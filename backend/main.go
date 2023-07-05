@@ -25,9 +25,10 @@ func main() {
 	r.GET("/goals", controller.FetchGoals)
 	r.DELETE("/goal/:id", controller.DeleteGoal)
 	r.GET("/goals/:id", controller.FetchGoalDetail)
-
+	
 	r.POST("/goals/:id/comments", controller.AddGoalComment)
 	r.GET("/goals/:id/comments", controller.FetchGoalComments)
+	r.DELETE("/goals/:goal_id/comments/:comment_id", controller.DeleteGoalComment)
 
 	r.Run(":8080")
 }

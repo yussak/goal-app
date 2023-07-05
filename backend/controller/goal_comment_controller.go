@@ -60,3 +60,20 @@ func AddGoalComment(c *gin.Context) {
 
 	c.JSON(http.StatusOK, req)
 }
+
+func DeleteGoalComment(c *gin.Context) {
+	comment_id := c.Param("comment_id")
+
+	if comment_id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID must be provided"})
+		return
+	}
+
+	_, err := db.DB.Exec("DELETE FROM goal_comments WHERE id = ?", comment_id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
+}
