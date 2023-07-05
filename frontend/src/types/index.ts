@@ -6,6 +6,7 @@ export type Goal = {
 };
 
 export type GoalComment = {
+  id: string;
   goal_id: string;
   title: string;
   text: string;
