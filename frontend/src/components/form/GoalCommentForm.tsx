@@ -1,6 +1,20 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
 
-const GoalCommentForm = ({ setTitle, setText, addComment, title, text }) => {
+type GoalCommentFormProps = {
+  setTitle: (title: string) => void;
+  setText: (text: string) => void;
+  addComment: () => void;
+  title: string;
+  text: string;
+};
+
+const GoalCommentForm = ({
+  setTitle,
+  setText,
+  addComment,
+  title,
+  text,
+}: GoalCommentFormProps) => {
   return (
     <Box component="form" noValidate autoComplete="off">
       <Stack spacing={2} direction="row">
