@@ -1,5 +1,6 @@
 // type interfaceの違いを調べたい
 export type Goal = {
+  id: string;
   title: string;
   text: string;
 };
