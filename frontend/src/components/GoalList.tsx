@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { Goal } from "@/types";
 
-const GoalList = ({ goals, onDelete }) => {
+type GoalListProps = {
+  goals: Goal[];
+  onDelete: (id: string) => void;
+};
+
+const GoalList = ({ goals, onDelete }: GoalListProps) => {
   return goals && goals.length > 0 ? (
     <ul>
       {goals.map((goal, index) => {
