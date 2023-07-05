@@ -1,6 +1,20 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
 
-const GoalForm = ({ setTitle, setText, addGoal, title, text }) => {
+type GoalFormProps = {
+  setTitle: (title: string) => void;
+  setText: (text: string) => void;
+  addGoal: () => void;
+  title: string;
+  text: string;
+};
+
+const GoalForm = ({
+  setTitle,
+  setText,
+  addGoal,
+  title,
+  text,
+}: GoalFormProps) => {
   return (
     <Box component="form" noValidate autoComplete="off">
       <Stack spacing={2} direction="row">
