@@ -1,4 +1,11 @@
-const GoalCommentList = ({ comments, onDelete }) => {
+import { GoalComment } from "@/types";
+
+type GoalCommentListProps = {
+  comments: GoalComment[];
+  onDelete: (id: string) => void;
+};
+
+const GoalCommentList = ({ comments, onDelete }: GoalCommentListProps) => {
   console.log(comments);
   return comments && comments.length > 0 ? (
     <ul>
