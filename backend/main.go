@@ -21,7 +21,7 @@ func main() {
 
 	r.Use(corsMiddleware())
 	
-	r.POST("/signup", controller.Signup)
+	r.POST("auth/signup", controller.Signup)
 
 	r.POST("/goal", controller.AddGoal)
 	r.GET("/goals", controller.FetchGoals)
