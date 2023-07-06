@@ -18,6 +18,7 @@ export default function Register() {
     console.log(res.data);
   };
 
+  // TODO: バリデーション追加;
   return (
     <form onSubmit={register}>
       <input
