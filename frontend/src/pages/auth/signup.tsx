@@ -21,8 +21,8 @@ export default function Register() {
   return (
     <form onSubmit={register}>
       <input
-        type="email"
-        value={email}
+        type="name"
+        value={name}
         onChange={(e) => setName(e.target.value)}
         required
       />
