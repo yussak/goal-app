@@ -6,21 +6,14 @@ import (
 	"time"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
+	"github.com/YusukeSakuraba/goal-app/model"
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
 	"golang.org/x/crypto/bcrypt"
 )
 
-// TODO:model/userに切り出す
-type User struct {
-	ID string `json:"id"`
-	Name string `json:"name"`
-	Email string `json:"email"`
-	Password string `json:"password"`
-}
-
 func Signup(c *gin.Context) {
-	var user User
+	var user model.User
 
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
