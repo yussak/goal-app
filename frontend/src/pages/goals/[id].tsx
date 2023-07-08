@@ -83,6 +83,7 @@ export default function GoalDetail() {
           title={title}
           text={text}
         />
+        <h3>コメント一覧</h3>
         <GoalCommentList comments={comments} onDelete={deleteComment} />
       </div>
     </>
