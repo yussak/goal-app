@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"database/sql"
 	"math/rand"
 	"net/http"
 	"time"
@@ -37,4 +38,38 @@ func Signup(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User successfully created"})
+}
+
+func Login(c *gin.Context) {
+	var user model.User
+	var dbUser model.User
+
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	row := db.DB.QueryRow("SELECT * FROM users WHERE email =?", user.Email)
+
+	err := row.Scan(&dbUser.ID, &dbUser.Name, &dbUser.Email, &dbUser.Password)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            // If the email does not exist
+            c.JSON(http.StatusUnauthorized, gin.H{"message": "No user found with this email"})
+            return
+        } else {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+            return
+        }
+    }
+
+    err = bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(user.Password))
+    if err != nil {
+        // If the password does not match
+        c.JSON(http.StatusUnauthorized, gin.H{"message": "Password is incorrect"})
+        return
+    }
+
+    // The user is authenticated, add your code here
+    c.JSON(http.StatusOK, gin.H{"message": "User authenticated successfully"})
 }
