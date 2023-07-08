@@ -1,4 +1,9 @@
 // type interfaceの違いを調べたい
+export type User = {
+  id: string;
+  name: string;
+};
+
 export type Goal = {
   id: string;
   title: string;
