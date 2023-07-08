@@ -8,6 +8,7 @@ import (
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 	"github.com/YusukeSakuraba/goal-app/model"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
 	"golang.org/x/crypto/bcrypt"
@@ -70,6 +71,22 @@ func Login(c *gin.Context) {
         return
     }
 
+	// The user is authenticated, add your code here
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"id": dbUser.ID,
+		"name": dbUser.Name,
+		"email": dbUser.Email,
+		// You can also add the expiration time of the token here
+	})
+
+	// Replace 'your-secret' with your own secret key
+	tokenString, err := token.SignedString([]byte("your-secret"))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating the token"})
+		return
+	}
+
+
     // The user is authenticated, add your code here
-    c.JSON(http.StatusOK, gin.H{"message": "User authenticated successfully"})
+    c.JSON(http.StatusOK, gin.H{"message": "User authenticated successfully","user":dbUser,"token":tokenString})
 }
