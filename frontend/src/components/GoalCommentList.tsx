@@ -6,7 +6,6 @@ type GoalCommentListProps = {
 };
 
 const GoalCommentList = ({ comments, onDelete }: GoalCommentListProps) => {
-  console.log(comments);
   return comments && comments.length > 0 ? (
     <ul>
       {comments.map((comment, index) => {
