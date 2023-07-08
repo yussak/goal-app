@@ -39,7 +39,7 @@ export default function signup() {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button type="submit">Register</button>
+      <button type="submit">新規登録</button>
     </form>
   );
 }
