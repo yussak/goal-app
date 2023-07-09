@@ -17,17 +17,20 @@ export default function GoalIndex() {
     getGoals();
   }, []);
 
-  const addGoal = () => {
+  const addGoal = async () => {
     const goal = {
       title: title,
       text: text,
     };
 
-    axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", goal).then((res) => {
-      getGoals();
+    try {
+      await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", goal);
+      await getGoals();
       setTitle("");
       setText("");
-    });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // thenを使う場合はasync/awaitは不要ということ（理解できてないので調べる）
