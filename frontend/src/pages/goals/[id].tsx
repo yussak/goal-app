@@ -21,12 +21,15 @@ export default function GoalDetail() {
     getComments();
   }, [router.isReady]);
 
-  const getGoalDetails = () => {
-    axios
-      .get(process.env.NEXT_PUBLIC_API_URL + `/goals/${id}`)
-      .then(({ data }) => {
-        setGoal(data);
-      });
+  const getGoalDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        process.env.NEXT_PUBLIC_API_URL + `/goals/${id}`
+      );
+      setGoal(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const addComment = async () => {
