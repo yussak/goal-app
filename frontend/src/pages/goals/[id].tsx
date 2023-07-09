@@ -62,14 +62,15 @@ export default function GoalDetail() {
     }
   };
 
-  const deleteComment = (comment_id: string) => {
-    axios
-      .delete(
+  const deleteComment = async (comment_id: string) => {
+    try {
+      await axios.delete(
         process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments/${comment_id}`
-      )
-      .then((res) => {
-        getComments();
-      });
+      );
+      await getComments();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
