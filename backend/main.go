@@ -25,6 +25,7 @@ func main() {
 	r.POST("auth/login", controller.Login)
 
 	r.GET("/users", controller.FetchUsers)
+	r.GET("/users/:id", controller.FetchUserDetails)
 
 	r.POST("/goal", controller.AddGoal)
 	r.GET("/goals", controller.FetchGoals)
