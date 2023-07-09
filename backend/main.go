@@ -24,6 +24,8 @@ func main() {
 	r.POST("auth/signup", controller.Signup)
 	r.POST("auth/login", controller.Login)
 
+	r.GET("/users", controller.FetchUsers)
+
 	r.POST("/goal", controller.AddGoal)
 	r.GET("/goals", controller.FetchGoals)
 	r.DELETE("/goal/:id", controller.DeleteGoal)
