@@ -83,7 +83,7 @@ func DeleteGoal(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }
 
-func FetchGoalDetail(c *gin.Context) {
+func FetchGoalDetails(c *gin.Context) {
 	id := c.Param("id")
 
 	row := db.DB.QueryRow("SELECT id, title, text FROM goals WHERE id = ?", id)

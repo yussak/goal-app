@@ -30,7 +30,7 @@ func main() {
 	r.POST("/goal", controller.AddGoal)
 	r.GET("/goals", controller.FetchGoals)
 	r.DELETE("/goal/:id", controller.DeleteGoal)
-	r.GET("/goals/:id", controller.FetchGoalDetail)
+	r.GET("/goals/:id", controller.FetchGoalDetails)
 	
 	r.POST("/goals/:id/comments", controller.AddGoalComment)
 	r.GET("/goals/:id/comments", controller.FetchGoalComments)
