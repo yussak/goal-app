@@ -51,15 +51,15 @@ export default function GoalDetail() {
     }
   };
 
-  const getComments = () => {
-    axios
-      .get(process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments`)
-      .then(({ data }) => {
-        setComments(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const getComments = async () => {
+    try {
+      const { data } = await axios.get(
+        process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments`
+      );
+      setComments(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const deleteComment = (comment_id: string) => {
