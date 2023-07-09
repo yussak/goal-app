@@ -9,6 +9,9 @@ export default function Sidebar() {
       <li>
         <Link href="/auth/login">login</Link>
       </li>
+      <li>
+        <Link href="/users">ユーザー一覧</Link>
+      </li>
     </ul>
   );
 }
