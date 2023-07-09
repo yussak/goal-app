@@ -44,12 +44,13 @@ export default function GoalIndex() {
     }
   };
 
-  const deleteGoal = (id: string) => {
-    axios
-      .delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}`)
-      .then((res) => {
-        getGoals();
-      });
+  const deleteGoal = async (id: string) => {
+    try {
+      await axios.delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}`);
+      await getGoals();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
