@@ -75,24 +75,22 @@ export default function GoalDetail() {
 
   return (
     <>
-      <div>
-        <h2>目標詳細</h2>
-        {goal && (
-          <>
-            <p>{goal.title}</p>
-            <p>{goal.text}</p>
-          </>
-        )}
-        <GoalCommentForm
-          setTitle={setTitle}
-          setText={setText}
-          addComment={addComment}
-          title={title}
-          text={text}
-        />
-        <h3>コメント一覧</h3>
-        <GoalCommentList comments={comments} onDelete={deleteComment} />
-      </div>
+      <h2>目標詳細</h2>
+      {goal && (
+        <>
+          <p>{goal.title}</p>
+          <p>{goal.text}</p>
+        </>
+      )}
+      <GoalCommentForm
+        setTitle={setTitle}
+        setText={setText}
+        addComment={addComment}
+        title={title}
+        text={text}
+      />
+      <h3>コメント一覧</h3>
+      <GoalCommentList comments={comments} onDelete={deleteComment} />
     </>
   );
 }
