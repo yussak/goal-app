@@ -29,20 +29,23 @@ export default function GoalDetail() {
       });
   };
 
-  const addComment = () => {
+  const addComment = async () => {
     const comment = {
       goal_id: id,
       title: title,
       text: text,
     };
-
-    axios
-      .post(process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments`, comment)
-      .then((res) => {
-        getComments();
-        setTitle("");
-        setText("");
-      });
+    try {
+      await axios.post(
+        process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments`,
+        comment
+      );
+      await getComments();
+      setTitle("");
+      setText("");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getComments = () => {
