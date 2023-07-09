@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { User } from "@/types";
+import Link from "next/link";
 
 export default function UserIndex() {
   const [users, setUsers] = useState<User[]>([]);
@@ -29,6 +30,7 @@ export default function UserIndex() {
             <li key={index}>
               <p>id(デバッグ用): {user.id}</p>
               <p>name: {user.name}</p>
+              <Link href={`/users/${user.id}`}>detail</Link>
             </li>
           );
         })}
