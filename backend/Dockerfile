@@ -5,6 +5,8 @@ RUN apt-get update && \
         git \
         build-essential
 
+RUN go install github.com/cosmtrek/air@latest
+
 WORKDIR /app
 
 COPY go.mod go.sum ./
