@@ -2,8 +2,11 @@ package controller
 
 import (
 	"database/sql"
+	"log"
 	"math/rand"
 	"net/http"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
@@ -80,13 +83,50 @@ func Login(c *gin.Context) {
 	})
 
 	// Replace 'your-secret' with your own secret key
-	tokenString, err := token.SignedString([]byte("your-secret"))
+	mySecret := os.Getenv("MY_SECRET")
+	tokenString, err := token.SignedString([]byte(mySecret))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating the token"})
 		return
 	}
+	log.Println("Generated token: ", tokenString)
+
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name: "token",
+		Value: tokenString,
+		HttpOnly: true,
+	})
 
 
     // The user is authenticated, add your code here
     c.JSON(http.StatusOK, gin.H{"message": "User authenticated successfully","user":dbUser,"token":tokenString})
+}
+
+func DecodeToken(c *gin.Context) {
+	// Extract the token from the 'Authorization' header
+	authHeader := c.Request.Header.Get("Authorization")
+	if authHeader == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Authorization header is missing"})
+		return
+	}
+	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+	log.Println("Received token: ", tokenString)
+
+	
+	mySecret := os.Getenv("MY_SECRET")
+	// log.Println("Received token: ", token.Token)
+	tokenClaims, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(mySecret), nil
+	})
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": err})
+		return
+	}
+	
+	if claims, ok := tokenClaims.Claims.(jwt.MapClaims); ok && tokenClaims.Valid {
+		c.JSON(http.StatusOK, gin.H{"user": claims})
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid token"})
+	}
 }

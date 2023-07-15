@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { UserContext } from "@/contexts/userContext";
-import { useContext } from "react";
+import { useUser } from "@/contexts/userContext";
 
 export default function Header() {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
 
   return (
     <header className="header">

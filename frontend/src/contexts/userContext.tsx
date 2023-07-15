@@ -1,14 +1,35 @@
 import { User } from "@/types";
-import { createContext } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 interface UserContextType {
   user: User | null;
   login: (user: User) => void;
 }
 
-const initialContext: UserContextType = {
-  user: null,
-  login: () => {},
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined
+);
+
+export const UserProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  const login = (user: User) => {
+    setUser(user);
+  };
+
+  return (
+    <UserContext.Provider value={{ user, login }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
-export const UserContext = createContext<UserContextType>(initialContext);
+export const useUser = (): UserContextType => {
+  const context = useContext(UserContext);
+  if (context === undefined) {
+    throw new Error("useUser must be used witin a UserProvider");
+  }
+  return context;
+};
