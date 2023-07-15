@@ -3,11 +3,11 @@ import axios from "axios";
 import { useUser } from "@/contexts/userContext";
 import cookie from "cookie";
 import { NextPageContext } from "next";
+import { Button, Container, Stack, TextField } from "@mui/material";
 
 // TODO:型を追加する（User | null)→他のところ見てどう追加するか確認する
 // TODO:パス再登録可能にしたい→別issueでも可
 // TODO:フォーム自動で入力しないようにしたい
-// TODO:フォーム縦並びにする
 // TODO:ログイン成功時にフラッシュ出す
 // TODO:ログイン失敗時にフラッシュ出す
 export default function Login({ user: initialUser }) {
@@ -53,25 +53,31 @@ export default function Login({ user: initialUser }) {
   // TODO: パスワード再発行可能にしたい
   // TODO: フォームコンポーネント化
   return (
-    <>
+    // TODO:labelがクリック前に入力とかぶるので対処
+    // TOOD:autoComplete="off"が効かないので対処
+    <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSumit}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">ログイン</button>
+        <Stack spacing={2}>
+          <TextField
+            label="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <TextField
+            label="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Button variant="contained" type="submit">
+            ログイン
+          </Button>
+        </Stack>
       </form>
-      test
-      {user ? <p>{user.name} desu</p> : "ログインしてない"}
-    </>
+    </Container>
   );
 }
 
