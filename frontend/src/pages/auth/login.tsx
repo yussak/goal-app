@@ -3,9 +3,15 @@ import axios from "axios";
 import { useUser } from "@/contexts/userContext";
 import cookie from "cookie";
 import { NextPageContext } from "next";
+import { Button, Container, Stack, TextField } from "@mui/material";
+import { User } from "@/types";
 
-export default function Login({ user: initialUser }) {
-  // export default function Login() {
+// TODO:パスワード再登録可能にする→ https://github.com/YusukeSakuraba/goal-app/issues/27 で対応
+// TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
+// TODO: フォームコンポーネント化
+// TODO:ログイン成功時にフラッシュ出す
+// TODO:ログイン失敗時にフラッシュ出す
+export default function Login({ user: initialUser }: { user: User | null }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, login } = useUser();
@@ -15,51 +21,59 @@ export default function Login({ user: initialUser }) {
       login(initialUser);
     }
   }, [initialUser]);
-  console.log("sdfff", user);
+  // console.log("user is", user);
 
   const handleSumit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await axios.post(
-      // TODO: env読み、try catchに変える
-      "http://localhost:8080/auth/login",
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
-    // TODO: 必要なのは確定なのでその理由をコメント
-    if (res.data.token) {
-      document.cookie = `token=${res.data.token}; path=/`;
-      console.log("asdf", res.data.user.name);
-      login(res.data.user);
+    const user = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const res = await axios.post(
+        process.env.NEXT_PUBLIC_API_URL + "/auth/login",
+        user,
+        { withCredentials: true }
+      );
+      // TODO: 必要なのは確定なのでその理由をコメント
+      if (res.data.token) {
+        // TODO:なにをやってるのかコメント追加
+        document.cookie = `token=${res.data.token}; path=/`;
+        // console.log("user name is", res.data.user.name);
+        // TODO:なにをやってるのかコメント追加
+        login(res.data.user);
+      }
+    } catch (error) {
+      console.error("error:", error);
     }
   };
 
-  // TODO: バリデーション追加
-  // TODO: パスワード再発行可能にしたい
-  // TODO: フォームコンポーネント化
   return (
-    <>
+    <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSumit}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">ログイン</button>
+        <Stack spacing={2}>
+          <TextField
+            label="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <TextField
+            label="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Button variant="contained" type="submit">
+            ログイン
+          </Button>
+        </Stack>
       </form>
-      test
-      {user ? <p>{user.name} desu</p> : "ログインしてない"}
-    </>
+    </Container>
   );
 }
 
@@ -70,7 +84,7 @@ export async function getServerSideProps(context: NextPageContext) {
   );
   const token = cookies.token;
 
-  console.log("token is", token);
+  // console.log("token is", token);
 
   // Tokenが存在しない場合はユーザー情報を空にする
   if (!token) {
