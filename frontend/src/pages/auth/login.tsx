@@ -19,20 +19,23 @@ export default function Login({ user: initialUser }) {
   const handleSumit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await axios.post(
-      // TODO: env読み、try catchに変える
-      "http://localhost:8080/auth/login",
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
-    // TODO: 必要なのは確定なのでその理由をコメント
-    if (res.data.token) {
-      document.cookie = `token=${res.data.token}; path=/`;
-      // console.log("user name is", res.data.user.name);
-      login(res.data.user);
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/auth/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      // TODO: 必要なのは確定なのでその理由をコメント
+      if (res.data.token) {
+        document.cookie = `token=${res.data.token}; path=/`;
+        // console.log("user name is", res.data.user.name);
+        login(res.data.user);
+      }
+    } catch (error) {
+      console.error("error:", error);
     }
   };
 
