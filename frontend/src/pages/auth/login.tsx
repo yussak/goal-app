@@ -4,6 +4,12 @@ import { useUser } from "@/contexts/userContext";
 import cookie from "cookie";
 import { NextPageContext } from "next";
 
+// TODO:型を追加する（User | null)→他のところ見てどう追加するか確認する
+// TODO:パス再登録可能にしたい→別issueでも可
+// TODO:フォーム自動で入力しないようにしたい
+// TODO:フォーム縦並びにする
+// TODO:ログイン成功時にフラッシュ出す
+// TODO:ログイン失敗時にフラッシュ出す
 export default function Login({ user: initialUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,8 +38,10 @@ export default function Login({ user: initialUser }) {
       );
       // TODO: 必要なのは確定なのでその理由をコメント
       if (res.data.token) {
+        // TODO:なにをやってるのかコメント追加
         document.cookie = `token=${res.data.token}; path=/`;
         // console.log("user name is", res.data.user.name);
+        // TODO:なにをやってるのかコメント追加
         login(res.data.user);
       }
     } catch (error) {

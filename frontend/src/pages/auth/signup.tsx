@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
+// TODO:登録時にログインする
 export default function signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +19,9 @@ export default function signup() {
     console.log(res.data);
   };
 
-  // TODO: バリデーション追加;
+  // TODO: バリデーション追加
+  // TODO: パスワード再発行可能にしたい
+  // TODO: フォームコンポーネント化
   return (
     <form onSubmit={register}>
       <input
