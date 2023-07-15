@@ -5,7 +5,6 @@ import cookie from "cookie";
 import { NextPageContext } from "next";
 
 export default function Login({ user: initialUser }) {
-  // export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, login } = useUser();
