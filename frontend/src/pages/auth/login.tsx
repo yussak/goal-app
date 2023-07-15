@@ -4,13 +4,13 @@ import { useUser } from "@/contexts/userContext";
 import cookie from "cookie";
 import { NextPageContext } from "next";
 import { Button, Container, Stack, TextField } from "@mui/material";
+import { User } from "@/types";
 
-// TODO:型を追加する（User | null)→他のところ見てどう追加するか確認する
 // TODO:パス再登録可能にしたい→別issueでも可
 // TODO:フォーム自動で入力しないようにしたい
 // TODO:ログイン成功時にフラッシュ出す
 // TODO:ログイン失敗時にフラッシュ出す
-export default function Login({ user: initialUser }) {
+export default function Login({ user: initialUser }: { user: User | null }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, login } = useUser();
