@@ -15,7 +15,7 @@ export default function Login({ user: initialUser }) {
       login(initialUser);
     }
   }, [initialUser]);
-  console.log("sdfff", user);
+  // console.log("user is", user);
 
   const handleSumit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ export default function Login({ user: initialUser }) {
     // TODO: 必要なのは確定なのでその理由をコメント
     if (res.data.token) {
       document.cookie = `token=${res.data.token}; path=/`;
-      console.log("asdf", res.data.user.name);
+      // console.log("user name is", res.data.user.name);
       login(res.data.user);
     }
   };
@@ -70,7 +70,7 @@ export async function getServerSideProps(context: NextPageContext) {
   );
   const token = cookies.token;
 
-  console.log("token is", token);
+  // console.log("token is", token);
 
   // Tokenが存在しない場合はユーザー情報を空にする
   if (!token) {
