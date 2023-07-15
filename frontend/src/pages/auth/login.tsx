@@ -54,7 +54,6 @@ export default function Login({ user: initialUser }) {
   // TODO: フォームコンポーネント化
   return (
     // TODO:labelがクリック前に入力とかぶるので対処
-    // TOOD:autoComplete="off"が効かないので対処
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSumit}>
         <Stack spacing={2}>
