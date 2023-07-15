@@ -7,6 +7,8 @@ import { Button, Container, Stack, TextField } from "@mui/material";
 import { User } from "@/types";
 
 // TODO:パスワード再登録可能にする→ https://github.com/YusukeSakuraba/goal-app/issues/27 で対応
+// TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
+// TODO: フォームコンポーネント化
 // TODO:ログイン成功時にフラッシュ出す
 // TODO:ログイン失敗時にフラッシュ出す
 export default function Login({ user: initialUser }: { user: User | null }) {
@@ -48,9 +50,6 @@ export default function Login({ user: initialUser }: { user: User | null }) {
     }
   };
 
-  // TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
-  // TODO: パスワード再発行可能にしたい
-  // TODO: フォームコンポーネント化
   return (
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSumit}>
