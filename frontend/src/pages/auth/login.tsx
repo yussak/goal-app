@@ -6,7 +6,7 @@ import { NextPageContext } from "next";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { User } from "@/types";
 
-// TODO:パス再登録可能にしたい→別issueでも可
+// TODO:パスワード再登録可能にする→ https://github.com/YusukeSakuraba/goal-app/issues/27 で対応
 // TODO:ログイン成功時にフラッシュ出す
 // TODO:ログイン失敗時にフラッシュ出す
 export default function Login({ user: initialUser }: { user: User | null }) {
