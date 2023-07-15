@@ -23,6 +23,7 @@ func main() {
 	
 	r.POST("auth/signup", controller.Signup)
 	r.POST("auth/login", controller.Login)
+	r.POST("auth/decodeToken", controller.DecodeToken)
 
 	r.GET("/users", controller.FetchUsers)
 	r.GET("/users/:id", controller.FetchUserDetails)
@@ -44,6 +45,7 @@ func corsMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Content-Type", "application/json")
 
 		if c.Request.Method == "OPTIONS" {
