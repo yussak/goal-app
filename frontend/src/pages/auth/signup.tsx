@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { Button, Container, Stack, TextField } from "@mui/material";
 
 // TODO:登録時にログインする
 export default function signup() {
@@ -27,26 +28,35 @@ export default function signup() {
   // TODO: パスワード再発行可能にしたい
   // TODO: フォームコンポーネント化
   return (
-    <form onSubmit={register}>
-      <input
-        type="name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">新規登録</button>
-    </form>
+    <Container sx={{ pt: 3 }}>
+      <form onSubmit={register}>
+        <Stack spacing={2}>
+          <TextField
+            label="name"
+            type="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <TextField
+            label="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <TextField
+            label="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Button variant="contained" type="submit">
+            新規登録
+          </Button>
+        </Stack>
+      </form>
+    </Container>
   );
 }
