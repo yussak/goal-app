@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Button, Container, Stack, TextField } from "@mui/material";
 
-// TODO:登録時にログインする
+// TODO:登録時にログインする→ https://github.com/YusukeSakuraba/goal-app/issues/28 で対応
 export default function signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,8 +24,7 @@ export default function signup() {
     }
   };
 
-  // TODO: バリデーション追加
-  // TODO: パスワード再発行可能にしたい
+  // TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
   // TODO: フォームコンポーネント化
   return (
     <Container sx={{ pt: 3 }}>

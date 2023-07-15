@@ -48,7 +48,7 @@ export default function Login({ user: initialUser }: { user: User | null }) {
     }
   };
 
-  // TODO: バリデーション追加
+  // TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
   // TODO: パスワード再発行可能にしたい
   // TODO: フォームコンポーネント化
   return (
