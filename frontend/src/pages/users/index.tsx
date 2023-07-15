@@ -24,6 +24,7 @@ export default function UserIndex() {
   return (
     <>
       <h2>ユーザー一覧</h2>
+      {/* TODO:ユーザー詳細部分をコンポーネントに切り出す */}
       <ul>
         {users.map((user, index) => {
           return (
