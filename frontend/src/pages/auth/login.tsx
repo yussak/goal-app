@@ -19,13 +19,15 @@ export default function Login({ user: initialUser }) {
   const handleSumit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const user = {
+      email: email,
+      password: password,
+    };
+
     try {
       const res = await axios.post(
         process.env.NEXT_PUBLIC_API_URL + "/auth/login",
-        {
-          email,
-          password,
-        },
+        user,
         { withCredentials: true }
       );
       // TODO: 必要なのは確定なのでその理由をコメント
