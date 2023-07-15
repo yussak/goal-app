@@ -10,13 +10,17 @@ export default function signup() {
   const register = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await axios.post("http://localhost:8080/auth/signup", {
-      name,
-      email,
-      password,
-    });
+    const user = {
+      email: email,
+      password: password,
+    };
 
-    console.log(res.data);
+    try {
+      await axios.post(process.env.NEXT_PUBLIC_API_URL + "/auth/signup", user);
+      // console.log(res.data);
+    } catch (error) {
+      console.error("error: ", error);
+    }
   };
 
   // TODO: バリデーション追加
