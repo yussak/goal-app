@@ -53,7 +53,6 @@ export default function Login({ user: initialUser }) {
   // TODO: パスワード再発行可能にしたい
   // TODO: フォームコンポーネント化
   return (
-    // TODO:labelがクリック前に入力とかぶるので対処
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSumit}>
         <Stack spacing={2}>
