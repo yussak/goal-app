@@ -7,7 +7,6 @@ import { Button, Container, Stack, TextField } from "@mui/material";
 import { User } from "@/types";
 
 // TODO:パス再登録可能にしたい→別issueでも可
-// TODO:フォーム自動で入力しないようにしたい
 // TODO:ログイン成功時にフラッシュ出す
 // TODO:ログイン失敗時にフラッシュ出す
 export default function Login({ user: initialUser }: { user: User | null }) {
