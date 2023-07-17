@@ -14,12 +14,13 @@ export default function UserDetail() {
   useEffect(() => {
     if (!router.isReady) return;
     getUserDetails();
+    getGoals();
   }, [router.isReady]);
 
   const getUserDetails = async () => {
     try {
       const { data } = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + `/users/${id}`
+        process.env.NEXT_PUBLIC_API_URL + `/users/${id}/details`
       );
       setUser(data);
     } catch (error) {
@@ -30,9 +31,10 @@ export default function UserDetail() {
   const getGoals = async () => {
     try {
       const { data } = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + "/goals"
+        process.env.NEXT_PUBLIC_API_URL + `/users/${id}/goals`
       );
       setGoals(data);
+      console.log("asdf", data);
     } catch (error) {
       console.error(error);
     }
@@ -56,7 +58,6 @@ export default function UserDetail() {
           <p>name: {user.name}</p>
         </>
       )}
-      {/* TODO:そのユーザーのgoalだけ取得する */}
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
