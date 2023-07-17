@@ -5,11 +5,12 @@ import GoalList from "@/components/GoalList";
 import { Goal, User } from "@/types";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import cookie from "cookie";
 import { NextPageContext } from "next";
 import { useUser } from "@/contexts/userContext";
+import { checkAuth } from "@/utils/auth";
 
 export default function GoalIndex({
+  // TODO:useLoginいらないのか確認（currentUserを取得するだけなら必須ではなさそう？
   user: currentUser,
 }: {
   user: User | null;
@@ -88,29 +89,13 @@ export default function GoalIndex({
 }
 
 export async function getServerSideProps(context: NextPageContext) {
-  // export async function getServerSideProps(context) {
-  const cookies = cookie.parse(
-    context.req ? context.req.headers.cookie || "" : document.cookie
-  );
-  const token = cookies.token;
-  // console.log("token is", token);
-  // Tokenが存在しない場合はユーザー情報を空にする
-  if (!token) {
-    return { props: { user: null } };
-  }
-  try {
-    const res = await axios.post(
-      "http://backend:8080/auth/decodeToken",
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return { props: { user: res.data.user || null } };
-  } catch (error) {
-    console.error("error: ", error);
-    return { props: {} };
-  }
+  const user = await checkAuth(context);
+
+  return {
+    props: {
+      user,
+    },
+  };
 }
 
 // TODO:型直す
