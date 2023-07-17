@@ -5,6 +5,7 @@ import cookie from "cookie";
 import { NextPageContext } from "next";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { User } from "@/types";
+import { checkAuth } from "@/utils/auth";
 
 // TODO:パスワード再登録可能にする→ https://github.com/YusukeSakuraba/goal-app/issues/27 で対応
 // TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
@@ -78,30 +79,11 @@ export default function Login({ user: initialUser }: { user: User | null }) {
 }
 
 export async function getServerSideProps(context: NextPageContext) {
-  // export async function getServerSideProps(context) {
-  const cookies = cookie.parse(
-    context.req ? context.req.headers.cookie || "" : document.cookie
-  );
-  const token = cookies.token;
+  const user = await checkAuth(context);
 
-  // console.log("token is", token);
-
-  // Tokenが存在しない場合はユーザー情報を空にする
-  if (!token) {
-    return { props: { user: null } };
-  }
-
-  try {
-    const res = await axios.post(
-      "http://backend:8080/auth/decodeToken",
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return { props: { user: res.data.user || null } };
-  } catch (error) {
-    console.error("error: ", error);
-    return { props: {} };
-  }
+  return {
+    props: {
+      user,
+    },
+  };
 }
