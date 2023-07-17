@@ -52,12 +52,8 @@ export default function UserDetail() {
   return (
     <>
       <h2>ユーザー詳細</h2>
-      {/* TODO:ユーザー詳細分をコンポーネントに切り出す */}
-      {user && (
-        <>
-          <p>name: {user.name}</p>
-        </>
-      )}
+
+      {user && <p>name: {user.name}</p>}
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
