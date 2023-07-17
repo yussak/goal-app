@@ -19,6 +19,7 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
               <Link href={`/goals/${goal.id}`}>detail</Link>
             </p>
             <p>id: {goal.id}</p>
+            <p>user_id（デバッグ用）: {goal.user_id}</p>
           </li>
         );
       })}

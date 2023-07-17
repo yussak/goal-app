@@ -15,7 +15,7 @@ import (
 func FetchGoals(c *gin.Context) {
 	goals := []model.Goal{}
 	
-	rows, err := db.DB.Query("SELECT id, title, text FROM goals")
+	rows, err := db.DB.Query("SELECT * FROM goals")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -24,7 +24,8 @@ func FetchGoals(c *gin.Context) {
 
 	for rows.Next() {
 		var goal model.Goal
-		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text)
+		// 順番関係ありそう=>DBのcolumn順と合わせる
+		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
