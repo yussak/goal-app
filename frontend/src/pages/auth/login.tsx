@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@/contexts/userContext";
-import cookie from "cookie";
 import { NextPageContext } from "next";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { User } from "@/types";
