@@ -48,9 +48,12 @@ func AddGoal(c *gin.Context) {
 	}
 
 	req.ID = id.String()
+	
+	// デバッグ用に残す
+	// fmt.Println("dafdsa",req.UserID)
 
-	sql := `INSERT INTO goals(id, title, text) VALUES(?, ?, ?)`
-	_, err = db.DB.Exec(sql, req.ID, req.Title, req.Text)
+	sql := `INSERT INTO goals(id, user_id, title, text) VALUES(?, ?, ?, ?)`
+	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
