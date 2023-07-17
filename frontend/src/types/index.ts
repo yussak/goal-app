@@ -8,6 +8,7 @@ export type Goal = {
   id: string;
   title: string;
   text: string;
+  user_id: string;
 };
 
 export type GoalComment = {

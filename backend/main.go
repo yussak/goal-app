@@ -26,7 +26,8 @@ func main() {
 	r.POST("auth/decodeToken", controller.DecodeToken)
 
 	r.GET("/users", controller.FetchUsers)
-	r.GET("/users/:id", controller.FetchUserDetails)
+	r.GET("/users/:id/details", controller.FetchUserDetails)
+	r.GET("/users/:id/goals", controller.FetchUserGoals)
 
 	r.POST("/goal", controller.AddGoal)
 	r.GET("/goals", controller.FetchGoals)

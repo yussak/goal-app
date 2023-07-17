@@ -12,6 +12,7 @@ export default function Sidebar() {
       <li>
         <Link href="/users">ユーザー一覧</Link>
       </li>
+      {/* TODO:ログインした時だけ自分のユーザー詳細ページへのリンク「マイページ」を追加する */}
     </ul>
   );
 }

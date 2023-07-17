@@ -15,7 +15,7 @@ import (
 func FetchGoals(c *gin.Context) {
 	goals := []model.Goal{}
 	
-	rows, err := db.DB.Query("SELECT id, title, text FROM goals")
+	rows, err := db.DB.Query("SELECT * FROM goals")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -24,7 +24,8 @@ func FetchGoals(c *gin.Context) {
 
 	for rows.Next() {
 		var goal model.Goal
-		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text)
+		// 順番関係ありそう=>DBのcolumn順と合わせる
+		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -48,9 +49,12 @@ func AddGoal(c *gin.Context) {
 	}
 
 	req.ID = id.String()
+	
+	// デバッグ用に残す
+	// fmt.Println("dafdsa",req.UserID)
 
-	sql := `INSERT INTO goals(id, title, text) VALUES(?, ?, ?)`
-	_, err = db.DB.Exec(sql, req.ID, req.Title, req.Text)
+	sql := `INSERT INTO goals(id, user_id, title, text) VALUES(?, ?, ?, ?)`
+	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
