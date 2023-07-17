@@ -12,14 +12,16 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
       {goals.map((goal, index) => {
         return (
           <li key={index}>
-            <p>
-              title: {goal.title}
-              text: {goal.text}
-              <button onClick={() => onDelete(goal.id)}>delete</button>
-              <Link href={`/goals/${goal.id}`}>detail</Link>
-            </p>
+            <p>title: {goal.title}</p>
+            <p>text: {goal.text}</p>
             <p>id: {goal.id}</p>
             <p>user_id（デバッグ用）: {goal.user_id}</p>
+            <p>
+              <Link href={`/goals/${goal.id}`}>detail</Link>
+            </p>
+            <p>
+              <button onClick={() => onDelete(goal.id)}>delete</button>
+            </p>
           </li>
         );
       })}
