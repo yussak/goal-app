@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@/contexts/userContext";
 import { NextPageContext } from "next";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { User } from "@/types";
 import { checkAuth } from "@/utils/auth";
+import { useLogin } from "@/hooks/useLogin";
 
 // TODO:パスワード再登録可能にする→ https://github.com/YusukeSakuraba/goal-app/issues/27 で対応
 // TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
 // TODO: フォームコンポーネント化
 // TODO:ログイン成功時にフラッシュ出す
 // TODO:ログイン失敗時にフラッシュ出す
-export default function Login({ user: initialUser }: { user: User | null }) {
+export default function Login({ user: currentUser }: { user: User | null }) {
+  useLogin(currentUser);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, login } = useUser();
-
-  useEffect(() => {
-    if (initialUser) {
-      login(initialUser);
-    }
-  }, [initialUser]);
-  // console.log("user is", user);
+  const { login } = useUser();
 
   const handleSumit = async (e: React.FormEvent) => {
     e.preventDefault();
