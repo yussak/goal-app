@@ -8,7 +8,6 @@ import SignupForm from "@/components/form/SignupForm";
 
 // TODO:登録時にログインする→ https://github.com/YusukeSakuraba/goal-app/issues/28 で対応
 // TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
-// TODO: フォームコンポーネント化
 export default function signup({ user: currentUser }: { user: User | null }) {
   useLogin(currentUser);
 
