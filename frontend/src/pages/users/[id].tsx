@@ -34,7 +34,6 @@ export default function UserDetail() {
         process.env.NEXT_PUBLIC_API_URL + `/users/${id}/goals`
       );
       setGoals(data);
-      console.log("asdf", data);
     } catch (error) {
       console.error(error);
     }
