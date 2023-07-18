@@ -1,4 +1,4 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Button, Container, Stack, TextField } from "@mui/material";
 
 type GoalFormProps = {
   setTitle: (title: string) => void;
@@ -16,16 +16,14 @@ const GoalForm = ({
   text,
 }: GoalFormProps) => {
   return (
-    <Box component="form" noValidate autoComplete="off">
-      <Stack spacing={2} direction="row">
+    <Container sx={{ pt: 3 }}>
+      <Stack spacing={2}>
         <TextField
-          id="outlined-read-only-input"
           label="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <TextField
-          id="outlined-read-only-input"
           label="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -34,7 +32,7 @@ const GoalForm = ({
           追加
         </Button>
       </Stack>
-    </Box>
+    </Container>
   );
 };
 
