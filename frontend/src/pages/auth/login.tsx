@@ -2,14 +2,13 @@ import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@/contexts/userContext";
 import { NextPageContext } from "next";
-import { Button, Container, Stack, TextField } from "@mui/material";
 import { User } from "@/types";
 import { checkAuth } from "@/utils/auth";
 import { useLogin } from "@/hooks/useLogin";
+import LoginForm from "@/components/form/LoginForm";
 
 // TODO:パスワード再登録可能にする→ https://github.com/YusukeSakuraba/goal-app/issues/27 で対応
 // TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
-// TODO: フォームコンポーネント化
 // TODO:ログイン成功時にフラッシュ出す
 // TODO:ログイン失敗時にフラッシュ出す
 export default function Login({ user: currentUser }: { user: User | null }) {
@@ -19,7 +18,7 @@ export default function Login({ user: currentUser }: { user: User | null }) {
   const [password, setPassword] = useState("");
   const { login } = useUser();
 
-  const handleSumit = async (e: React.FormEvent) => {
+  const loginUser = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const user = {
@@ -47,29 +46,13 @@ export default function Login({ user: currentUser }: { user: User | null }) {
   };
 
   return (
-    <Container sx={{ pt: 3 }}>
-      <form onSubmit={handleSumit}>
-        <Stack spacing={2}>
-          <TextField
-            label="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <TextField
-            label="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Button variant="contained" type="submit">
-            ログイン
-          </Button>
-        </Stack>
-      </form>
-    </Container>
+    <LoginForm
+      setEmail={setEmail}
+      setPassword={setPassword}
+      loginUser={loginUser}
+      email={email}
+      password={password}
+    />
   );
 }
 
