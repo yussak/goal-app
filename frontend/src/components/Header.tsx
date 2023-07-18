@@ -11,6 +11,7 @@ export default function Header() {
       <Link href="/about">About</Link>
       <Link href="/goals">Goals</Link>
       <LanguageSwitcher />
+      {user ? <Link href={`/users/${user.id}`}>mypage</Link> : null}
       {user ? <p>{user.name} desu</p> : "ログインしてない"}
     </header>
   );
