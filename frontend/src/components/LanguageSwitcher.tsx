@@ -16,7 +16,7 @@ export const LanguageSwitcher: React.FC = () => {
 
   return (
     <select defaultValue={i18n.language} onChange={changeLanguage}>
-      <option value="ja">{t("日本語")}</option>
+      <option value="ja">{t("japanese")}</option>
       <option value="en">{t("english")}</option>
     </select>
   );

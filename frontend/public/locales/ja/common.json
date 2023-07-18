@@ -2,5 +2,7 @@
   "test": "テストですああ",
   "goal_index": {
     "title": "目標を追加する"
-  }
+  },
+  "japanese": "日本語",
+  "english": "英語"
 }
