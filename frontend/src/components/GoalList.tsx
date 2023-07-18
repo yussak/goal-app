@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Goal } from "@/types";
+import { useUser } from "@/contexts/userContext";
 
 type GoalListProps = {
   goals: Goal[];
@@ -7,6 +8,8 @@ type GoalListProps = {
 };
 
 const GoalList = ({ goals, onDelete }: GoalListProps) => {
+  const { user } = useUser();
+
   return goals && goals.length > 0 ? (
     <ul>
       {goals.map((goal, index) => {
@@ -19,9 +22,13 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>
               <Link href={`/goals/${goal.id}`}>detail</Link>
             </p>
-            <p>
-              <button onClick={() => onDelete(goal.id)}>delete</button>
-            </p>
+            {user && user.id === goal.user_id ? (
+              <p>
+                <button onClick={() => onDelete(goal.id)}>delete</button>
+              </p>
+            ) : (
+              ""
+            )}
           </li>
         );
       })}
