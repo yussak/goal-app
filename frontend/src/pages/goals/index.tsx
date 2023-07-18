@@ -16,8 +16,8 @@ export default function GoalIndex({
   user: User | null;
 }) {
   const { t } = useTranslation();
-  const [goals, setGoals] = useState<Goal[]>([]);
 
+  const [goals, setGoals] = useState<Goal[]>([]);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const { login } = useUser();
@@ -90,21 +90,12 @@ export default function GoalIndex({
 
 export async function getServerSideProps(context: NextPageContext) {
   const user = await checkAuth(context);
+  const { locale } = context;
 
   return {
     props: {
       user,
+      ...(await serverSideTranslations(locale!, ["common"])),
     },
   };
 }
-
-// TODO:型直す
-// TODO:いったんコメントアウト
-// export async function getServerSideProps({ locale }: any) {
-//   return {
-//     props: {
-//       ...(await serverSideTranslations(locale, ["common"])),
-//       // Will be passed to the page component as props
-//     },
-//   };
-// }
