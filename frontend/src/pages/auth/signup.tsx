@@ -1,10 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
-import { Button, Container, Stack, TextField } from "@mui/material";
 import { checkAuth } from "@/utils/auth";
 import { NextPageContext } from "next";
 import { useLogin } from "@/hooks/useLogin";
 import { User } from "@/types";
+import SignupForm from "@/components/form/SignupForm";
 
 // TODO:登録時にログインする→ https://github.com/YusukeSakuraba/goal-app/issues/28 で対応
 // TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
@@ -20,6 +20,7 @@ export default function signup({ user: currentUser }: { user: User | null }) {
     e.preventDefault();
 
     const user = {
+      name: name,
       email: email,
       password: password,
     };
@@ -33,36 +34,15 @@ export default function signup({ user: currentUser }: { user: User | null }) {
   };
 
   return (
-    <Container sx={{ pt: 3 }}>
-      <form onSubmit={register}>
-        <Stack spacing={2}>
-          <TextField
-            label="name"
-            type="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <TextField
-            label="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <TextField
-            label="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Button variant="contained" type="submit">
-            新規登録
-          </Button>
-        </Stack>
-      </form>
-    </Container>
+    <SignupForm
+      setName={setName}
+      setEmail={setEmail}
+      setPassword={setPassword}
+      register={register}
+      name={name}
+      email={email}
+      password={password}
+    />
   );
 }
 
