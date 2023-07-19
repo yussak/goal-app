@@ -29,7 +29,6 @@ export default function GoalIndex({
     process.env.NEXT_PUBLIC_API_URL + "/goals",
     fetcher
   );
-  console.log(goals, "asdf");
   if (error) {
     console.error(error);
   }
@@ -51,6 +50,7 @@ export default function GoalIndex({
     };
 
     try {
+      // TODO:useSWRMutationで書き換えられそう？調べる
       await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", goal);
       // useSWRで書き換える
       mutate(process.env.NEXT_PUBLIC_API_URL + "/goals");
