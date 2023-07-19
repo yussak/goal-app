@@ -33,14 +33,14 @@ jobs:
       - name: frontend install & build
         working-directory: ./frontend
         run: |
-          npm install
-          npm run build
+          yarn install
+          yarn run build
 
       - name: frontend test
         uses: cypress-io/github-action@v3
         with:
           working-directory: ./frontend
-          start: npm run start
+          start: yarn run start
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
           command: npx cypress run
