@@ -8,6 +8,10 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NextPageContext } from "next";
 import { useUser } from "@/contexts/userContext";
 import { checkAuth } from "@/utils/auth";
+import useSWR, { mutate } from "swr";
+
+// TODO:これ共通化したい
+export const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function GoalIndex({
   // TODO:useLoginいらないのか確認（currentUserを取得するだけなら必須ではなさそう？
@@ -17,14 +21,18 @@ export default function GoalIndex({
 }) {
   const { t } = useTranslation();
 
-  const [goals, setGoals] = useState<Goal[]>([]);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const { login } = useUser();
 
-  useEffect(() => {
-    getGoals();
-  }, []);
+  const { data: goals, error } = useSWR(
+    process.env.NEXT_PUBLIC_API_URL + "/goals",
+    fetcher
+  );
+  console.log(goals, "asdf");
+  if (error) {
+    console.error(error);
+  }
 
   // useEffectは複数書ける
   useEffect(() => {
@@ -44,20 +52,10 @@ export default function GoalIndex({
 
     try {
       await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", goal);
-      await getGoals();
+      // useSWRで書き換える
+      mutate(process.env.NEXT_PUBLIC_API_URL + "/goals");
       setTitle("");
       setText("");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getGoals = async () => {
-    try {
-      const { data } = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + "/goals"
-      );
-      setGoals(data);
     } catch (error) {
       console.error(error);
     }
@@ -66,7 +64,7 @@ export default function GoalIndex({
   const deleteGoal = async (id: string) => {
     try {
       await axios.delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}`);
-      await getGoals();
+      mutate(process.env.NEXT_PUBLIC_API_URL + "/goals");
     } catch (error) {
       console.error(error);
     }
