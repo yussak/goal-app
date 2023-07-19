@@ -12,7 +12,7 @@ export default function Header() {
       <Link href="/goals">Goals</Link>
       <LanguageSwitcher />
       {user ? <Link href={`/users/${user.id}`}>mypage</Link> : null}
-      {user ? <p>{user.name} desu</p> : "ログインしてない"}
+      {user ? <p>{user.name} </p> : "Not logged in"}
     </header>
   );
 }
