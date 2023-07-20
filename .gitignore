@@ -4,3 +4,7 @@
 .env
 
 backend/tmp
+
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
