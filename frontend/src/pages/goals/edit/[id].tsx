@@ -9,11 +9,10 @@ export default function EditGoal() {
 
   const [goal, setGoal] = useState<Goal | null>(null);
 
-  // TODO:if(router.isReady){}に書き換える
-  // TODO:show goalの方もやる
   useEffect(() => {
-    if (!router.isReady) return;
-    getGoal();
+    if (router.isReady) {
+      getGoal();
+    }
   }, [router.isReady]);
 
   const getGoal = async () => {
