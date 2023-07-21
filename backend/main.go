@@ -33,6 +33,7 @@ func main() {
 	r.GET("/goals", controller.FetchGoals)
 	r.DELETE("/goal/:id", controller.DeleteGoal)
 	r.GET("/goals/:id", controller.FetchGoalDetails)
+	r.PUT("/goals/edit/:id", controller.EditGoal)
 	
 	r.POST("/goals/:id/comments", controller.AddGoalComment)
 	r.GET("/goals/:id/comments", controller.FetchGoalComments)
