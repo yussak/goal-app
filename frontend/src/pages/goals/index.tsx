@@ -31,7 +31,6 @@ export default function GoalIndex({
     console.error(error);
   }
 
-  // useEffectは複数書ける
   useEffect(() => {
     if (currentUser) {
       login(currentUser);
