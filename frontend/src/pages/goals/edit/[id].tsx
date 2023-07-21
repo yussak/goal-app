@@ -34,6 +34,7 @@ export default function EditGoal() {
 
   return (
     <>
+      <h2>目標編集</h2>
       <Container sx={{ pt: 3 }}>
         <Stack spacing={2}>
           <TextField
