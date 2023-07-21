@@ -1,4 +1,3 @@
-import { Goal } from "@/types";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -8,7 +7,6 @@ export default function EditGoal() {
   const router = useRouter();
   const id = router.query.id;
 
-  const [goal, setGoal] = useState<Goal | null>(null);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
 
@@ -23,7 +21,6 @@ export default function EditGoal() {
       const { data } = await axios.get(
         process.env.NEXT_PUBLIC_API_URL + `/goals/${id}`
       );
-      setGoal(data);
       setTitle(data.title);
       setText(data.text);
     } catch (error) {
