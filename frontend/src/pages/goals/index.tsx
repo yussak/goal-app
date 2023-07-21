@@ -6,17 +6,12 @@ import { User } from "@/types";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NextPageContext } from "next";
-import { useUser } from "@/contexts/userContext";
 import { checkAuth } from "@/utils/auth";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "@/utils/fetcher";
 import { useLogin } from "@/hooks/useLogin";
 
-export default function GoalIndex({
-  user: currentUser,
-}: {
-  user: User | null;
-}) {
+export default function Goals({ user: currentUser }: { user: User | null }) {
   useLogin(currentUser);
 
   const { t } = useTranslation();
