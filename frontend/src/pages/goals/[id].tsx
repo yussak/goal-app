@@ -78,8 +78,8 @@ export default function GoalDetail() {
       <h2>目標詳細</h2>
       {goal && (
         <>
-          <p>{goal.title}</p>
-          <p>{goal.text}</p>
+          <p>title: {goal.title}</p>
+          <p>text: {goal.text}</p>
         </>
       )}
       <GoalCommentForm
