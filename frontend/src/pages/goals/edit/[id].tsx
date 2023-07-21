@@ -1,4 +1,5 @@
 import { Goal } from "@/types";
+import { Button, Container, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -8,6 +9,8 @@ export default function EditGoal() {
   const id = router.query.id;
 
   const [goal, setGoal] = useState<Goal | null>(null);
+  const [title, setTitle] = useState<string>("");
+  const [text, setText] = useState<string>("");
 
   useEffect(() => {
     if (router.isReady) {
@@ -21,15 +24,37 @@ export default function EditGoal() {
         process.env.NEXT_PUBLIC_API_URL + `/goals/${id}`
       );
       setGoal(data);
+      setTitle(data.title);
+      setText(data.text);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const editGoal = async () => {
+    //
+  };
+
   return (
     <>
-      <p>編集ページ</p>
-      <p>id: {id}</p>
+      <Container sx={{ pt: 3 }}>
+        <Stack spacing={2}>
+          <TextField
+            label="title"
+            value={title}
+            defaultValue={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <TextField
+            label="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <Button onClick={editGoal} variant="contained">
+            更新
+          </Button>
+        </Stack>
+      </Container>
     </>
   );
 }
