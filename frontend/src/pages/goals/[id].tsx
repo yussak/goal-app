@@ -4,6 +4,7 @@ import axios from "axios";
 import { Goal, GoalComment } from "@/types";
 import GoalCommentForm from "@/components/form/GoalCommentForm";
 import GoalCommentList from "@/components/GoalCommentList";
+import Link from "next/link";
 
 export default function GoalDetail() {
   const [goal, setGoal] = useState<Goal | null>(null);
@@ -78,6 +79,7 @@ export default function GoalDetail() {
       <h2>目標詳細</h2>
       {goal && (
         <>
+          <Link href={`/goals/edit/${goal.id}`}>edit</Link>
           <p>title: {goal.title}</p>
           <p>text: {goal.text}</p>
         </>
