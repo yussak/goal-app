@@ -2,9 +2,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { User } from "@/types";
 import Link from "next/link";
+import { checkAuth } from "@/utils/auth";
+import { NextPageContext } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useLogin } from "@/hooks/useLogin";
 
-export default function UserIndex() {
+export default function UserIndex({
+  user: currentUser,
+}: {
+  user: User | null;
+}) {
   const [users, setUsers] = useState<User[]>([]);
+  useLogin(currentUser);
 
   useEffect(() => {
     getUsers();
@@ -37,4 +46,16 @@ export default function UserIndex() {
       </ul>
     </>
   );
+}
+
+export async function getServerSideProps(context: NextPageContext) {
+  const user = await checkAuth(context);
+  const { locale } = context;
+
+  return {
+    props: {
+      user,
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
 }
