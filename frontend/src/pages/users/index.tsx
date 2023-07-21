@@ -7,11 +7,7 @@ import { NextPageContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useLogin } from "@/hooks/useLogin";
 
-export default function UserIndex({
-  user: currentUser,
-}: {
-  user: User | null;
-}) {
+export default function Users({ user: currentUser }: { user: User | null }) {
   const [users, setUsers] = useState<User[]>([]);
   useLogin(currentUser);
 
