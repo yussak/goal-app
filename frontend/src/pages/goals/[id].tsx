@@ -80,6 +80,7 @@ export default function GoalDetail() {
       <h2>目標詳細</h2>
       {goal && (
         <>
+          {/* TODO:自分のgoalの時だけ表示する */}
           <Link href={`/goals/edit/${goal.id}`}>edit</Link>
           <p>title: {goal.title}</p>
           <p>text: {goal.text}</p>
