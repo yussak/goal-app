@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import GoalForm from "@/components/form/GoalForm";
 import GoalList from "@/components/GoalList";
-import { Goal, User } from "@/types";
+import { User } from "@/types";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NextPageContext } from "next";
