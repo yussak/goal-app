@@ -10,18 +10,19 @@ import { useUser } from "@/contexts/userContext";
 import { checkAuth } from "@/utils/auth";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "@/utils/fetcher";
+import { useLogin } from "@/hooks/useLogin";
 
 export default function GoalIndex({
-  // TODO:useLoginいらないのか確認（currentUserを取得するだけなら必須ではなさそう？
   user: currentUser,
 }: {
   user: User | null;
 }) {
+  useLogin(currentUser);
+
   const { t } = useTranslation();
 
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
-  const { login } = useUser();
 
   const { data: goals, error } = useSWR(
     process.env.NEXT_PUBLIC_API_URL + "/goals",
@@ -30,13 +31,6 @@ export default function GoalIndex({
   if (error) {
     console.error(error);
   }
-
-  useEffect(() => {
-    if (currentUser) {
-      login(currentUser);
-    }
-  }, [currentUser]);
-  // console.log(currentUser.id);
 
   const addGoal = async () => {
     const goal = {
