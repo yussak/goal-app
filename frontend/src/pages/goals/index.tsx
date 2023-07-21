@@ -9,9 +9,7 @@ import { NextPageContext } from "next";
 import { useUser } from "@/contexts/userContext";
 import { checkAuth } from "@/utils/auth";
 import useSWR, { mutate } from "swr";
-
-// TODO:これ共通化したい
-export const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+import { fetcher } from "@/utils/fetcher";
 
 export default function GoalIndex({
   // TODO:useLoginいらないのか確認（currentUserを取得するだけなら必須ではなさそう？
