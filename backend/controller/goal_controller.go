@@ -106,3 +106,30 @@ func FetchGoalDetails(c *gin.Context) {
 
     c.JSON(http.StatusOK, goal)
 }
+
+func EditGoal(c *gin.Context) {
+	id := c.Param("id")
+
+	var req model.Goal
+	err := c.Bind(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = db.DB.Exec("UPDATE goals SET title = ?, text = ? WHERE id = ?", req.Title, req.Text, id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
+	var goal model.Goal
+	err = row.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+    c.JSON(http.StatusOK, goal)
+}

@@ -29,7 +29,19 @@ export default function EditGoal() {
   };
 
   const editGoal = async () => {
-    //
+    try {
+      const goal = {
+        title: title,
+        text: text,
+      };
+      await axios.put(
+        process.env.NEXT_PUBLIC_API_URL + `/goals/edit/${id}`,
+        goal
+      );
+      router.push(`/goals/${id}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
