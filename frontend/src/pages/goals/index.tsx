@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import GoalForm from "@/components/form/GoalForm";
 import GoalList from "@/components/GoalList";
