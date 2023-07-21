@@ -1,4 +1,4 @@
-import { Button, Container, Stack, TextField } from "@mui/material";
+import EditGoalForm from "@/components/form/EditGoalForm";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -46,26 +46,15 @@ export default function EditGoal() {
 
   return (
     <>
-      {/* TODO:コンポーネント化 */}
       <h2>目標編集</h2>
-      <Container sx={{ pt: 3 }}>
-        <Stack spacing={2}>
-          <TextField
-            label="title"
-            value={title}
-            defaultValue={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <TextField
-            label="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
-          <Button onClick={editGoal} variant="contained">
-            更新
-          </Button>
-        </Stack>
-      </Container>
+
+      <EditGoalForm
+        setTitle={setTitle}
+        setText={setText}
+        editGoal={editGoal}
+        title={title}
+        text={text}
+      />
     </>
   );
 }
