@@ -17,9 +17,10 @@ export default function GoalDetail() {
   const id = router.query.id;
 
   useEffect(() => {
-    if (!router.isReady) return;
-    getGoalDetails();
-    getComments();
+    if (router.isReady) {
+      getGoalDetails();
+      getComments();
+    }
   }, [router.isReady]);
 
   const getGoalDetails = async () => {
