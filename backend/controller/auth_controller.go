@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -129,4 +130,17 @@ func DecodeToken(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid token"})
 	}
+}
+
+func Logout(c *gin.Context) {
+	fmt.Println("asdfarああ")
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name: "token",
+		Value: "",
+		Path: "/",
+		HttpOnly: true,
+		MaxAge: -1,
+	})
+
+    c.JSON(http.StatusOK, gin.H{"message": "Logout successfully"})
 }
