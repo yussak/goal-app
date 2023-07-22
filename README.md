@@ -19,6 +19,10 @@
 - データベース
   - MySQL
 
+## ER図（順次更新）
+![goal-app-erd drawio](https://github.com/YusukeSakuraba/goal-app/assets/69101210/0273e96f-6d50-4e1e-bf8d-f3b93e33f315)
+
+
 # アプリの機能紹介
 
 ## 機能一覧
