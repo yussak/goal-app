@@ -8,12 +8,21 @@ export default function Sidebar() {
   const router = useRouter();
 
   const logout = async () => {
+    // これでもログアウトはできる
+    // でも2回クリックしないとできないしリロードしたらログインされてしまう
+    // しかもこれだけだとtokenが消えない→不正利用の可能性があるらしい。なのでブラックリスト作成したりトークン削除が必要（要調査）
+    // そもそも自前実装じゃなくライブラリ使うようにしたい
+    // 登録・ログイン・ログアウトはとりあえずできるようになった。でもこのようにセキュリティ的問題があるのでライブラリ検討
+    //　go使っててもnextauth使ってもいいんではないか？調べる
     try {
       await axios.post(
         process.env.NEXT_PUBLIC_API_URL + `/auth/logout`,
         {},
         { withCredentials: true }
       );
+      // サーバーへのログアウトリクエスト成功後、クライアントサイドのCookieからトークンを削除
+      document.cookie =
+        "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       login(null);
       router.push("/auth/login");
     } catch (error) {
