@@ -2,7 +2,6 @@ package controller
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -133,7 +132,6 @@ func DecodeToken(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	fmt.Println("asdfarああ")
 	http.SetCookie(c.Writer, &http.Cookie{
 		Name: "token",
 		Value: "",

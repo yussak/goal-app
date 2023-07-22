@@ -38,7 +38,6 @@ export default function Sidebar() {
         <>
           {/* ログイン時のみ表示 */}
           <p>ログイン済み（デバッグ用）</p>
-          {/* TODO:実装 */}
           <button onClick={logout}>ログアウト</button>
         </>
       )}
