@@ -2,7 +2,7 @@
 
 - フロントエンド
   - HTML/CSS
-  - JavaScript
+  - TypeScript
   - Next.js
   - MUI
   - Cypress
