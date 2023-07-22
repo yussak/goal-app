@@ -1,8 +1,25 @@
 import { useUser } from "@/contexts/userContext";
+import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Sidebar() {
-  const { user } = useUser();
+  const { user, login } = useUser();
+  const router = useRouter();
+
+  const logout = async () => {
+    try {
+      await axios.post(
+        process.env.NEXT_PUBLIC_API_URL + `/auth/logout`,
+        {},
+        { withCredentials: true }
+      );
+      login(null);
+      router.push("/auth/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <ul>
@@ -22,7 +39,7 @@ export default function Sidebar() {
           {/* ログイン時のみ表示 */}
           <p>ログイン済み（デバッグ用）</p>
           {/* TODO:実装 */}
-          <button>ログアウト</button>
+          <button onClick={logout}>ログアウト</button>
         </>
       )}
       {/* 常に表示 */}
