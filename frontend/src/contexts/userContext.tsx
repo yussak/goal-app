@@ -3,7 +3,7 @@ import { ReactNode, createContext, useContext, useState } from "react";
 
 interface UserContextType {
   user: User | null;
-  login: (user: User) => void;
+  login: (user: User | null) => void;
 }
 
 export const UserContext = createContext<UserContextType | undefined>(
@@ -15,7 +15,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = (user: User) => {
+  const login = (user: User | null) => {
     setUser(user);
   };
 

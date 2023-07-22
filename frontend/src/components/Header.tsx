@@ -7,12 +7,9 @@ export default function Header() {
 
   return (
     <header className="header">
-      <Link href="/">Home</Link>
-      <Link href="/about">About</Link>
-      <Link href="/goals">Goals</Link>
       <LanguageSwitcher />
       {user ? <Link href={`/users/${user.id}`}>mypage</Link> : null}
-      {user ? <p>{user.name} </p> : "Not logged in"}
+      {user ? <p>{user.name} としてログイン</p> : "Not logged in"}
     </header>
   );
 }
