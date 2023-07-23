@@ -28,7 +28,8 @@ func FetchGoals(c *gin.Context) {
 	for rows.Next() {
 		var goal model.Goal
 		// 順番関係ありそう=>DBのcolumn順と合わせる
-		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID)
+		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID, &goal.ImageURL)
+		// err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -65,12 +66,15 @@ func AddGoal(c *gin.Context) {
 
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
+		Config: aws.Config{
+			Region: aws.String("ap-northeast-1"),
+		},
 	}))
 
 	// IAMユーザー goal-app-s3を使用する
 	uploader := s3manager.NewUploader(sess)
 	result, err := uploader.Upload(&s3manager.UploadInput{
-		Bucket: aws.String("bucket-name"),
+		Bucket: aws.String("goal-app-bucket"),
 		Key: aws.String(header.Filename),
 		Body: file,
 	})
@@ -80,15 +84,22 @@ func AddGoal(c *gin.Context) {
 	}
 
 	imageUrl := result.Location
-	sql := `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, ?)`
-	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text, imageUrl)
+
+	var sql string
+	if imageUrl == "" {
+		sql = `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, NULL)`
+		_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text)
+	} else {
+		sql = `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, ?)`
+		_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text, imageUrl)
+		req.ImageURL = &imageUrl
+	}
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	req.ImageURL = imageUrl
 	c.JSON(http.StatusOK, req)
 }
 
