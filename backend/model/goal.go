@@ -5,5 +5,5 @@ type Goal struct {
 	UserID string `json:"user_id"`
 	Title string `json:"title"`
 	Text string `json:"text"`
-	ImageURL string `json:"image_url"`
+	ImageURL *string `json:"image_url"`
 }
