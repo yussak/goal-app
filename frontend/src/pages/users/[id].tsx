@@ -63,6 +63,8 @@ export default function UserDetail({
       <h2>ユーザー詳細</h2>
 
       {user && <p>name: {user.name}</p>}
+
+      <h3>目標一覧</h3>
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
