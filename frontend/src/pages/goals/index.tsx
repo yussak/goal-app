@@ -18,6 +18,7 @@ export default function Goals({ user: currentUser }: { user: User | null }) {
 
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
 
   const { data: goals, error } = useSWR(
     process.env.NEXT_PUBLIC_API_URL + "/goals",
@@ -28,16 +29,28 @@ export default function Goals({ user: currentUser }: { user: User | null }) {
   }
 
   const addGoal = async () => {
-    const goal = {
-      title: title,
-      text: text,
-      // TODO:非ログイン時送信できないようにすればnullチェック不要そう？
-      user_id: currentUser ? currentUser.id : null,
-    };
+    const formData = new FormData();
+    if (file !== null) {
+      formData.append("image", file);
+    }
+    formData.append("title", title);
+    formData.append("text", text);
+    if (currentUser !== null) {
+      formData.append("user_id", currentUser.id);
+    }
+    // const goal = {
+    //   title: title,
+    //   text: text,
+    //   // TODO:非ログイン時送信できないようにすればnullチェック不要そう？
+    //   user_id: currentUser ? currentUser.id : null,
+    // };
 
     try {
       // TODO:useSWRMutationで書き換えられそう？調べる
-      await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", goal);
+      await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      // await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", goal);
       // useSWRで書き換える
       mutate(process.env.NEXT_PUBLIC_API_URL + "/goals");
       setTitle("");
@@ -63,6 +76,7 @@ export default function Goals({ user: currentUser }: { user: User | null }) {
       <GoalForm
         setTitle={setTitle}
         setText={setText}
+        setFile={setFile}
         addGoal={addGoal}
         title={title}
         text={text}
