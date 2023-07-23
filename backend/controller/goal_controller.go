@@ -67,6 +67,7 @@ func AddGoal(c *gin.Context) {
 		SharedConfigState: session.SharedConfigEnable,
 	}))
 
+	// IAMユーザー goal-app-s3を使用する
 	uploader := s3manager.NewUploader(sess)
 	result, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String("bucket-name"),
