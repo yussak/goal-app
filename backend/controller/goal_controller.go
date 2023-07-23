@@ -8,6 +8,9 @@ import (
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 	"github.com/YusukeSakuraba/goal-app/model"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
 )
@@ -53,14 +56,38 @@ func AddGoal(c *gin.Context) {
 	// デバッグ用に残す
 	// fmt.Println("dafdsa",req.UserID)
 
-	sql := `INSERT INTO goals(id, user_id, title, text) VALUES(?, ?, ?, ?)`
-	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text)
+	file, header, err := c.Request.FormFile("image")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer file.Close()
+
+	sess := session.Must(session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+	}))
+
+	uploader := s3manager.NewUploader(sess)
+	result, err := uploader.Upload(&s3manager.UploadInput{
+		Bucket: aws.String("bucket-name"),
+		Key: aws.String(header.Filename),
+		Body: file,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	imageUrl := result.Location
+	sql := `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, ?)`
+	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text, imageUrl)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
+	req.ImageURL = imageUrl
 	c.JSON(http.StatusOK, req)
 }
 
