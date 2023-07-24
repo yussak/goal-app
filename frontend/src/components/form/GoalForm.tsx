@@ -30,7 +30,6 @@ const GoalForm = ({
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        {/* TODO:画像追加を実装 */}
         <input type="file" onChange={(e) => setFile(e.target.files[0])} />
         <Button onClick={addGoal} variant="contained">
           追加

@@ -43,7 +43,6 @@ export default function Goals({ user: currentUser }: { user: User | null }) {
       await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      // await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", goal);
       // useSWRで書き換える
       mutate(process.env.NEXT_PUBLIC_API_URL + "/goals");
       setTitle("");
