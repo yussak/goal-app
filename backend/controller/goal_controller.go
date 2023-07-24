@@ -30,7 +30,6 @@ func FetchGoals(c *gin.Context) {
 		var goal model.Goal
 		// 順番関係ありそう=>DBのcolumn順と合わせる
 		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID, &goal.ImageURL)
-		// err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -63,21 +62,29 @@ func AddGoal(c *gin.Context) {
 
 	// formDataを受け取る
 	// fmt.Println(c.Request.PostForm)
-	Title := 	c.Request.PostForm["title"][0]
-	Text := 	c.Request.PostForm["text"][0]
-	UserID := 	c.Request.PostForm["user_id"][0]
 	
+	// Parse form values
+	title, titleOk := c.Request.PostForm["title"]
+	text, textOk := c.Request.PostForm["text"]
+	userID, userIDOk := c.Request.PostForm["user_id"]
+
+	if !titleOk || !textOk || !userIDOk {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
+		return
+	}
+
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
 		sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, NULL)`
-		_, err = db.DB.Exec(sql, req.ID, Title, Text, UserID)
-		if err != nil {
+		_, execErr := db.DB.Exec(sql, req.ID, title[0], text[0], userID[0])
+
+		if execErr != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		c.JSON(http.StatusOK, req)
 		return
-	}
+	} else {
 	defer file.Close()
 
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
@@ -88,6 +95,8 @@ func AddGoal(c *gin.Context) {
 	}))
 
 	// IAMユーザー goal-app-s3を使用する
+	// AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEYを環境変数に書けば~/.aws/configなど作らなくても自動で読み込んでくれる（はず）
+	// ローカルでは/configなど作る必要があるがdokcerなら環境変数として設定すればOK
 	uploader := s3manager.NewUploader(sess)
 	result, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String("goal-app-bucket"),
@@ -101,17 +110,7 @@ func AddGoal(c *gin.Context) {
 
 	imageUrl := result.Location
 	sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
-	_, err = db.DB.Exec(sql, req.ID, req.Title, req.Text, req.UserID, imageUrl)
-
-	// var sql string
-	// if imageUrl == "" {
-	// 	sql = `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, NULL)`
-	// 	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text)
-	// } else {
-	// 	sql = `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, ?)`
-	// 	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text, imageUrl)
-	// 	req.ImageURL = &imageUrl
-	// }
+	_, err = db.DB.Exec(sql, req.ID, title[0], text[0], userID[0],imageUrl)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -119,6 +118,7 @@ func AddGoal(c *gin.Context) {
 	}
 
 	req.ImageURL = &imageUrl
+}
 	c.JSON(http.StatusOK, req)
 }
 
