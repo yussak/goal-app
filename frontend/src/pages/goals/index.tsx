@@ -38,13 +38,6 @@ export default function Goals({ user: currentUser }: { user: User | null }) {
     if (currentUser !== null) {
       formData.append("user_id", currentUser.id);
     }
-    // const goal = {
-    //   title: title,
-    //   text: text,
-    //   // TODO:非ログイン時送信できないようにすればnullチェック不要そう？
-    //   user_id: currentUser ? currentUser.id : null,
-    // };
-
     try {
       // TODO:useSWRMutationで書き換えられそう？調べる
       await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", formData, {

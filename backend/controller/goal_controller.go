@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -53,13 +54,28 @@ func AddGoal(c *gin.Context) {
 	}
 
 	req.ID = id.String()
-	
-	// デバッグ用に残す
-	// fmt.Println("dafdsa",req.UserID)
 
+	err = c.Request.ParseMultipartForm(10 << 20) // 10MB
+	if err != nil {
+		log.Printf("Error parsing form data: %s", err)
+		return
+	}
+
+	// formDataを受け取る
+	// fmt.Println(c.Request.PostForm)
+	Title := 	c.Request.PostForm["title"][0]
+	Text := 	c.Request.PostForm["text"][0]
+	UserID := 	c.Request.PostForm["user_id"][0]
+	
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, NULL)`
+		_, err = db.DB.Exec(sql, req.ID, Title, Text, UserID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, req)
 		return
 	}
 	defer file.Close()
@@ -84,22 +100,25 @@ func AddGoal(c *gin.Context) {
 	}
 
 	imageUrl := result.Location
+	sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
+	_, err = db.DB.Exec(sql, req.ID, req.Title, req.Text, req.UserID, imageUrl)
 
-	var sql string
-	if imageUrl == "" {
-		sql = `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, NULL)`
-		_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text)
-	} else {
-		sql = `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, ?)`
-		_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text, imageUrl)
-		req.ImageURL = &imageUrl
-	}
+	// var sql string
+	// if imageUrl == "" {
+	// 	sql = `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, NULL)`
+	// 	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text)
+	// } else {
+	// 	sql = `INSERT INTO goals(id, user_id, title, text, image_url) VALUES(?, ?, ?, ?, ?)`
+	// 	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text, imageUrl)
+	// 	req.ImageURL = &imageUrl
+	// }
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
+	req.ImageURL = &imageUrl
 	c.JSON(http.StatusOK, req)
 }
 
