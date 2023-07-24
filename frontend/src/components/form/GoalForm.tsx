@@ -30,7 +30,14 @@ const GoalForm = ({
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+        <input
+          type="file"
+          onChange={(e) => {
+            if (e.target.files) {
+              setFile(e.target.files[0]);
+            }
+          }}
+        />
         <Button onClick={addGoal} variant="contained">
           追加
         </Button>
