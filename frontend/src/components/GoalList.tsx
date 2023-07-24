@@ -19,6 +19,12 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>text: {goal.text}</p>
             <p>id: {goal.id}</p>
             <p>user_id（デバッグ用）: {goal.user_id}</p>
+            {goal.image_url && (
+              <>
+                <p>画像あり（デバッグ用）</p>
+                <img src={goal.image_url} alt="asdf" />
+              </>
+            )}
             <p>
               <Link href={`/goals/${goal.id}`}>detail</Link>
             </p>

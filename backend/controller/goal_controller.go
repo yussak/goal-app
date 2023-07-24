@@ -2,12 +2,16 @@ package controller
 
 import (
 	"database/sql"
+	"log"
 	"math/rand"
 	"net/http"
 	"time"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 	"github.com/YusukeSakuraba/goal-app/model"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
 )
@@ -25,7 +29,7 @@ func FetchGoals(c *gin.Context) {
 	for rows.Next() {
 		var goal model.Goal
 		// 順番関係ありそう=>DBのcolumn順と合わせる
-		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID)
+		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID, &goal.ImageURL)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -49,18 +53,72 @@ func AddGoal(c *gin.Context) {
 	}
 
 	req.ID = id.String()
-	
-	// デバッグ用に残す
-	// fmt.Println("dafdsa",req.UserID)
 
-	sql := `INSERT INTO goals(id, user_id, title, text) VALUES(?, ?, ?, ?)`
-	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.Title, req.Text)
+	err = c.Request.ParseMultipartForm(10 << 20) // 10MB
+	if err != nil {
+		log.Printf("Error parsing form data: %s", err)
+		return
+	}
+
+	// formDataを受け取る
+	// fmt.Println(c.Request.PostForm)
+	
+	// Parse form values
+	title, titleOk := c.Request.PostForm["title"]
+	text, textOk := c.Request.PostForm["text"]
+	userID, userIDOk := c.Request.PostForm["user_id"]
+
+	if !titleOk || !textOk || !userIDOk {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
+		return
+	}
+
+	file, header, err := c.Request.FormFile("image")
+	if err != nil {
+		sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, NULL)`
+		_, execErr := db.DB.Exec(sql, req.ID, title[0], text[0], userID[0])
+
+		if execErr != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, req)
+		return
+	} else {
+	defer file.Close()
+
+	sess := session.Must(session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+		Config: aws.Config{
+			Region: aws.String("ap-northeast-1"),
+		},
+	}))
+
+	// IAMユーザー goal-app-s3を使用する
+	// AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEYを環境変数に書けば~/.aws/configなど作らなくても自動で読み込んでくれる（はず）
+	// ローカルでは/configなど作る必要があるがdokcerなら環境変数として設定すればOK
+	uploader := s3manager.NewUploader(sess)
+	result, err := uploader.Upload(&s3manager.UploadInput{
+		Bucket: aws.String("goal-app-bucket"),
+		Key: aws.String(header.Filename),
+		Body: file,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	imageUrl := result.Location
+	sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
+	_, err = db.DB.Exec(sql, req.ID, title[0], text[0], userID[0],imageUrl)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
+	req.ImageURL = &imageUrl
+}
 	c.JSON(http.StatusOK, req)
 }
 
