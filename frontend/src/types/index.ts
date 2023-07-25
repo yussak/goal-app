@@ -10,6 +10,8 @@ export type Goal = {
   text: string;
   user_id: string;
   image_url: string;
+  CreatedAt: Date;
+  UpdatedAt: Date;
 };
 
 export type GoalComment = {

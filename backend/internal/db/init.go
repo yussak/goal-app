@@ -18,7 +18,7 @@ func InitDB() (*sql.DB, error) {
 	user := os.Getenv("DB_USERNAME")
 	pwd := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_DBNAME")
-	dsn := fmt.Sprintf("%s:%s@tcp(db:3306)/%s?charset=utf8", user, pwd, dbname)
+	dsn := fmt.Sprintf("%s:%s@tcp(db:3306)/%s?charset=utf8&parseTime=true", user, pwd, dbname)
 
 	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
