@@ -168,14 +168,68 @@ func FetchGoalDetails(c *gin.Context) {
 func EditGoal(c *gin.Context) {
 	id := c.Param("id")
 
-	var req model.Goal
-	err := c.Bind(&req)
+	err := c.Request.ParseMultipartForm(10 << 20) // 10MB
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		log.Printf("Error parsing form data: %s", err)
 		return
 	}
 
-	_, err = db.DB.Exec("UPDATE goals SET title = ?, text = ? WHERE id = ?", req.Title, req.Text, id)
+	// Parse form values
+	title, titleOk := c.Request.PostForm["title"]
+	text, textOk := c.Request.PostForm["text"]
+
+	if !titleOk || !textOk {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
+		return
+	}
+	file, header, err := c.Request.FormFile("image")
+	if err != nil {
+		sql := `UPDATE goals SET title = ?, text = ? WHERE id = ?`
+		_, execErr := db.DB.Exec(sql, title[0], text[0], id)
+
+		if execErr != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
+		var goal model.Goal
+		err = row.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, goal)
+		return
+	} else {
+		defer file.Close()
+
+		sess := session.Must(session.NewSessionWithOptions(session.Options{
+			SharedConfigState: session.SharedConfigEnable,
+			Config: aws.Config{
+				Region: aws.String("ap-northeast-1"),
+			},
+		}))
+
+	// IAMユーザー goal-app-s3を使用する
+	// AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEYを環境変数に書けば~/.aws/configなど作らなくても自動で読み込んでくれる（はず）
+	// ローカルでは/configなど作る必要があるがdokcerなら環境変数として設定すればOK
+	uploader := s3manager.NewUploader(sess)
+	result, err := uploader.Upload(&s3manager.UploadInput{
+		Bucket: aws.String("goal-app-bucket"),
+		Key: aws.String(header.Filename),
+		Body: file,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	imageUrl := result.Location
+	sql := `UPDATE goals SET title = ?, text = ?, image_url = ?`
+	_, err = db.DB.Exec(sql, title[0], text[0],imageUrl)
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -183,11 +237,12 @@ func EditGoal(c *gin.Context) {
 
 	row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
 	var goal model.Goal
-	err = row.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID)
+	err = row.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-    c.JSON(http.StatusOK, goal)
+	c.JSON(http.StatusOK, goal)
+	}
 }

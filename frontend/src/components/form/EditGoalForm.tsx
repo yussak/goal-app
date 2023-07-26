@@ -3,16 +3,18 @@ import { Button, Container, Stack, TextField } from "@mui/material";
 type EditGoalFormProps = {
   setTitle: (title: string) => void;
   setText: (text: string) => void;
-  setImageURL: (imageURL: string) => void;
+  setFile: (file: File | null) => void;
   editGoal: () => void;
   title: string;
   text: string;
   imageURL: string | null;
+  file: File | null;
 };
 
 const EditGoalForm = ({
   setTitle,
   setText,
+  setFile,
   editGoal,
   title,
   text,
@@ -40,7 +42,14 @@ const EditGoalForm = ({
         ) : (
           <p>no image（デバッグ用）</p>
         )}
-
+        <input
+          type="file"
+          onChange={(e) => {
+            if (e.target.files) {
+              setFile(e.target.files[0]);
+            }
+          }}
+        />
         <Button onClick={editGoal} variant="contained">
           更新
         </Button>

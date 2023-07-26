@@ -1,15 +1,23 @@
 import EditGoalForm from "@/components/form/EditGoalForm";
+import { useLogin } from "@/hooks/useLogin";
+import { Goal, User } from "@/types";
+import { checkAuth } from "@/utils/auth";
 import axios from "axios";
+import { NextPageContext } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function EditGoal() {
+export default function EditGoal({ user: currentUser }: { user: User | null }) {
+  useLogin(currentUser);
+
   const router = useRouter();
   const id = router.query.id;
 
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [imageURL, setImageURL] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -31,14 +39,23 @@ export default function EditGoal() {
   };
 
   const editGoal = async () => {
+    const formData = new FormData();
+    if (file !== null) {
+      formData.append("image", file);
+    }
+    formData.append("title", title);
+    formData.append("text", text);
+    if (currentUser !== null) {
+      formData.append("user_id", currentUser.id);
+    }
+
     try {
-      const goal = {
-        title: title,
-        text: text,
-      };
       await axios.put(
         process.env.NEXT_PUBLIC_API_URL + `/goals/edit/${id}`,
-        goal
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
       );
       router.push(`/goals/${id}`);
     } catch (error) {
@@ -53,12 +70,25 @@ export default function EditGoal() {
       <EditGoalForm
         setTitle={setTitle}
         setText={setText}
-        setImageURL={setImageURL}
+        setFile={setFile}
         editGoal={editGoal}
         title={title}
         text={text}
         imageURL={imageURL}
+        file={file}
       />
     </>
   );
+}
+
+export async function getServerSideProps(context: NextPageContext) {
+  const user = await checkAuth(context);
+  const { locale } = context;
+
+  return {
+    props: {
+      user,
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
 }
