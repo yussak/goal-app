@@ -14,7 +14,7 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
     <ul>
       {goals.map((goal, index) => {
         return (
-          <li key={index}>
+          <li key={index} className="goal-list">
             <p>title: {goal.title}</p>
             <p>text: {goal.text}</p>
             <p>id: {goal.id}</p>
