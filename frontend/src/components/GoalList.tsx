@@ -13,6 +13,7 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
   return goals && goals.length > 0 ? (
     <ul>
       {goals.map((goal, index) => {
+        const isEdited = goal.CreatedAt !== goal.UpdatedAt;
         return (
           <li key={index} className="goal-list">
             <p>title: {goal.title}</p>
@@ -37,6 +38,7 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             ) : (
               ""
             )}
+            {isEdited && <p>編集済み</p>}
           </li>
         );
       })}
