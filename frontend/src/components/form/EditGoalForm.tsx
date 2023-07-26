@@ -35,7 +35,7 @@ const EditGoalForm = ({
         {imageURL ? (
           <>
             <p>画像あり（デバッグ用）</p>
-            <img src={imageURL} alt="asdf" />
+            <img className="image_box" src={imageURL} alt="asdf" />
           </>
         ) : (
           <p>no image（デバッグ用）</p>
