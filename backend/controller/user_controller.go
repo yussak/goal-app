@@ -12,7 +12,7 @@ import (
 
 func FetchUsers(c *gin.Context) {
 	users := []model.User{}
-	
+
 	rows, err := db.DB.Query("SELECT id, name FROM users")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -38,28 +38,28 @@ func FetchUserDetails(c *gin.Context) {
 
 	row := db.DB.QueryRow("SELECT id, name FROM Users WHERE id = ?", id)
 
-    var User model.User
-    err := row.Scan(&User.ID, &User.Name)
-    if err != nil {
-        if err == sql.ErrNoRows {
-            c.JSON(http.StatusNotFound, gin.H{"error": "No User with the provided ID."})
-            return
-        }
+	var User model.User
+	err := row.Scan(&User.ID, &User.Name)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusNotFound, gin.H{"error": "No User with the provided ID."})
+			return
+		}
 
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-    c.JSON(http.StatusOK, User)
+	c.JSON(http.StatusOK, User)
 }
 
 func FetchUserGoals(c *gin.Context) {
-	
+
 	user_id := c.Param("id")
-	fmt.Println("asdffsd",user_id)
+	fmt.Println("asdffsd", user_id)
 
 	goals := []model.Goal{}
-	
+
 	rows, err := db.DB.Query("SELECT * FROM goals WHERE user_id = ?", user_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
