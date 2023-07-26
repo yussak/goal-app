@@ -85,13 +85,24 @@ export default function GoalDetail({
     }
   };
 
+  console.log("goal", goal);
+  console.log("currentUser", currentUser);
+  const isMyGoal =
+    goal && currentUser ? goal.user_id === currentUser.id : false;
+  console.log(isMyGoal);
   return (
     <>
       <h2>目標詳細</h2>
       {goal && (
         <>
-          {/* TODO:自分のgoalの時だけ表示する */}
-          <Link href={`/goals/edit/${goal.id}`}>edit</Link>
+          {isMyGoal ? (
+            <>
+              <Link href={`/goals/edit/${goal.id}`}>edit</Link>
+              <p>this is my goal</p>
+            </>
+          ) : (
+            "not my goal"
+          )}
           <p>title: {goal.title}</p>
           <p>text: {goal.text}</p>
           <p>user_id(デバッグ用): {goal.user_id}</p>
