@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { Goal, GoalComment } from "@/types";
+import { Goal, GoalComment, User } from "@/types";
 import GoalCommentForm from "@/components/form/GoalCommentForm";
 import GoalCommentList from "@/components/GoalCommentList";
 import Link from "next/link";
+import { NextPageContext } from "next";
+import { checkAuth } from "@/utils/auth";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useLogin } from "@/hooks/useLogin";
 
-export default function GoalDetail() {
+export default function GoalDetail({
+  user: currentUser,
+}: {
+  user: User | null;
+}) {
+  useLogin(currentUser);
+
   const [goal, setGoal] = useState<Goal | null>(null);
   const [comments, setComments] = useState<GoalComment[]>([]);
 
@@ -108,4 +118,16 @@ export default function GoalDetail() {
       <GoalCommentList comments={comments} onDelete={deleteComment} />
     </>
   );
+}
+
+export async function getServerSideProps(context: NextPageContext) {
+  const user = await checkAuth(context);
+  const { locale } = context;
+
+  return {
+    props: {
+      user,
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
 }
