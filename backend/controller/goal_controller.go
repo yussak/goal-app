@@ -148,10 +148,10 @@ func DeleteGoal(c *gin.Context) {
 func FetchGoalDetails(c *gin.Context) {
 	id := c.Param("id")
 
-	row := db.DB.QueryRow("SELECT id, title, text FROM goals WHERE id = ?", id)
+	row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
 
     var goal model.Goal
-    err := row.Scan(&goal.ID, &goal.Title, &goal.Text)
+    err := row.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID,&goal.ImageURL,&goal.CreatedAt,&goal.UpdatedAt)
     if err != nil {
         if err == sql.ErrNoRows {
             c.JSON(http.StatusNotFound, gin.H{"error": "No goal with the provided ID."})

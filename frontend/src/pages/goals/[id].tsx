@@ -84,6 +84,17 @@ export default function GoalDetail() {
           <Link href={`/goals/edit/${goal.id}`}>edit</Link>
           <p>title: {goal.title}</p>
           <p>text: {goal.text}</p>
+          <p>user_id(デバッグ用): {goal.user_id}</p>
+          <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p>
+          <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p>
+          {goal.image_url ? (
+            <>
+              <p>画像あり（デバッグ用）</p>
+              <img src={goal.image_url} alt="asdf" />
+            </>
+          ) : (
+            <p>no image（デバッグ用）</p>
+          )}
         </>
       )}
       <GoalCommentForm
