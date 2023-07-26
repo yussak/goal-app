@@ -8,8 +8,8 @@ export default function Header() {
   return (
     <header className="header">
       <LanguageSwitcher />
-      {user ? <Link href={`/users/${user.id}`}>mypage</Link> : null}
-      {user ? <p>{user.name} としてログイン</p> : "Not logged in"}
+      <p>{user ? <span>{user.name} としてログイン</span> : "Not logged in"}</p>
+      <p>{user && <span>userid（デバッグ用）: {user.id}</span>}</p>
     </header>
   );
 }
