@@ -9,6 +9,7 @@ export default function EditGoal() {
 
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
+  const [imageURL, setImageURL] = useState<string | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -23,6 +24,7 @@ export default function EditGoal() {
       );
       setTitle(data.title);
       setText(data.text);
+      setImageURL(data.image_url);
     } catch (error) {
       console.error(error);
     }
@@ -51,9 +53,11 @@ export default function EditGoal() {
       <EditGoalForm
         setTitle={setTitle}
         setText={setText}
+        setImageURL={setImageURL}
         editGoal={editGoal}
         title={title}
         text={text}
+        imageURL={imageURL}
       />
     </>
   );
