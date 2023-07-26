@@ -85,11 +85,9 @@ export default function GoalDetail({
     }
   };
 
-  console.log("goal", goal);
-  console.log("currentUser", currentUser);
   const isMyGoal =
     goal && currentUser ? goal.user_id === currentUser.id : false;
-  console.log(isMyGoal);
+
   return (
     <>
       <h2>目標詳細</h2>
