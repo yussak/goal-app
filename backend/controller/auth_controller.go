@@ -24,7 +24,7 @@ func Signup(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -33,8 +33,8 @@ func Signup(c *gin.Context) {
 
 	t := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
-	user.ID = ulid.MustNew(ulid.Timestamp(t),entropy).String()
-	
+	user.ID = ulid.MustNew(ulid.Timestamp(t), entropy).String()
+
 	_, err = db.DB.Exec("INSERT INTO users(id, name, email, password) VALUES(?, ?, ?, ?)", user.ID, user.Name, user.Email, string(hashedPassword))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -56,28 +56,28 @@ func Login(c *gin.Context) {
 	row := db.DB.QueryRow("SELECT * FROM users WHERE email =?", user.Email)
 
 	err := row.Scan(&dbUser.ID, &dbUser.Name, &dbUser.Email, &dbUser.Password)
-    if err != nil {
-        if err == sql.ErrNoRows {
-            // If the email does not exist
-            c.JSON(http.StatusUnauthorized, gin.H{"message": "No user found with this email"})
-            return
-        } else {
-            c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-            return
-        }
-    }
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// If the email does not exist
+			c.JSON(http.StatusUnauthorized, gin.H{"message": "No user found with this email"})
+			return
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	}
 
-    err = bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(user.Password))
-    if err != nil {
-        // If the password does not match
-        c.JSON(http.StatusUnauthorized, gin.H{"message": "Password is incorrect"})
-        return
-    }
+	err = bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(user.Password))
+	if err != nil {
+		// If the password does not match
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Password is incorrect"})
+		return
+	}
 
 	// The user is authenticated, add your code here
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id": dbUser.ID,
-		"name": dbUser.Name,
+		"id":    dbUser.ID,
+		"name":  dbUser.Name,
 		"email": dbUser.Email,
 		// You can also add the expiration time of the token here
 	})
@@ -92,14 +92,13 @@ func Login(c *gin.Context) {
 	log.Println("Generated token: ", tokenString)
 
 	http.SetCookie(c.Writer, &http.Cookie{
-		Name: "token",
-		Value: tokenString,
+		Name:     "token",
+		Value:    tokenString,
 		HttpOnly: true,
 	})
 
-
-    // The user is authenticated, add your code here
-    c.JSON(http.StatusOK, gin.H{"message": "User authenticated successfully","user":dbUser,"token":tokenString})
+	// The user is authenticated, add your code here
+	c.JSON(http.StatusOK, gin.H{"message": "User authenticated successfully", "user": dbUser, "token": tokenString})
 }
 
 func DecodeToken(c *gin.Context) {
@@ -112,7 +111,6 @@ func DecodeToken(c *gin.Context) {
 	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 	log.Println("Received token: ", tokenString)
 
-	
 	mySecret := os.Getenv("MY_SECRET")
 	// log.Println("Received token: ", token.Token)
 	tokenClaims, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -123,7 +121,7 @@ func DecodeToken(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": err})
 		return
 	}
-	
+
 	if claims, ok := tokenClaims.Claims.(jwt.MapClaims); ok && tokenClaims.Valid {
 		c.JSON(http.StatusOK, gin.H{"user": claims})
 	} else {
@@ -133,12 +131,12 @@ func DecodeToken(c *gin.Context) {
 
 func Logout(c *gin.Context) {
 	http.SetCookie(c.Writer, &http.Cookie{
-		Name: "token",
-		Value: "",
-		Path: "/",
+		Name:     "token",
+		Value:    "",
+		Path:     "/",
 		HttpOnly: true,
-		MaxAge: -1,
+		MaxAge:   -1,
 	})
 
-    c.JSON(http.StatusOK, gin.H{"message": "Logout successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Logout successfully"})
 }
