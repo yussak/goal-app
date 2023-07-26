@@ -174,6 +174,7 @@ func EditGoal(c *gin.Context) {
 		return
 	}
 
+	// TODO:画像追加周りがaddGoalとほぼ同じなのでいい感じに共通化する
 	// Parse form values
 	title, titleOk := c.Request.PostForm["title"]
 	text, textOk := c.Request.PostForm["text"]
