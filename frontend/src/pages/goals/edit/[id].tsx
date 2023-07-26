@@ -1,6 +1,6 @@
 import EditGoalForm from "@/components/form/EditGoalForm";
 import { useLogin } from "@/hooks/useLogin";
-import { Goal, User } from "@/types";
+import { User } from "@/types";
 import { checkAuth } from "@/utils/auth";
 import axios from "axios";
 import { NextPageContext } from "next";
