@@ -5,12 +5,15 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 	"github.com/YusukeSakuraba/goal-app/model"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
@@ -246,4 +249,57 @@ func EditGoal(c *gin.Context) {
 
 		c.JSON(http.StatusOK, goal)
 	}
+}
+
+func DeleteGoalImage(c *gin.Context) {
+	id := c.Param("id")
+
+	// Get the current image_url for this goal
+	row := db.DB.QueryRow("SELECT image_url FROM goals WHERE id = ?", id)
+	var imageUrl string
+	err := row.Scan(&imageUrl)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Setup AWS session
+	sess := session.Must(session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+		Config: aws.Config{
+			Region: aws.String("ap-northeast-1"),
+		},
+	}))
+
+	// Create a new S3 service client
+	svc := s3.New(sess)
+
+	// Parse the image URL to get the key
+	u, err := url.Parse(imageUrl)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	key := strings.TrimPrefix(u.Path, "/")
+
+	// Delete the image from S3
+	_, err = svc.DeleteObject(&s3.DeleteObjectInput{
+		Bucket: aws.String("goal-app-bucket"),
+		Key:    aws.String(key),
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Delete the image URL from the database
+	sql := `UPDATE goals SET image_url = NULL WHERE id = ?`
+	_, execErr := db.DB.Exec(sql, id)
+
+	if execErr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": execErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Image deleted successfully"})
 }
