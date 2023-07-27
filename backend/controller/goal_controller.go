@@ -5,16 +5,11 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"net/url"
-	"strings"
 	"time"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 	"github.com/YusukeSakuraba/goal-app/model"
 	"github.com/YusukeSakuraba/goal-app/utils"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
 )
@@ -227,30 +222,7 @@ func DeleteGoalImage(c *gin.Context) {
 		return
 	}
 
-	// Setup AWS session
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-		Config: aws.Config{
-			Region: aws.String("ap-northeast-1"),
-		},
-	}))
-
-	// Create a new S3 service client
-	svc := s3.New(sess)
-
-	// Parse the image URL to get the key
-	u, err := url.Parse(imageUrl)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	key := strings.TrimPrefix(u.Path, "/")
-
-	// Delete the image from S3
-	_, err = svc.DeleteObject(&s3.DeleteObjectInput{
-		Bucket: aws.String("goal-app-bucket"),
-		Key:    aws.String(key),
-	})
+	err = utils.DeleteFromS3(imageUrl)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
