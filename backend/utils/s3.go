@@ -2,9 +2,12 @@ package utils
 
 import (
 	"mime/multipart"
+	"net/url"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
@@ -30,4 +33,36 @@ func UploadToS3(file multipart.File, header *multipart.FileHeader) (string, erro
 	}
 
 	return result.Location, nil
+}
+
+func DeleteFromS3(imageUrl string) error {
+	// Setup AWS session
+	sess := session.Must(session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+		Config: aws.Config{
+			Region: aws.String("ap-northeast-1"),
+		},
+	}))
+
+	// Create a new S3 service client
+	svc := s3.New(sess)
+
+	// Parse the image URL to get the key
+	u, err := url.Parse(imageUrl)
+	if err != nil {
+		return err
+	}
+	key := strings.TrimPrefix(u.Path, "/")
+
+	// Delete the image from S3
+	_, err = svc.DeleteObject(&s3.DeleteObjectInput{
+		Bucket: aws.String("goal-app-bucket"),
+		Key:    aws.String(key),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
