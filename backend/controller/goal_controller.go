@@ -11,6 +11,7 @@ import (
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 	"github.com/YusukeSakuraba/goal-app/model"
+	"github.com/YusukeSakuraba/goal-app/utils"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -88,30 +89,12 @@ func AddGoal(c *gin.Context) {
 		c.JSON(http.StatusOK, req)
 		return
 	} else {
-		defer file.Close()
-
-		sess := session.Must(session.NewSessionWithOptions(session.Options{
-			SharedConfigState: session.SharedConfigEnable,
-			Config: aws.Config{
-				Region: aws.String("ap-northeast-1"),
-			},
-		}))
-
-		// IAMユーザー goal-app-s3を使用する
-		// AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEYを環境変数に書けば~/.aws/configなど作らなくても自動で読み込んでくれる（はず）
-		// ローカルでは/configなど作る必要があるがdokcerなら環境変数として設定すればOK
-		uploader := s3manager.NewUploader(sess)
-		result, err := uploader.Upload(&s3manager.UploadInput{
-			Bucket: aws.String("goal-app-bucket"),
-			Key:    aws.String(header.Filename),
-			Body:   file,
-		})
+		imageUrl, err := utils.UploadToS3(file, header)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		imageUrl := result.Location
 		sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
 		_, err = db.DB.Exec(sql, req.ID, title[0], text[0], userID[0], imageUrl)
 
