@@ -5,16 +5,11 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"net/url"
-	"strings"
 	"time"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 	"github.com/YusukeSakuraba/goal-app/model"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	"github.com/YusukeSakuraba/goal-app/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
 )
@@ -88,30 +83,12 @@ func AddGoal(c *gin.Context) {
 		c.JSON(http.StatusOK, req)
 		return
 	} else {
-		defer file.Close()
-
-		sess := session.Must(session.NewSessionWithOptions(session.Options{
-			SharedConfigState: session.SharedConfigEnable,
-			Config: aws.Config{
-				Region: aws.String("ap-northeast-1"),
-			},
-		}))
-
-		// IAMユーザー goal-app-s3を使用する
-		// AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEYを環境変数に書けば~/.aws/configなど作らなくても自動で読み込んでくれる（はず）
-		// ローカルでは/configなど作る必要があるがdokcerなら環境変数として設定すればOK
-		uploader := s3manager.NewUploader(sess)
-		result, err := uploader.Upload(&s3manager.UploadInput{
-			Bucket: aws.String("goal-app-bucket"),
-			Key:    aws.String(header.Filename),
-			Body:   file,
-		})
+		imageUrl, err := utils.UploadToS3(file, header)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		imageUrl := result.Location
 		sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
 		_, err = db.DB.Exec(sql, req.ID, title[0], text[0], userID[0], imageUrl)
 
@@ -177,7 +154,6 @@ func EditGoal(c *gin.Context) {
 		return
 	}
 
-	// TODO:画像追加周りがaddGoalとほぼ同じなのでいい感じに共通化する
 	// Parse form values
 	title, titleOk := c.Request.PostForm["title"]
 	text, textOk := c.Request.PostForm["text"]
@@ -207,30 +183,12 @@ func EditGoal(c *gin.Context) {
 		c.JSON(http.StatusOK, goal)
 		return
 	} else {
-		defer file.Close()
-
-		sess := session.Must(session.NewSessionWithOptions(session.Options{
-			SharedConfigState: session.SharedConfigEnable,
-			Config: aws.Config{
-				Region: aws.String("ap-northeast-1"),
-			},
-		}))
-
-		// IAMユーザー goal-app-s3を使用する
-		// AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEYを環境変数に書けば~/.aws/configなど作らなくても自動で読み込んでくれる（はず）
-		// ローカルでは/configなど作る必要があるがdokcerなら環境変数として設定すればOK
-		uploader := s3manager.NewUploader(sess)
-		result, err := uploader.Upload(&s3manager.UploadInput{
-			Bucket: aws.String("goal-app-bucket"),
-			Key:    aws.String(header.Filename),
-			Body:   file,
-		})
+		imageUrl, err := utils.UploadToS3(file, header)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		imageUrl := result.Location
 		sql := `UPDATE goals SET title = ?, text = ?, image_url = ?`
 		_, err = db.DB.Exec(sql, title[0], text[0], imageUrl)
 
@@ -263,30 +221,7 @@ func DeleteGoalImage(c *gin.Context) {
 		return
 	}
 
-	// Setup AWS session
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-		Config: aws.Config{
-			Region: aws.String("ap-northeast-1"),
-		},
-	}))
-
-	// Create a new S3 service client
-	svc := s3.New(sess)
-
-	// Parse the image URL to get the key
-	u, err := url.Parse(imageUrl)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	key := strings.TrimPrefix(u.Path, "/")
-
-	// Delete the image from S3
-	_, err = svc.DeleteObject(&s3.DeleteObjectInput{
-		Bucket: aws.String("goal-app-bucket"),
-		Key:    aws.String(key),
-	})
+	err = utils.DeleteFromS3(imageUrl)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
