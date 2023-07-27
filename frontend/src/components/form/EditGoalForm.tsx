@@ -5,6 +5,7 @@ type EditGoalFormProps = {
   setText: (text: string) => void;
   setFile: (file: File | null) => void;
   editGoal: () => void;
+  deleteGoalImage: () => void;
   title: string;
   text: string;
   imageURL: string | null;
@@ -16,6 +17,7 @@ const EditGoalForm = ({
   setText,
   setFile,
   editGoal,
+  deleteGoalImage,
   title,
   text,
   imageURL,
@@ -37,6 +39,7 @@ const EditGoalForm = ({
         {imageURL ? (
           <>
             <p>画像あり（デバッグ用）</p>
+            <button onClick={deleteGoalImage}>画像削除</button>
             <img className="image_box" src={imageURL} alt="asdf" />
           </>
         ) : (

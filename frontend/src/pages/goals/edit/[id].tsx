@@ -63,6 +63,15 @@ export default function EditGoal({ user: currentUser }: { user: User | null }) {
     }
   };
 
+  const deleteGoalImage = async () => {
+    try {
+      await axios.delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}/image`);
+      router.push(`/goals/${id}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <h2>目標編集</h2>
@@ -72,6 +81,7 @@ export default function EditGoal({ user: currentUser }: { user: User | null }) {
         setText={setText}
         setFile={setFile}
         editGoal={editGoal}
+        deleteGoalImage={deleteGoalImage}
         title={title}
         text={text}
         imageURL={imageURL}
