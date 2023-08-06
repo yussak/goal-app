@@ -2,15 +2,19 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Layout from "@/components/Layout";
 import { appWithTranslation } from "next-i18next";
-import { UserProvider } from "@/contexts/userContext";
+import { SessionProvider } from "next-auth/react";
+const MyApp = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) => {
+  console.log("apptsxw", session);
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <UserProvider>
+    <SessionProvider session={session}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </UserProvider>
+    </SessionProvider>
   );
 };
 
