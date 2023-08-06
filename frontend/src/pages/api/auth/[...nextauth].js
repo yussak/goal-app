@@ -19,7 +19,7 @@ export default NextAuth({
           );
           if (res.data && res.data.user) {
             const user = res.data.user;
-            return Promise.resolve(user);
+            return user;
           } else {
             console.error("Unexpected response:", res.data);
             return Promise.reject("Authorization failed");
@@ -31,6 +31,21 @@ export default NextAuth({
       },
     }),
   ],
+
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id;
+      }
+      return session;
+    },
+  },
   session: {
     jwt: true,
   },
