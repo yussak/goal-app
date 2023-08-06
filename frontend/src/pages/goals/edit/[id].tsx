@@ -1,16 +1,10 @@
 import EditGoalForm from "@/components/form/EditGoalForm";
-import { useLogin } from "@/hooks/useLogin";
-import { User } from "@/types";
-import { checkAuth } from "@/utils/auth";
 import axios from "axios";
-import { NextPageContext } from "next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function EditGoal({ user: currentUser }: { user: User | null }) {
-  useLogin(currentUser);
-
+export default function EditGoal() {
   const router = useRouter();
   const id = router.query.id;
 
@@ -18,6 +12,7 @@ export default function EditGoal({ user: currentUser }: { user: User | null }) {
   const [text, setText] = useState<string>("");
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const { data: session } = useSession();
 
   useEffect(() => {
     if (router.isReady) {
@@ -45,8 +40,8 @@ export default function EditGoal({ user: currentUser }: { user: User | null }) {
     }
     formData.append("title", title);
     formData.append("text", text);
-    if (currentUser !== null) {
-      formData.append("user_id", currentUser.id);
+    if (session?.user?.id) {
+      formData.append("user_id", session?.user.id);
     }
 
     try {
@@ -91,14 +86,14 @@ export default function EditGoal({ user: currentUser }: { user: User | null }) {
   );
 }
 
-export async function getServerSideProps(context: NextPageContext) {
-  const user = await checkAuth(context);
-  const { locale } = context;
+// export async function getServerSideProps(context: NextPageContext) {
+//   const user = await checkAuth(context);
+//   const { locale } = context;
 
-  return {
-    props: {
-      user,
-      ...(await serverSideTranslations(locale!, ["common"])),
-    },
-  };
-}
+//   return {
+//     props: {
+//       user,
+//       ...(await serverSideTranslations(locale!, ["common"])),
+//     },
+//   };
+// }
