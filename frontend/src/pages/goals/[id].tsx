@@ -1,27 +1,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { Goal, GoalComment, User } from "@/types";
+import { Goal, GoalComment } from "@/types";
 import GoalCommentForm from "@/components/form/GoalCommentForm";
 import GoalCommentList from "@/components/GoalCommentList";
 import Link from "next/link";
-import { NextPageContext } from "next";
-import { checkAuth } from "@/utils/auth";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useLogin } from "@/hooks/useLogin";
+import { useSession } from "next-auth/react";
 
-export default function GoalDetail({
-  user: currentUser,
-}: {
-  user: User | null;
-}) {
-  useLogin(currentUser);
-
+export default function GoalDetail() {
   const [goal, setGoal] = useState<Goal | null>(null);
   const [comments, setComments] = useState<GoalComment[]>([]);
 
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
+
+  const { data: session } = useSession();
 
   const router = useRouter();
   const id = router.query.id;
@@ -86,7 +79,7 @@ export default function GoalDetail({
   };
 
   const isMyGoal =
-    goal && currentUser ? goal.user_id === currentUser.id : false;
+    goal && session?.user ? goal.user_id === session?.user?.id : false;
 
   return (
     <>
@@ -129,14 +122,14 @@ export default function GoalDetail({
   );
 }
 
-export async function getServerSideProps(context: NextPageContext) {
-  const user = await checkAuth(context);
-  const { locale } = context;
+// export async function getServerSideProps(context: NextPageContext) {
+//   const user = await checkAuth(context);
+//   const { locale } = context;
 
-  return {
-    props: {
-      user,
-      ...(await serverSideTranslations(locale!, ["common"])),
-    },
-  };
-}
+//   return {
+//     props: {
+//       user,
+//       ...(await serverSideTranslations(locale!, ["common"])),
+//     },
+//   };
+// }
