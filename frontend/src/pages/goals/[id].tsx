@@ -121,15 +121,3 @@ export default function GoalDetail() {
     </>
   );
 }
-
-// export async function getServerSideProps(context: NextPageContext) {
-//   const user = await checkAuth(context);
-//   const { locale } = context;
-
-//   return {
-//     props: {
-//       user,
-//       ...(await serverSideTranslations(locale!, ["common"])),
-//     },
-//   };
-// }
