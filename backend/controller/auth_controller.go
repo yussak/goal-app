@@ -91,13 +91,6 @@ func Login(c *gin.Context) {
 	}
 	log.Println("Generated token: ", tokenString)
 
-	http.SetCookie(c.Writer, &http.Cookie{
-		Name:     "token",
-		Value:    tokenString,
-		HttpOnly: true,
-	})
-
-	// The user is authenticated, add your code here
 	c.JSON(http.StatusOK, gin.H{"message": "User authenticated successfully", "user": dbUser, "token": tokenString})
 }
 

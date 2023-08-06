@@ -2,23 +2,18 @@ import { useState } from "react";
 import axios from "axios";
 import GoalForm from "@/components/form/GoalForm";
 import GoalList from "@/components/GoalList";
-import { User } from "@/types";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { NextPageContext } from "next";
-import { checkAuth } from "@/utils/auth";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "@/utils/fetcher";
-import { useLogin } from "@/hooks/useLogin";
+import { useSession } from "next-auth/react";
 
-export default function Goals({ user: currentUser }: { user: User | null }) {
-  useLogin(currentUser);
-
+export default function Goals() {
   const { t } = useTranslation();
 
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
+  const { data: session } = useSession();
 
   const { data: goals, error } = useSWR(
     process.env.NEXT_PUBLIC_API_URL + "/goals",
@@ -35,8 +30,8 @@ export default function Goals({ user: currentUser }: { user: User | null }) {
     }
     formData.append("title", title);
     formData.append("text", text);
-    if (currentUser !== null) {
-      formData.append("user_id", currentUser.id);
+    if (session?.user) {
+      formData.append("user_id", session?.user.id);
     }
     try {
       // TODO:useSWRMutationで書き換えられそう？調べる
@@ -76,16 +71,4 @@ export default function Goals({ user: currentUser }: { user: User | null }) {
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
-}
-
-export async function getServerSideProps(context: NextPageContext) {
-  const user = await checkAuth(context);
-  const { locale } = context;
-
-  return {
-    props: {
-      user,
-      ...(await serverSideTranslations(locale!, ["common"])),
-    },
-  };
 }

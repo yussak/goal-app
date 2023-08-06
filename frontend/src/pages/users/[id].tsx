@@ -3,20 +3,11 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { Goal, User } from "@/types";
 import GoalList from "@/components/GoalList";
-import { useLogin } from "@/hooks/useLogin";
-import { NextPageContext } from "next";
-import { checkAuth } from "@/utils/auth";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useSession } from "next-auth/react";
 
-export default function UserDetail({
-  user: currentUser,
-}: {
-  user: User | null;
-}) {
+export default function UserDetail() {
   const [user, setUser] = useState<User | null>(null);
   const [goals, setGoals] = useState<Goal[]>([]);
-
-  useLogin(currentUser);
 
   const router = useRouter();
   const id = router.query.id;
@@ -68,16 +59,4 @@ export default function UserDetail({
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
-}
-
-export async function getServerSideProps(context: NextPageContext) {
-  const user = await checkAuth(context);
-  const { locale } = context;
-
-  return {
-    props: {
-      user,
-      ...(await serverSideTranslations(locale!, ["common"])),
-    },
-  };
 }
