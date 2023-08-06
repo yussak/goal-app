@@ -11,6 +11,10 @@ export default function Sidebar() {
     // これでもログアウトはできる
     // でも2回クリックしないとできないしリロードしたらログインされてしまう
     // しかもこれだけだとtokenが消えない→不正利用の可能性があるらしい。なのでブラックリスト作成したりトークン削除が必要（要調査）
+
+    // TODO:ログアウト実装
+    // nextauthのsignOut()使えそうなので見る
+    // https://next-auth.js.org/getting-started/client#signout
     try {
       await axios.post(
         process.env.NEXT_PUBLIC_API_URL + `/auth/logout`,
