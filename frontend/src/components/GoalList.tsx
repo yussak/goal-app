@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Goal } from "@/types";
-import { useUser } from "@/contexts/userContext";
+import { useSession } from "next-auth/react";
 
 type GoalListProps = {
   goals: Goal[];
@@ -8,7 +8,8 @@ type GoalListProps = {
 };
 
 const GoalList = ({ goals, onDelete }: GoalListProps) => {
-  const { user } = useUser();
+  const { data: session } = useSession();
+
   // TODO: 新しいのを上にする
   return goals && goals.length > 0 ? (
     <ul>
@@ -31,7 +32,7 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>
               <Link href={`/goals/${goal.id}`}>detail</Link>
             </p>
-            {user && user.id === goal.user_id ? (
+            {session?.user?.id === goal.user_id ? (
               <p>
                 <button onClick={() => onDelete(goal.id)}>delete</button>
               </p>
