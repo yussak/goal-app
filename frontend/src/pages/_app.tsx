@@ -7,8 +7,6 @@ const MyApp = ({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) => {
-  console.log("apptsxw", session);
-
   return (
     <SessionProvider session={session}>
       <Layout>
