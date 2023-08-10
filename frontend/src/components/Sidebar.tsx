@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -40,7 +40,8 @@ export default function Sidebar() {
           <li>
             <Link href={`/users/${session.user.id}`}>mypage</Link>
           </li>
-          <button onClick={logout}>ログアウト</button>
+          <button onClick={() => signOut()}>ログアウト</button>
+          {/* <button onClick={logout}>ログアウト</button> */}
         </>
       ) : (
         <>
