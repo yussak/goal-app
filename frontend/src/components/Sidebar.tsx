@@ -1,35 +1,10 @@
-import axios from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 export default function Sidebar() {
   const router = useRouter();
   const { data: session } = useSession();
-
-  const logout = async () => {
-    // これでもログアウトはできる
-    // でも2回クリックしないとできないしリロードしたらログインされてしまう
-    // しかもこれだけだとtokenが消えない→不正利用の可能性があるらしい。なのでブラックリスト作成したりトークン削除が必要（要調査）
-
-    // TODO:ログアウト実装
-    // nextauthのsignOut()使えそうなので見る
-    // https://next-auth.js.org/getting-started/client#signout
-    try {
-      await axios.post(
-        process.env.NEXT_PUBLIC_API_URL + `/auth/logout`,
-        {},
-        { withCredentials: true }
-      );
-      // サーバーへのログアウトリクエスト成功後、クライアントサイドのCookieからトークンを削除
-      document.cookie =
-        "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      // login(null);
-      router.push("/auth/login");
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <ul>
@@ -40,7 +15,7 @@ export default function Sidebar() {
           <li>
             <Link href={`/users/${session.user.id}`}>mypage</Link>
           </li>
-          <button onClick={logout}>ログアウト</button>
+          <button onClick={() => signOut()}>ログアウト</button>
         </>
       ) : (
         <>
