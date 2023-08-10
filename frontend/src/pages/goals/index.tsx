@@ -6,6 +6,7 @@ import { useTranslation } from "next-i18next";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "@/utils/fetcher";
 import { useSession } from "next-auth/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function Goals() {
   const { t } = useTranslation();
@@ -71,4 +72,12 @@ export default function Goals() {
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
+}
+
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 }
