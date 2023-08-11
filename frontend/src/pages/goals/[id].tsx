@@ -109,14 +109,18 @@ export default function GoalDetail() {
           )}
         </>
       )}
-      <h3>コメントを追加</h3>
-      <GoalCommentForm
-        setTitle={setTitle}
-        setText={setText}
-        addComment={addComment}
-        title={title}
-        text={text}
-      />
+      {session?.user && (
+        <>
+          <h3>コメントを追加</h3>
+          <GoalCommentForm
+            setTitle={setTitle}
+            setText={setText}
+            addComment={addComment}
+            title={title}
+            text={text}
+          />
+        </>
+      )}
       <h3>コメント一覧</h3>
       <GoalCommentList comments={comments} onDelete={deleteComment} />
     </>
