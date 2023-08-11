@@ -89,10 +89,10 @@ export default function GoalDetail() {
           {isMyGoal ? (
             <>
               <Link href={`/goals/edit/${goal.id}`}>edit</Link>
-              <p>this is my goal</p>
+              <p>this is my goal（デバッグ用）</p>
             </>
           ) : (
-            "not my goal"
+            "not my goal（デバッグ用）"
           )}
           <p>title: {goal.title}</p>
           <p>text: {goal.text}</p>
