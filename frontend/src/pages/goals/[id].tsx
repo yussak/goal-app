@@ -109,6 +109,7 @@ export default function GoalDetail() {
           )}
         </>
       )}
+      <h3>コメントを追加</h3>
       <GoalCommentForm
         setTitle={setTitle}
         setText={setText}
