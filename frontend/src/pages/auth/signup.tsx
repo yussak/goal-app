@@ -1,11 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import SignupForm from "@/components/form/SignupForm";
+import { signIn } from "next-auth/react";
 
-// TODO:登録時にログインする→ https://github.com/YusukeSakuraba/goal-app/issues/28 で対応
 // TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
-
-// TODO:next-auth hookがあると思うので書き換える
 export default function signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,7 +20,11 @@ export default function signup() {
 
     try {
       await axios.post(process.env.NEXT_PUBLIC_API_URL + "/auth/signup", user);
-      // console.log(res.data);
+      signIn("credentials", {
+        redirect: false,
+        email: email,
+        password: password,
+      });
     } catch (error) {
       console.error("error: ", error);
     }
