@@ -16,7 +16,7 @@ export default function Sidebar() {
             <Link href={`/users/${session.user.id}`}>mypage</Link>
           </li>
           {/* ログアウト時にログイン画面にリダイレクト */}
-          <button onClick={() => signOut({ callbackUrl: "/login" })}>
+          <button onClick={() => signOut({ callbackUrl: "/auth/login" })}>
             ログアウト
           </button>
         </>
