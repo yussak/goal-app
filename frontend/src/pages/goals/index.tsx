@@ -16,10 +16,7 @@ export default function Goals() {
   const [file, setFile] = useState<File | null>(null);
   const { data: session } = useSession();
 
-  const { data: goals, error } = useSWR(
-    process.env.NEXT_PUBLIC_API_URL + "/goals",
-    fetcher
-  );
+  const { data: goals, error } = useSWR("/goals", fetcher);
   if (error) {
     console.error(error);
   }
