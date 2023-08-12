@@ -17,7 +17,7 @@ import (
 func FetchGoals(c *gin.Context) {
 	goals := []model.Goal{}
 
-	rows, err := db.DB.Query("SELECT * FROM goals")
+	rows, err := db.DB.Query("SELECT * FROM goals ORDER BY created_at DESC")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
