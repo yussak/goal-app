@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import GoalForm from "@/components/form/GoalForm";
 import GoalList from "@/components/GoalList";
 import { useTranslation } from "next-i18next";
 import useSWR, { mutate } from "swr";
+import { axios } from "@/utils/axios";
 import { fetcher } from "@/utils/fetcher";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -37,7 +37,7 @@ export default function Goals() {
         headers: { "Content-Type": "multipart/form-data" },
       });
       // useSWRで書き換える
-      mutate(process.env.NEXT_PUBLIC_API_URL + "/goals");
+      mutate("/goals");
       setTitle("");
       setText("");
     } catch (error) {
