@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import GoalForm from "@/components/form/GoalForm";
 import GoalList from "@/components/GoalList";
 import { useTranslation } from "next-i18next";
@@ -21,6 +21,9 @@ export default function Goals() {
     console.error(error);
   }
 
+  // ファイルリセット
+  const inputRef = useRef(null);
+
   const addGoal = async () => {
     const formData = new FormData();
     if (file !== null) {
@@ -40,6 +43,12 @@ export default function Goals() {
       mutate("/goals");
       setTitle("");
       setText("");
+      // これがないとフォームはリセットできてても前のgoalの画像が次のgoalにも表示されてしまう;
+      setFile(null);
+      // fileのリセット
+      if (inputRef.current) {
+        inputRef.current.value = null;
+      }
     } catch (error) {
       console.error(error);
     }
@@ -65,6 +74,7 @@ export default function Goals() {
           addGoal={addGoal}
           title={title}
           text={text}
+          inputRef={inputRef}
         />
       )}
       <GoalList goals={goals} onDelete={deleteGoal} />
