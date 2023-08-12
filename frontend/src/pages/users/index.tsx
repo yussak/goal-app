@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { axios } from "@/utils/axios";
 import { User } from "@/types";
 import Link from "next/link";
 
@@ -12,9 +12,7 @@ export default function Users() {
 
   const getUsers = async () => {
     try {
-      const { data } = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + "/users"
-      );
+      const { data } = await axios.get("/users");
       setUsers(data);
     } catch (error) {
       console.error(error);
