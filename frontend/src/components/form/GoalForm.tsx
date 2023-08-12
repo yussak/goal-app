@@ -1,4 +1,5 @@
 import { Button, Container, Stack, TextField } from "@mui/material";
+import { RefObject } from "react";
 
 type GoalFormProps = {
   setTitle: (title: string) => void;
@@ -7,6 +8,7 @@ type GoalFormProps = {
   addGoal: () => void;
   title: string;
   text: string;
+  inputRef: RefObject<HTMLInputElement>;
 };
 
 const GoalForm = ({
@@ -16,6 +18,7 @@ const GoalForm = ({
   addGoal,
   title,
   text,
+  inputRef,
 }: GoalFormProps) => {
   return (
     <Container sx={{ pt: 3 }}>
@@ -32,6 +35,7 @@ const GoalForm = ({
         />
         <input
           type="file"
+          ref={inputRef}
           onChange={(e) => {
             if (e.target.files) {
               setFile(e.target.files[0]);
