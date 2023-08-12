@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
+import { axios } from "@/utils/axios";
 import { Goal, User } from "@/types";
 import GoalList from "@/components/GoalList";
 import { useSession } from "next-auth/react";
@@ -20,9 +20,7 @@ export default function UserDetail() {
 
   const getUserDetails = async () => {
     try {
-      const { data } = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + `/users/${id}/details`
-      );
+      const { data } = await axios.get(`/users/${id}/details`);
       setUser(data);
     } catch (error) {
       console.error(error);
@@ -31,9 +29,7 @@ export default function UserDetail() {
 
   const getGoals = async () => {
     try {
-      const { data } = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + `/users/${id}/goals`
-      );
+      const { data } = await axios.get(`/users/${id}/goals`);
       setGoals(data);
     } catch (error) {
       console.error(error);
@@ -42,7 +38,7 @@ export default function UserDetail() {
 
   const deleteGoal = async (id: string) => {
     try {
-      await axios.delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}`);
+      await axios.delete(`/goal/${id}`);
       await getGoals();
     } catch (error) {
       console.error(error);

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import GoalForm from "@/components/form/GoalForm";
 import GoalList from "@/components/GoalList";
 import { useTranslation } from "next-i18next";
 import useSWR, { mutate } from "swr";
+import { axios } from "@/utils/axios";
 import { fetcher } from "@/utils/fetcher";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -33,11 +33,11 @@ export default function Goals() {
     }
     try {
       // TODO:useSWRMutationで書き換えられそう？調べる
-      await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", formData, {
+      await axios.post("/goal", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       // useSWRで書き換える
-      mutate(process.env.NEXT_PUBLIC_API_URL + "/goals");
+      mutate("/goals");
       setTitle("");
       setText("");
     } catch (error) {
@@ -47,8 +47,8 @@ export default function Goals() {
 
   const deleteGoal = async (id: string) => {
     try {
-      await axios.delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}`);
-      mutate(process.env.NEXT_PUBLIC_API_URL + "/goals");
+      await axios.delete(`/goal/${id}`);
+      mutate("/goals");
     } catch (error) {
       console.error(error);
     }

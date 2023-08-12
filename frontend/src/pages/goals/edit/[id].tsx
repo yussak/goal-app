@@ -1,5 +1,5 @@
 import EditGoalForm from "@/components/form/EditGoalForm";
-import axios from "axios";
+import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -22,9 +22,7 @@ export default function EditGoal() {
 
   const getGoal = async () => {
     try {
-      const { data } = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + `/goals/${id}`
-      );
+      const { data } = await axios.get(`/goals/${id}`);
       setTitle(data.title);
       setText(data.text);
       setImageURL(data.image_url);
@@ -45,13 +43,9 @@ export default function EditGoal() {
     }
 
     try {
-      await axios.put(
-        process.env.NEXT_PUBLIC_API_URL + `/goals/edit/${id}`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      await axios.put(`/goals/edit/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       router.push(`/goals/${id}`);
     } catch (error) {
       console.error(error);
@@ -60,7 +54,7 @@ export default function EditGoal() {
 
   const deleteGoalImage = async () => {
     try {
-      await axios.delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}/image`);
+      await axios.delete(`/goal/${id}/image`);
       router.push(`/goals/${id}`);
     } catch (error) {
       console.error(error);

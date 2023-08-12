@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
+import { axios } from "@/utils/axios";
 import { Goal, GoalComment } from "@/types";
 import GoalCommentForm from "@/components/form/GoalCommentForm";
 import GoalCommentList from "@/components/GoalCommentList";
@@ -28,9 +28,7 @@ export default function GoalDetail() {
 
   const getGoalDetails = async () => {
     try {
-      const { data } = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + `/goals/${id}`
-      );
+      const { data } = await axios.get(`/goals/${id}`);
       setGoal(data);
     } catch (error) {
       console.error(error);
@@ -44,10 +42,7 @@ export default function GoalDetail() {
       text: text,
     };
     try {
-      await axios.post(
-        process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments`,
-        comment
-      );
+      await axios.post(`/goals/${id}/comments`, comment);
       await getComments();
       setTitle("");
       setText("");
@@ -58,9 +53,7 @@ export default function GoalDetail() {
 
   const getComments = async () => {
     try {
-      const { data } = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments`
-      );
+      const { data } = await axios.get(`/goals/${id}/comments`);
       setComments(data);
     } catch (error) {
       console.error(error);
@@ -69,9 +62,7 @@ export default function GoalDetail() {
 
   const deleteComment = async (comment_id: string) => {
     try {
-      await axios.delete(
-        process.env.NEXT_PUBLIC_API_URL + `/goals/${id}/comments/${comment_id}`
-      );
+      await axios.delete(`/goals/${id}/comments/${comment_id}`);
       await getComments();
     } catch (error) {
       console.error(error);
