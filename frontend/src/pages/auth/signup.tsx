@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import { axios } from "@/utils/axios";
 import SignupForm from "@/components/form/SignupForm";
 import { signIn } from "next-auth/react";
 
@@ -19,7 +19,7 @@ export default function signup() {
     };
 
     try {
-      await axios.post(process.env.NEXT_PUBLIC_API_URL + "/auth/signup", user);
+      await axios.post("/auth/signup", user);
       signIn("credentials", {
         redirect: false,
         email: email,
