@@ -47,8 +47,8 @@ export default function Goals() {
 
   const deleteGoal = async (id: string) => {
     try {
-      await axios.delete(process.env.NEXT_PUBLIC_API_URL + `/goal/${id}`);
-      mutate(process.env.NEXT_PUBLIC_API_URL + "/goals");
+      await axios.delete(`/goal/${id}`);
+      mutate("/goals");
     } catch (error) {
       console.error(error);
     }
