@@ -33,7 +33,7 @@ export default function Goals() {
     }
     try {
       // TODO:useSWRMutationで書き換えられそう？調べる
-      await axios.post(process.env.NEXT_PUBLIC_API_URL + "/goal", formData, {
+      await axios.post("/goal", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       // useSWRで書き換える
