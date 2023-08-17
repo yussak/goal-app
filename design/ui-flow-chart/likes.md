@@ -1,1 +1,1 @@
-![](https://storage.googleapis.com/zenn-user-upload/d30b9b93cdf1-20230817.png)
+![](https://storage.googleapis.com/zenn-user-upload/e0d0fd1fb922-20230817.png)
