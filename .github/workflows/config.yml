@@ -42,10 +42,17 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         # uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build and push image for ECR backend
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ../../backend
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}
+
+      - name: Build and push image for ECR frontend
+        uses: docker/build-push-action@v2
+        with:
+          context: ../../frontend
           push: true
           tags: ${{ steps.login-ecr.outputs.registry }}
 
