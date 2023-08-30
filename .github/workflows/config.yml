@@ -55,7 +55,7 @@ jobs:
         with:
           context: ./frontend
           push: true
-          tags: ${{ steps.login-ecr.outputs.registry }}
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
 
       - name: Force a new deployment
         run: |
