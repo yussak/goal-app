@@ -12,12 +12,6 @@ env:
   ECR_REPOSITORY: example # set this to your Amazon ECR repository name
   ECS_CLUSTER: example # set this to your Amazon ECS cluster name
   ECS_SERVICE: example # set this to your Amazon ECS service name
-  # ECS_TASK_DEFINITION:
-  #   MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-  #   # file, e.g. .aws/task-definition.json
-  # CONTAINER_NAME:
-  #   example # set this to the name of the container in the
-  #   # containerDefinitions section of your task definition
 
 jobs:
   deploy:
@@ -31,7 +25,6 @@ jobs:
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
-        # uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -40,11 +33,9 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-        # uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
 
       - name: Build and push image for ECR backend
         uses: docker/build-push-action@v4
-        # uses: docker/build-push-action@v2
         with:
           context: ./backend
           push: true
@@ -60,50 +51,6 @@ jobs:
       - name: Force a new deployment
         run: |
           aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
-        # id: build-image
-        # env:
-        #   ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        #   IMAGE_TAG: ${{ github.sha }}
-        # run: |
-        #   # Build a docker container and
-        #   # push it to ECR so that it can
-        #   # be deployed to ECS.
-        #   docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        #   docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        #   echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-        #   - name: Checkout
-        #   uses: actions/checkout@v3
-        #   with:
-        #     path: main
-
-      # terraform applyなどはジョブではやらない予定なのでコメントアウト
-
-      # - name: Setup Terraform
-      #   uses: hashicorp/setup-terraform@v1
-
-      # - name: Initialize Terraform
-      #   run: terraform init
-
-      # - name: Apply Terraform changes
-      #   run: terraform apply -auto-approve
-
-      # - name: Fill in the new image ID in the Amazon ECS task definition
-      #   id: task-def
-      #   uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
-      #   with:
-      #     task-definition: terraform/
-      #     # task-definition: ${{ env.ECS_TASK_DEFINITION }}
-      #     container-name: ${{ env.CONTAINER_NAME }}
-      #     image: ${{ steps.build-image.outputs.image }}
-
-      # - name: Deploy Amazon ECS task definition
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
-      #   with:
-      #     task-definition: ${{ steps.task-def.outputs.task-definition }}
-      #     service: ${{ env.ECS_SERVICE }}
-      #     cluster: ${{ env.ECS_CLUSTER }}
-      #     wait-for-service-stability: true
 
 # name: CI
 # on: [push]
