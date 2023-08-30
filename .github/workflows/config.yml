@@ -1,4 +1,5 @@
 # TODO:下の方にテストジョブがある。後ほどデプロイジョブと組み合わせる
+# TODO:テスト・ビルド用とデプロイ用でファイル分けるかもしれない
 name: Deploy to Amazon ECS
 
 on:
@@ -8,15 +9,15 @@ on:
 
 env:
   AWS_REGION: ap-northeast-1 # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: example # set this to your Amazon ECR repository name
-  ECS_SERVICE: example # set this to your Amazon ECS service name
-  ECS_CLUSTER: example # set this to your Amazon ECS cluster name
+  # ECR_REPOSITORY: example # set this to your Amazon ECR repository name
+  # ECS_SERVICE: example # set this to your Amazon ECS service name
+  # ECS_CLUSTER: example # set this to your Amazon ECS cluster name
   # ECS_TASK_DEFINITION:
   #   MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
   #   # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME:
-    example # set this to the name of the container in the
-    # containerDefinitions section of your task definition
+  # CONTAINER_NAME:
+  #   example # set this to the name of the container in the
+  #   # containerDefinitions section of your task definition
 
 jobs:
   deploy:
