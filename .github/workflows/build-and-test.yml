@@ -1,0 +1,46 @@
+name: CI
+on: [push]
+
+jobs:
+  backend_build_and_test:
+    name: backend build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out code
+        uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.20.5"
+
+      - name: Go build & test
+        run: |
+          cd backend
+          go build .
+          go test -v
+
+  frontend_build_and_test:
+    name: frontend build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.16.0"
+
+      - name: frontend install & build
+        working-directory: ./frontend
+        run: |
+          yarn install
+          yarn run build
+
+      - name: frontend test
+        uses: cypress-io/github-action@v3
+        with:
+          working-directory: ./frontend
+          start: yarn run start
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 120
+          command: npx cypress run
