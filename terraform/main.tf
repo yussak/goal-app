@@ -617,7 +617,7 @@ resource "aws_ecs_service" "frontend" {
 
   load_balancer {
     # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
-    target_group_arn = aws_lb_target_group.backend.arn
+    target_group_arn = aws_lb_target_group.frontend.arn
     container_name   = "frontend"
     container_port   = 3000
   }
