@@ -50,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./frontend
-          file: Dockerfile.prod
+          file: ./frontend/Dockerfile.prod
           push: true
           tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.FRONTEND_TAG }}-latest
 
