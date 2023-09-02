@@ -6,6 +6,9 @@ COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
 
+# 本番時のみ実行
+RUN yarn run build
+
 # 環境ごとにわける必要がある（devだとデプロイ時タスク起動しなかったので）
 # でもまずはデプロイさせたいので一時コメントアウト
 # CMD ["yarn", "run", "dev"]
