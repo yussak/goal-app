@@ -22,7 +22,7 @@ export default function Goals() {
   }
 
   // ファイルリセット
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const addGoal = async () => {
     const formData = new FormData();
@@ -47,7 +47,7 @@ export default function Goals() {
       setFile(null);
       // fileのリセット
       if (inputRef.current) {
-        inputRef.current.value = null;
+        inputRef.current.value = "";
       }
     } catch (error) {
       console.error(error);
