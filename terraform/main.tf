@@ -612,8 +612,15 @@ data "aws_iam_policy_document" "ecs_task_execution" {
   source_policy_documents = [data.aws_iam_policy.ecs_task_execution_role_policy.policy]
 
   statement {
-    effect    = "Allow"
-    actions   = ["ssm:GetParameters", "kms:Decrypt"]
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameters",
+      "kms:Decrypt",
+      # ECR用権限
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:BatchGetImage"
+    ]
     resources = ["*"]
   }
 }
@@ -743,7 +750,7 @@ resource "aws_ssm_parameter" "db_password" {
 # MySQLを使用
 # MySQLのmy.cnfファイルに定義するようなDBの設定を以下のDBパラメータグループに書く
 resource "aws_db_parameter_group" "example" {
-  name = "example"
+  name   = "example"
   family = "mysql8.0"
 
   parameter {
@@ -761,8 +768,8 @@ resource "aws_db_parameter_group" "example" {
 # 以下ではMariaDB監査プラグインを追加している
 # ユーザーのログインや実行したクエリなどのアクティビティを記録できる
 resource "aws_db_option_group" "example" {
-  name        = "example"
-  engine_name = "mysql"
+  name                 = "example"
+  engine_name          = "mysql"
   major_engine_version = "8.0"
 
   option {
@@ -781,7 +788,7 @@ resource "aws_db_subnet_group" "example" {
 resource "aws_db_instance" "example" {
   identifier = "example"
 
-  engine = "mysql"
+  engine         = "mysql"
   engine_version = "8.0.33"
 
   instance_class = "db.t3.small"
@@ -877,7 +884,7 @@ resource "aws_elasticache_replication_group" "example" {
   engine_version = "5.0.4"
 
   num_cache_clusters = 3
-  node_type             = "cache.t3.medium"
+  node_type          = "cache.t3.medium"
 
   snapshot_window          = "09:10-10:10"
   snapshot_retention_limit = 7
