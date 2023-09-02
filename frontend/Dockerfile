@@ -6,4 +6,8 @@ COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
 
-CMD ["yarn", "run", "dev"]
+# 環境ごとにわける必要がある（devだとデプロイ時タスク起動しなかったので）
+# でもまずはデプロイさせたいので一時コメントアウト
+# CMD ["yarn", "run", "dev"]
+
+CMD ["yarn", "run", "start"]
