@@ -526,7 +526,7 @@ resource "aws_ecs_service" "example" {
     # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
     target_group_arn = aws_lb_target_group.example.arn
     container_name   = "backend"
-    container_port   = 5050
+    container_port   = 5000
   }
 
   lifecycle {
