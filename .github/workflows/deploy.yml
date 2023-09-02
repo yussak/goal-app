@@ -44,14 +44,14 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/${{ env.BACKEND_TAG }}:latest
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.BACKEND_TAG }}-latest
 
       - name: Build and push image for ECR frontend
         uses: docker/build-push-action@v2
         with:
           context: ./frontend
           push: true
-          tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/${{ env.FRONTEND_TAG }}:latest
+          tags: ${{ steps.login-ecr.outputs.registry }}:${{ env.ECR_REPOSITORY }}/${{ env.FRONTEND_TAG }}-latest
 
       - name: Force a new deployment for Backend
         run: |
