@@ -1,7 +1,7 @@
 [
   {
     "name": "backend",
-    "image": "backend:latest",
+    "image": "770082765213.dkr.ecr.ap-northeast-1.amazonaws.com/example:backend-latest",
     "essential": true,
     "logConfiguration": {
       "logDriver": "awslogs",
@@ -20,7 +20,7 @@
   },
   {
     "name": "frontend",
-    "image": "frontend:latest",
+    "image": "770082765213.dkr.ecr.ap-northeast-1.amazonaws.com/example:frontend-latest",
     "essential": true,
     "logConfiguration": {
       "logDriver": "awslogs",
