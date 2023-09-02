@@ -666,6 +666,7 @@ data "aws_iam_policy_document" "ecs_task_execution" {
       # ECR用権限
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchCheckLayerAvailability",
+      "ecr:DescribeRepositories",
       "ecr:BatchGetImage"
     ]
     resources = ["*"]
