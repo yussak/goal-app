@@ -514,7 +514,7 @@ resource "aws_ecs_service" "example" {
 
   network_configuration {
     assign_public_ip = false
-    security_groups  = [module.nginx_sg.security_group_id]
+    security_groups  = [module.backend_sg.security_group_id]
 
     subnets = [
       aws_subnet.private_0.id,
@@ -525,8 +525,8 @@ resource "aws_ecs_service" "example" {
   load_balancer {
     # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
     target_group_arn = aws_lb_target_group.example.arn
-    container_name   = "example"
-    container_port   = 80
+    container_name   = "backend"
+    container_port   = 8080
   }
 
   lifecycle {
@@ -534,9 +534,9 @@ resource "aws_ecs_service" "example" {
   }
 }
 
-module "nginx_sg" {
+module "backend_sg" {
   source      = "./security_group"
-  name        = "nginx-sg"
+  name        = "backend-sg"
   vpc_id      = aws_vpc.example.id
   port        = 80
   cidr_blocks = [aws_vpc.example.cidr_block]
