@@ -444,11 +444,11 @@ resource "aws_lb_listener" "redirect_http_to_https" {
 
 # ターゲットグループ
 # ALBがリクエストをフォワードする対象が「ターゲットグループ」
-resource "aws_lb_target_group" "example" {
-  name                 = "example"
+resource "aws_lb_target_group" "backend" {
+  name                 = "tg-backend"
   target_type          = "ip"
   vpc_id               = aws_vpc.example.id
-  port                 = 80
+  port                 = 5000
   protocol             = "HTTP"
   deregistration_delay = 300
 
@@ -472,7 +472,7 @@ resource "aws_lb_target_group" "example" {
 
 # リスナールール
 # ターゲットグループにリクエストをフォワードするルール
-resource "aws_lb_listener_rule" "example" {
+resource "aws_lb_listener_rule" "backend" {
   listener_arn = aws_lb_listener.https.arn
   # 優先順位を指定。数字が小さいほど優先度が高い
   priority = 100
@@ -480,7 +480,53 @@ resource "aws_lb_listener_rule" "example" {
   action {
     type = "forward"
     # フォワード先のtg
-    target_group_arn = aws_lb_target_group.example.arn
+    target_group_arn = aws_lb_target_group.backend.arn
+  }
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
+  }
+}
+
+resource "aws_lb_target_group" "frontend" {
+  name                 = "tg-frontend"
+  target_type          = "ip"
+  vpc_id               = aws_vpc.example.id
+  port                 = 3000
+  protocol             = "HTTP"
+  deregistration_delay = 300
+
+  health_check {
+    path = "/"
+    # 正常判定を行うまでのヘルスチェック実行回数
+    healthy_threshold = 5
+    # 異常判定を行うまでのヘルスチェック実行回数
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 30
+    # 正常判定を行うために使用するHTTPステータスコード
+    matcher = 200
+    # ヘルスチェックで使用するポート
+    port     = "traffic-port"
+    protocol = "HTTP"
+  }
+
+  depends_on = [aws_lb.example]
+}
+
+# リスナールール
+# ターゲットグループにリクエストをフォワードするルール
+resource "aws_lb_listener_rule" "frontend" {
+  listener_arn = aws_lb_listener.https.arn
+  # 優先順位を指定。数字が小さいほど優先度が高い
+  # BEとずらすため一時的に101にした
+  priority = 101
+
+  action {
+    type = "forward"
+    # フォワード先のtg
+    target_group_arn = aws_lb_target_group.frontend.arn
   }
   condition {
     path_pattern {
@@ -524,7 +570,8 @@ resource "aws_ecs_service" "backend" {
 
   load_balancer {
     # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
-    target_group_arn = aws_lb_target_group.example.arn
+    target_group_arn = aws_lb_target_group.backend.arn
+    # target_group_arn = aws_lb_target_group.example.arn
     container_name   = "backend"
     container_port   = 5000
   }
@@ -570,7 +617,7 @@ resource "aws_ecs_service" "frontend" {
 
   load_balancer {
     # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
-    target_group_arn = aws_lb_target_group.example.arn
+    target_group_arn = aws_lb_target_group.backend.arn
     container_name   = "frontend"
     container_port   = 3000
   }
