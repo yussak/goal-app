@@ -542,6 +542,52 @@ module "backend_sg" {
   cidr_blocks = [aws_vpc.example.cidr_block]
 }
 
+resource "aws_ecs_service" "frontend" {
+  name            = "frontend"
+  cluster         = aws_ecs_cluster.example.arn
+  task_definition = aws_ecs_task_definition.example.arn
+
+  # ECSサービスが維持するタスク数
+  # ここで1を指定すると、コンテナが以上終了するとECSサービスがタスクを再起動するまでアクセスできなくなる。なので2以上を指定
+  desired_count = 2
+
+  launch_type      = "FARGATE"
+  platform_version = "1.3.0"
+
+  # タスク起動時のヘルスチェック猶予期間を設定
+  # タスク起動に時間がかかる場合、十分な時間を用意しないとヘルスチェックに引っかかり、タスクの起動と終了が無限に続いてしまう。なので0以上を指定する
+  health_check_grace_period_seconds = 60
+
+  network_configuration {
+    assign_public_ip = false
+    security_groups  = [module.frontend_sg.security_group_id]
+
+    subnets = [
+      aws_subnet.public_0.id,
+      aws_subnet.public_1.id,
+    ]
+  }
+
+  load_balancer {
+    # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
+    target_group_arn = aws_lb_target_group.example.arn
+    container_name   = "frontend"
+    container_port   = 3000
+  }
+
+  lifecycle {
+    ignore_changes = [task_definition]
+  }
+}
+
+module "frontend_sg" {
+  source      = "./security_group"
+  name        = "frontend-sg"
+  vpc_id      = aws_vpc.example.id
+  port        = 80
+  cidr_blocks = [aws_vpc.example.cidr_block]
+}
+
 # cloudwatch ログ
 # Fargateではホストサーバーにログインできず、コンテナのログを直接確認できない。なのでログで確認できるようにする
 resource "aws_cloudwatch_log_group" "for_ecs_backend" {
