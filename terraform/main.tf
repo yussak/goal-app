@@ -526,7 +526,7 @@ resource "aws_ecs_service" "example" {
     # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
     target_group_arn = aws_lb_target_group.example.arn
     container_name   = "backend"
-    container_port   = 8080
+    container_port   = 5050
   }
 
   lifecycle {
@@ -545,7 +545,7 @@ module "backend_sg" {
 # cloudwatch ログ
 # Fargateではホストサーバーにログインできず、コンテナのログを直接確認できない。なのでログで確認できるようにする
 resource "aws_cloudwatch_log_group" "for_ecs" {
-  name              = "/ecs/example"
+  name              = "/ecs/backend"
   retention_in_days = 180
 }
 
