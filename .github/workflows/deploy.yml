@@ -51,7 +51,7 @@ jobs:
         with:
           context: ./frontend
           push: true
-          tags: ${{ steps.login-ecr.outputs.registry }}:${{ env.ECR_REPOSITORY }}]${{ env.FRONTEND_TAG }}-latest
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.FRONTEND_TAG }}-latest
 
       - name: Force a new deployment for Backend
         run: |
