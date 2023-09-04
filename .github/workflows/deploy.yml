@@ -1,4 +1,5 @@
 # TODO:ECRビルドをさ分ある時だけ実行にしたい
+# TODO:環境変数まとめたい（backendなど）
 name: Deploy to Amazon ECS
 
 on:
