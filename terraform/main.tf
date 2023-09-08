@@ -864,8 +864,9 @@ resource "aws_db_instance" "example" {
 
   kms_key_id = aws_kms_key.example.arn
 
-  username = "admin"
-  password = "VeryStrongPassword!"
+  username = aws_ssm_parameter.db_username.value
+  password = aws_ssm_parameter.db_password.value
+
 
   multi_az = true
   # falseでVPC外からのアクセスを遮断する
