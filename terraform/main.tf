@@ -572,8 +572,8 @@ resource "aws_ecs_service" "backend" {
     # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
     target_group_arn = aws_lb_target_group.backend.arn
     # target_group_arn = aws_lb_target_group.example.arn
-    container_name   = "backend"
-    container_port   = 5000
+    container_name = "backend"
+    container_port = 5000
   }
 
   lifecycle {
@@ -795,6 +795,13 @@ resource "aws_ssm_parameter" "db_password" {
   }
 }
 
+resource "aws_ssm_parameter" "db_hostname" {
+  name        = "/db/hostname"
+  value       = aws_db_instance.example.address
+  type        = "String"
+  description = "DBのhost名です!!"
+}
+
 # MySQLを使用
 # MySQLのmy.cnfファイルに定義するようなDBの設定を以下のDBパラメータグループに書く
 resource "aws_db_parameter_group" "example" {
@@ -835,6 +842,7 @@ resource "aws_db_subnet_group" "example" {
 # DBインスタンス
 resource "aws_db_instance" "example" {
   identifier = "example"
+  db_name    = "goaldb"
 
   engine         = "mysql"
   engine_version = "8.0.33"
