@@ -18,11 +18,12 @@ func InitDB() (*sql.DB, error) {
 	user := os.Getenv("DB_USERNAME")
 	pwd := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_DBNAME")
-	dsn := fmt.Sprintf("%s:%s@tcp(db:3306)/%s?charset=utf8&parseTime=true", user, pwd, dbname)
+	hostname := os.Getenv("DB_HOSTNAME")
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?charset=utf8&parseTime=true", user, pwd, hostname, dbname)
 
 	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
-		fmt.Println("Error opening connection:",err)
+		fmt.Println("Error opening connection:", err)
 		return nil, err
 	}
 
