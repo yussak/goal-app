@@ -86,10 +86,6 @@ resource "aws_vpc" "example" {
 
   # VPC内のリソースにパブリックDNSホスト名を自動で割り当てる
   enable_dns_hostnames = true
-
-  tags = {
-    Name = "tf_vpc"
-  }
 }
 
 # パブリックサブネット
@@ -100,10 +96,6 @@ resource "aws_subnet" "public_0" {
   # そのサブネットで起動したインスタンスにパブリックIPアドレスを自動的に割り当てる
   map_public_ip_on_launch = true
   availability_zone       = "ap-northeast-1a"
-
-  tags = {
-    Name = "tf_public_subnet_0"
-  }
 }
 
 resource "aws_subnet" "public_1" {
@@ -111,29 +103,17 @@ resource "aws_subnet" "public_1" {
   cidr_block              = "10.0.2.0/24"
   map_public_ip_on_launch = true
   availability_zone       = "ap-northeast-1c"
-
-  tags = {
-    Name = "tf_public_subnet_1"
-  }
 }
 
 # igw
 # VPCとインターネット間で通信できるようにする
 resource "aws_internet_gateway" "example" {
   vpc_id = aws_vpc.example.id
-
-  tags = {
-    Name = "tf_igw"
-  }
 }
 
 # igwだけではネットに接続できない。ネットワークにデータを流すためルーティング情報を管理するルートテーブルを用意
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.example.id
-
-  tags = {
-    Name = "tf_route_table"
-  }
 }
 
 # ルート
@@ -166,10 +146,6 @@ resource "aws_subnet" "private_0" {
   availability_zone = "ap-northeast-1a"
   # パブリックIPアドレスは不要
   map_public_ip_on_launch = false
-
-  tags = {
-    Name = "tf_private_subnet_0"
-  }
 }
 
 resource "aws_subnet" "private_1" {
@@ -177,10 +153,6 @@ resource "aws_subnet" "private_1" {
   cidr_block              = "10.0.66.0/24"
   availability_zone       = "ap-northeast-1c"
   map_public_ip_on_launch = false
-
-  tags = {
-    Name = "tf_private_subnet_1"
-  }
 }
 
 # ルートテーブルと関連付け
@@ -221,19 +193,11 @@ resource "aws_route_table_association" "private_1" {
 resource "aws_eip" "nat_gateway_0" {
   vpc        = true
   depends_on = [aws_internet_gateway.example]
-
-  tags = {
-    Name = "tf_eip_0"
-  }
 }
 
 resource "aws_eip" "nat_gateway_1" {
   vpc        = true
   depends_on = [aws_internet_gateway.example]
-
-  tags = {
-    Name = "tf_eip_1"
-  }
 }
 
 # NATゲートウェイ
@@ -241,20 +205,12 @@ resource "aws_nat_gateway" "nat_gateway_0" {
   allocation_id = aws_eip.nat_gateway_0.id
   subnet_id     = aws_subnet.public_0.id
   depends_on    = [aws_internet_gateway.example]
-
-  tags = {
-    Name = "tf_nat_gateway_0"
-  }
 }
 
 resource "aws_nat_gateway" "nat_gateway_1" {
   allocation_id = aws_eip.nat_gateway_1.id
   subnet_id     = aws_subnet.public_1.id
   depends_on    = [aws_internet_gateway.example]
-
-  tags = {
-    Name = "tf_nat_gateway_1"
-  }
 }
 
 module "example_sg" {
