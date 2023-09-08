@@ -11,6 +11,24 @@
         "awslogs-group": "/ecs/backend"
       }
     },
+    "secrets": [
+      {
+        "name": "DB_USERNAME",
+        "valueFrom": "/db/username"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "valueFrom": "/db/password"
+      },
+      {
+        "name": "DB_DBNAME",
+        "valueFrom": "/db/dbname"
+      },
+      {
+        "name": "DB_HOSTNAME",
+        "valueFrom": "/db/hostname"
+      }
+    ],
     "portMappings": [
       {
         "protocol": "tcp",
