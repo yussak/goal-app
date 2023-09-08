@@ -802,6 +802,13 @@ resource "aws_ssm_parameter" "db_hostname" {
   description = "DBのhost名です!!"
 }
 
+resource "aws_ssm_parameter" "db_dbname" {
+  name        = "/db/dbname"
+  value       = aws_db_instance.example.db_name
+  type        = "String"
+  description = "DBのdb名です!!"
+}
+
 # MySQLを使用
 # MySQLのmy.cnfファイルに定義するようなDBの設定を以下のDBパラメータグループに書く
 resource "aws_db_parameter_group" "example" {
