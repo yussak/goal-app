@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     environment:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -34,7 +34,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     env_file:
       - .env
     volumes:
