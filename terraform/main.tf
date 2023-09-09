@@ -136,7 +136,6 @@ resource "aws_route_table_association" "public_1" {
 
 # プライベートネットワーク
 # DBサーバーのようにネットからアクセスしないものを置く
-
 # システムをセキュアにするため、パブリックネットワークには最小限のリソースのみ配置し、それ以外はプライベートネットワークにおくのが定石
 
 # プライベートサブネット
@@ -226,6 +225,7 @@ resource "aws_lb" "example" {
   load_balancer_type = "application"
   internal           = false
   idle_timeout       = 60
+
   # 基本はtrueだが、削除したい時だけfalseにしてapplyしてからdestroyする
   # enable_deletion_protection = true
   # 基本はtrueだが一時的にfalseにしてる
@@ -526,9 +526,7 @@ resource "aws_ecs_service" "backend" {
   }
 
   load_balancer {
-    # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
     target_group_arn = aws_lb_target_group.backend.arn
-    # target_group_arn = aws_lb_target_group.example.arn
     container_name = "backend"
     container_port = 5000
   }
