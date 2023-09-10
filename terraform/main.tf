@@ -45,7 +45,6 @@ module "describe_regions_for_ec2" {
 # }
 
 # ログローテーションバケット（AWS各種サービスがログを保存するバケット）
-# 八章でALB使う時に使用予定
 resource "aws_s3_bucket" "alb_log" {
   bucket = "alb-log-tf-practice-yus"
 
