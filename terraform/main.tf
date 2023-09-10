@@ -820,7 +820,10 @@ resource "aws_db_instance" "example" {
   kms_key_id = aws_kms_key.example.arn
 
   username = aws_ssm_parameter.db_username.value
-  password = aws_ssm_parameter.db_password.value
+  # このパスワードは使わず、以下のコマンドで上書きする
+  # aws rds modify-db-instance --db-instance-identifier 'example' \
+  # --master-user-password 'newPassword!'
+  password = "password"
 
 
   multi_az = true
