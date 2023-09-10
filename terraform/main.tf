@@ -86,6 +86,10 @@ resource "aws_vpc" "example" {
 
   # VPC内のリソースにパブリックDNSホスト名を自動で割り当てる
   enable_dns_hostnames = true
+
+  tags = {
+    Name = "goal-vpc"
+  }
 }
 
 # パブリックサブネット
@@ -527,8 +531,8 @@ resource "aws_ecs_service" "backend" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.backend.arn
-    container_name = "backend"
-    container_port = 5000
+    container_name   = "backend"
+    container_port   = 5000
   }
 
   lifecycle {
