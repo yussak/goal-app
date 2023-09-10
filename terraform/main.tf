@@ -229,8 +229,6 @@ resource "aws_lb" "example" {
   internal           = false
   idle_timeout       = 60
 
-  # 基本はtrueだが、削除したい時だけfalseにしてapplyしてからdestroyする
-  # enable_deletion_protection = true
   # 基本はtrueだが一時的にfalseにしてる
   enable_deletion_protection = false
 
