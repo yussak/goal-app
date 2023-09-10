@@ -655,17 +655,6 @@ resource "aws_cloudwatch_log_group" "for_ecs_scheduled_tasks" {
   retention_in_days = 180
 }
 
-# バッチ用タスク定義
-# resource "aws_ecs_task_definition" "example_batch" {
-#   family                   = "example-batch"
-#   cpu                      = "256"
-#   memory                   = "512"
-#   network_mode             = "awsvpc"
-#   requires_compatibilities = ["FARGATE"]
-#   container_definitions    = file("./batch_container_definitions.json")
-#   execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
-# }
-
 # cloudwatchイベントからECSを起動するためのIAMロールを作成する
 module "ecs_events_role" {
   source     = "./iam_role"
@@ -678,33 +667,6 @@ data "aws_iam_policy" "ecs_events_role_policy" {
   # このポリシーでは「タスクを実行する」権限と「タスクにIAMロールを渡す」権限を付与する
   arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
 }
-
-# ジョブの実行スケジュールを定義する
-# resource "aws_cloudwatch_event_rule" "example_batch" {
-#   name                = "example-batch"
-#   description         = "実践TFで作成"
-#   schedule_expression = "cron(*/2 * * * ? *)"
-# }
-
-# cloudwatchイベントターゲットで実行対象のジョブを定義
-# resource "aws_cloudwatch_event_target" "example_batch" {
-#   target_id = "example-batch"
-#   rule      = aws_cloudwatch_event_rule.example_batch.name
-#   role_arn  = module.ecs_events_role.iam_role_arn
-#   arn       = aws_ecs_cluster.example.arn
-
-#   ecs_target {
-#     launch_type         = "FARGATE"
-#     task_count          = 1
-#     platform_version    = "1.3.0"
-#     task_definition_arn = aws_ecs_task_definition.example_batch.arn
-
-#     network_configuration {
-#       assign_public_ip = "false"
-#       subnets          = [aws_subnet.private_0.id]
-#     }
-#   }
-# }
 
 # カスタマーキー
 resource "aws_kms_key" "example" {
@@ -724,6 +686,8 @@ resource "aws_kms_alias" "exasmple" {
 }
 
 # SSMパラメータストア
+# 環境変数をGoアプリなどで使用するため用意
+
 # /db/usernameのキー名で「root」という値を平文で保存
 resource "aws_ssm_parameter" "db_username" {
   name        = "/db/username"
