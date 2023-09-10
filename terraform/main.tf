@@ -562,7 +562,7 @@ resource "aws_ecs_service" "frontend" {
   health_check_grace_period_seconds = 60
 
   network_configuration {
-    assign_public_ip = false
+    assign_public_ip = true
     security_groups  = [module.frontend_sg.security_group_id]
 
     subnets = [
