@@ -7,3 +7,9 @@ test("adds 1+2 to equal 3", () => {
 test("adds 1+2 not to equal 6", () => {
   expect(sum(1, 2)).not.toBe(6);
 });
+
+test("object assignment", () => {
+  const data = { one: 1 };
+  data["two"] = 2;
+  expect(data).toEqual({ one: 1, two: 2 });
+});
