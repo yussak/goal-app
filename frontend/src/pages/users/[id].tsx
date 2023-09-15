@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
 import { Goal, User } from "@/types";
 import GoalList from "@/components/GoalList";
-import { useSession } from "next-auth/react";
 
 export default function UserDetail() {
   const [user, setUser] = useState<User | null>(null);
