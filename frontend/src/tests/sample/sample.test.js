@@ -24,3 +24,11 @@ test("2+2", () => {
   expect(value).toBe(4);
   expect(value).toEqual(4);
 });
+
+test("there is no I in team", () => {
+  expect("team").not.toMatch(/I/);
+});
+
+test("there is no ea in team", () => {
+  expect("team").toMatch(/ea/);
+});
