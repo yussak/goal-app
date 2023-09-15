@@ -58,7 +58,7 @@ export default function Goals() {
   const deleteGoal = async (id: string) => {
     try {
       await axios.delete(`/goal/${id}`);
-      mutate("/goals");
+      mutate(`/${user_id}/goals`);
     } catch (error) {
       console.error(error);
     }
