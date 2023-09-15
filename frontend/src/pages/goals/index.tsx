@@ -16,11 +16,12 @@ export default function Goals() {
   const [file, setFile] = useState<File | null>(null);
   const { data: session } = useSession();
 
-  const { data: goals, error } = useSWR("/goals", fetcher);
+  const user_id = session?.user ? session.user.id : null;
+  console.log("dd", user_id);
+  const { data: goals, error } = useSWR(`/${user_id}/goals`, fetcher);
   if (error) {
     console.error(error);
   }
-
   // ファイルリセット
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -66,7 +67,7 @@ export default function Goals() {
   return (
     <>
       <h2>{t("goal_index.title")}</h2>
-      {session?.user && (
+      {/* {session?.user && (
         <GoalForm
           setTitle={setTitle}
           setText={setText}
@@ -76,7 +77,7 @@ export default function Goals() {
           text={text}
           inputRef={inputRef}
         />
-      )}
+      )} */}
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
