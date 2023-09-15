@@ -14,30 +14,6 @@ import (
 	"github.com/oklog/ulid"
 )
 
-func FetchGoals(c *gin.Context) {
-	goals := []model.Goal{}
-
-	rows, err := db.DB.Query("SELECT * FROM goals ORDER BY created_at DESC")
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var goal model.Goal
-		// 順番関係ありそう=>DBのcolumn順と合わせる
-		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		goals = append(goals, goal)
-	}
-
-	c.JSON(http.StatusOK, goals)
-}
-
 func AddGoal(c *gin.Context) {
 	t := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)

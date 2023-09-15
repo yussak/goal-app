@@ -15,7 +15,6 @@ func SetupRouter(r *gin.Engine) {
 	r.GET("/:user_id/goals", controller.FetchUserGoals)
 
 	r.POST("/goal", controller.AddGoal)
-	r.GET("/goals", controller.FetchGoals)
 	r.DELETE("/goal/:id", controller.DeleteGoal)
 	r.GET("/goals/:id", controller.FetchGoalDetails)
 	r.PUT("/goals/edit/:id", controller.EditGoal)
