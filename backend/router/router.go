@@ -12,7 +12,6 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("auth/decodeToken", controller.DecodeToken)
 	r.POST("auth/logout", controller.Logout)
 
-	r.GET("/users/:id/details", controller.FetchUserDetails)
 	r.GET("/users/:id/goals", controller.FetchUserGoals)
 
 	r.POST("/goal", controller.AddGoal)
