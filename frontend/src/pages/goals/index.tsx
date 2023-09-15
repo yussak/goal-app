@@ -68,15 +68,18 @@ export default function Goals() {
     <>
       <h2>{t("goal_index.title")}</h2>
       {session?.user && (
-        <GoalForm
-          setTitle={setTitle}
-          setText={setText}
-          setFile={setFile}
-          addGoal={addGoal}
-          title={title}
-          text={text}
-          inputRef={inputRef}
-        />
+        <>
+          debug用 id: {session?.user.id}
+          <GoalForm
+            setTitle={setTitle}
+            setText={setText}
+            setFile={setFile}
+            addGoal={addGoal}
+            title={title}
+            text={text}
+            inputRef={inputRef}
+          />
+        </>
       )}
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
