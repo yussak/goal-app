@@ -16,11 +16,12 @@ export default function Goals() {
   const [file, setFile] = useState<File | null>(null);
   const { data: session } = useSession();
 
-  const { data: goals, error } = useSWR("/goals", fetcher);
+  const user_id = session?.user ? session.user.id : null;
+
+  const { data: goals, error } = useSWR(`/${user_id}/goals`, fetcher);
   if (error) {
     console.error(error);
   }
-
   // ファイルリセット
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -40,7 +41,7 @@ export default function Goals() {
         headers: { "Content-Type": "multipart/form-data" },
       });
       // useSWRで書き換える
-      mutate("/goals");
+      mutate(`/${user_id}/goals`);
       setTitle("");
       setText("");
       // これがないとフォームはリセットできてても前のgoalの画像が次のgoalにも表示されてしまう;
@@ -57,7 +58,7 @@ export default function Goals() {
   const deleteGoal = async (id: string) => {
     try {
       await axios.delete(`/goal/${id}`);
-      mutate("/goals");
+      mutate(`/${user_id}/goals`);
     } catch (error) {
       console.error(error);
     }

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -14,10 +15,14 @@ import (
 	"github.com/oklog/ulid"
 )
 
-func FetchGoals(c *gin.Context) {
+func FetchUserGoals(c *gin.Context) {
+
+	user_id := c.Param("user_id")
+	fmt.Println("c.Param", c.Param("user_id"))
+
 	goals := []model.Goal{}
 
-	rows, err := db.DB.Query("SELECT * FROM goals ORDER BY created_at DESC")
+	rows, err := db.DB.Query("SELECT * FROM goals WHERE user_id = ?", user_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -26,7 +31,6 @@ func FetchGoals(c *gin.Context) {
 
 	for rows.Next() {
 		var goal model.Goal
-		// 順番関係ありそう=>DBのcolumn順と合わせる
 		err = rows.Scan(&goal.ID, &goal.Title, &goal.Text, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

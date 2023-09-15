@@ -12,9 +12,6 @@ export default function Sidebar() {
         <>
           {/* ログイン時のみ表示 */}
           <p>ログイン済み（デバッグ用）</p>
-          <li>
-            <Link href={`/users/${session.user.id}`}>mypage</Link>
-          </li>
           {/* ログアウト時にログイン画面にリダイレクト */}
           <button onClick={() => signOut({ callbackUrl: "/auth/login" })}>
             ログアウト
@@ -38,9 +35,6 @@ export default function Sidebar() {
       </li>
       <li>
         <Link href="/goals">Goals</Link>
-      </li>
-      <li>
-        <Link href="/users">ユーザー一覧</Link>
       </li>
       <li>
         <Link href="/about">About</Link>
