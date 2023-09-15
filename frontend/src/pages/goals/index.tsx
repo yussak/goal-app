@@ -41,7 +41,7 @@ export default function Goals() {
         headers: { "Content-Type": "multipart/form-data" },
       });
       // useSWRで書き換える
-      mutate("/goals");
+      mutate(`/${user_id}/goals`);
       setTitle("");
       setText("");
       // これがないとフォームはリセットできてても前のgoalの画像が次のgoalにも表示されてしまう;
