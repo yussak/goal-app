@@ -1,1 +1,13 @@
 frontend/node_modules/
+
+.github
+
+design
+
+terraform
+
+.gitignore
+
+compose.yaml
+
+README.md
