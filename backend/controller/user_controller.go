@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 
@@ -9,26 +8,6 @@ import (
 	"github.com/YusukeSakuraba/goal-app/model"
 	"github.com/gin-gonic/gin"
 )
-
-func FetchUserDetails(c *gin.Context) {
-	id := c.Param("id")
-
-	row := db.DB.QueryRow("SELECT id, name FROM Users WHERE id = ?", id)
-
-	var User model.User
-	err := row.Scan(&User.ID, &User.Name)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(http.StatusNotFound, gin.H{"error": "No User with the provided ID."})
-			return
-		}
-
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, User)
-}
 
 func FetchUserGoals(c *gin.Context) {
 
