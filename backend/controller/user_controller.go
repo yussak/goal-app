@@ -13,7 +13,6 @@ func FetchUserGoals(c *gin.Context) {
 
 	user_id := c.Param("user_id")
 	fmt.Println("c.Param", c.Param("user_id"))
-	fmt.Println("asdffsd", user_id)
 
 	goals := []model.Goal{}
 
