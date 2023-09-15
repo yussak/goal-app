@@ -40,9 +40,6 @@ export default function Sidebar() {
         <Link href="/goals">Goals</Link>
       </li>
       <li>
-        <Link href="/users">ユーザー一覧</Link>
-      </li>
-      <li>
         <Link href="/about">About</Link>
       </li>
     </ul>
