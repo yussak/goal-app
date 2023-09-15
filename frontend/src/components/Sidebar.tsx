@@ -34,6 +34,9 @@ export default function Sidebar() {
         <Link href="/">Home</Link>
       </li>
       <li>
+        <Link href="/goals">Goals</Link>
+      </li>
+      <li>
         <Link href="/about">About</Link>
       </li>
     </ul>
