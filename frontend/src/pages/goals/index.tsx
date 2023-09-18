@@ -78,10 +78,20 @@ export default function Goals() {
           <GoalForm
             setTitle={setTitle}
             setText={setText}
+            SetSmartSpecific={SetSmartSpecific}
+            SetSmartMeasurable={SetSmartMeasurable}
+            SetSmartAchievable={SetSmartAchievable}
+            SetSmartRelevant={SetSmartRelevant}
+            SetSmartTimeBound={SetSmartTimeBound}
             setFile={setFile}
             addGoal={addGoal}
             title={title}
             text={text}
+            smartSpecific={smartSpecific}
+            smartMeasurable={smartMeasurable}
+            smartAchievable={smartAchievable}
+            smartRelevant={smartRelevant}
+            smartTimeBound={smartTimeBound}
             inputRef={inputRef}
           />
         </>
