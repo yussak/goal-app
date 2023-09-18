@@ -12,6 +12,11 @@ export type Goal = {
   image_url: string;
   CreatedAt: Date;
   UpdatedAt: Date;
+  smart_specific: string;
+  smart_measurable: string;
+  smart_achievable: string;
+  smart_relevant: string;
+  smart_time_bound: string;
 };
 
 export type GoalComment = {
