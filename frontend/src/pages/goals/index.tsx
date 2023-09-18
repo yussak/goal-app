@@ -11,8 +11,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 export default function Goals() {
   const { t } = useTranslation();
 
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
+  // const [title, setTitle] = useState<string>("");
+  // const [text, setText] = useState<string>("");
   const [smartSpecific, SetSmartSpecific] = useState<string>("");
   const [smartMeasurable, SetSmartMeasurable] = useState<string>("");
   const [smartAchievable, SetSmartAchievable] = useState<string>("");
@@ -35,8 +35,8 @@ export default function Goals() {
     if (file !== null) {
       formData.append("image", file);
     }
-    formData.append("title", title);
-    formData.append("text", text);
+    // formData.append("title", title);
+    // formData.append("text", text);
     if (session?.user) {
       formData.append("user_id", session?.user.id);
     }
@@ -47,8 +47,8 @@ export default function Goals() {
       });
       // useSWRで書き換える
       mutate(`/${user_id}/goals`);
-      setTitle("");
-      setText("");
+      // setTitle("");
+      // setText("");
       // これがないとフォームはリセットできてても前のgoalの画像が次のgoalにも表示されてしまう;
       setFile(null);
       // fileのリセット
@@ -76,8 +76,8 @@ export default function Goals() {
         <>
           debug用 id: {session?.user.id}
           <GoalForm
-            setTitle={setTitle}
-            setText={setText}
+            // setTitle={setTitle}
+            // setText={setText}
             SetSmartSpecific={SetSmartSpecific}
             SetSmartMeasurable={SetSmartMeasurable}
             SetSmartAchievable={SetSmartAchievable}
@@ -85,8 +85,8 @@ export default function Goals() {
             SetSmartTimeBound={SetSmartTimeBound}
             setFile={setFile}
             addGoal={addGoal}
-            title={title}
-            text={text}
+            // title={title}
+            // text={text}
             smartSpecific={smartSpecific}
             smartMeasurable={smartMeasurable}
             smartAchievable={smartAchievable}
