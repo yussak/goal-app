@@ -4,20 +4,20 @@ import { RefObject } from "react";
 type GoalFormProps = {
   // setTitle: (title: string) => void;
   // setText: (text: string) => void;
-  SetSmartSpecific: (smart_specific: string) => void;
-  SetSmartMeasurable: (smart_measurable: string) => void;
-  SetSmartAchievable: (smart_achievable: string) => void;
-  SetSmartRelevant: (smart_relevant: string) => void;
-  SetSmartTimeBound: (smart_time_bound: string) => void;
+  SetSmartSpecific: (smartSpecific: string) => void;
+  SetSmartMeasurable: (smartMeasurable: string) => void;
+  SetSmartAchievable: (smartAchievable: string) => void;
+  SetSmartRelevant: (smartRelevant: string) => void;
+  SetSmartTimeBound: (smartTimeBound: string) => void;
   setFile: (file: File | null) => void;
   addGoal: () => void;
   // title: string;
   // text: string;
-  smart_specific: string;
-  smart_measurable: string;
-  smart_achievable: string;
-  smart_relevant: string;
-  smart_time_bound: string;
+  smartSpecific: string;
+  smartMeasurable: string;
+  smartAchievable: string;
+  smartRelevant: string;
+  smartTimeBound: string;
   inputRef: RefObject<HTMLInputElement>;
 };
 
@@ -33,11 +33,11 @@ const GoalForm = ({
   addGoal,
   // title,
   // text,
-  smart_specific,
-  smart_measurable,
-  smart_achievable,
-  smart_relevant,
-  smart_time_bound,
+  smartSpecific,
+  smartMeasurable,
+  smartAchievable,
+  smartRelevant,
+  smartTimeBound,
   inputRef,
 }: GoalFormProps) => {
   return (
@@ -54,28 +54,28 @@ const GoalForm = ({
           onChange={(e) => setText(e.target.value)}
         /> */}
         <TextField
-          label="smart_specific"
-          value={smart_specific}
+          label="smartSpecific"
+          value={smartSpecific}
           onChange={(e) => SetSmartSpecific(e.target.value)}
         />
         <TextField
-          label="smart_measurable"
-          value={smart_measurable}
+          label="smartMeasurable"
+          value={smartMeasurable}
           onChange={(e) => SetSmartMeasurable(e.target.value)}
         />
         <TextField
-          label="smart_achievable"
-          value={smart_achievable}
+          label="smartAchievable"
+          value={smartAchievable}
           onChange={(e) => SetSmartAchievable(e.target.value)}
         />
         <TextField
-          label="smart_relevant"
-          value={smart_relevant}
+          label="smartRelevant"
+          value={smartRelevant}
           onChange={(e) => SetSmartRelevant(e.target.value)}
         />
         <TextField
-          label="smart_time_bound"
-          value={smart_time_bound}
+          label="smartTimeBound"
+          value={smartTimeBound}
           onChange={(e) => SetSmartTimeBound(e.target.value)}
         />
         <input
