@@ -13,6 +13,11 @@ export default function Goals() {
 
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
+  const [smart_specific, SetSmartSpecific] = useState<string>("");
+  const [smart_measurable, SetSmartMeasurable] = useState<string>("");
+  const [smart_achievable, SetSmartAchievable] = useState<string>("");
+  const [smart_relevant, SetSmartRelevant] = useState<string>("");
+  const [smart_time_bound, SetSmartTimeBound] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const { data: session } = useSession();
 
