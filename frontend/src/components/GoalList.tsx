@@ -17,8 +17,11 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
         const isEdited = goal.CreatedAt !== goal.UpdatedAt;
         return (
           <li key={index} className="goal-list">
-            <p>title: {goal.title}</p>
-            <p>text: {goal.text}</p>
+            <p>specific: {goal.smart_specific}</p>
+            <p>measurable: {goal.smart_measurable}</p>
+            <p>achievable: {goal.smart_achievable}</p>
+            <p>relevant: {goal.smart_relevant}</p>
+            <p>time_bound: {goal.smart_time_bound}</p>
             <p>id: {goal.id}</p>
             <p>user_id（デバッグ用）: {goal.user_id}</p>
             <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
