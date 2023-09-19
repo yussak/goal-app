@@ -45,8 +45,15 @@ export default function EditGoal() {
     if (file !== null) {
       formData.append("image", file);
     }
-    formData.append("title", title);
-    formData.append("text", text);
+    // formData.append("title", title);
+    // formData.append("text", text);
+    formData.append("purpose", purpose);
+    formData.append("loss", loss);
+    formData.append("smartSpecific", smartSpecific);
+    formData.append("smartMeasurable", smartMeasurable);
+    formData.append("smartAchievable", smartAchievable);
+    formData.append("smartRelevant", smartRelevant);
+    formData.append("smartTimeBound", smartTimeBound);
     if (session?.user?.id) {
       formData.append("user_id", session?.user.id);
     }
