@@ -85,8 +85,14 @@ export default function GoalDetail() {
           ) : (
             "not my goal（デバッグ用）"
           )}
-          <p>title: {goal.title}</p>
-          <p>text: {goal.text}</p>
+          <p>specific: {goal.smart_specific}</p>
+          <p>measurable: {goal.smart_measurable}</p>
+          <p>achievable: {goal.smart_achievable}</p>
+          <p>relevant: {goal.smart_relevant}</p>
+          <p>time_bound: {goal.smart_time_bound}</p>
+          <p>purpose: {goal.purpose}</p>
+          <p>loss: {goal.loss}</p>
+          <p>progress: {goal.progress}</p>
           <p>user_id(デバッグ用): {goal.user_id}</p>
           <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p>
           <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p>
