@@ -101,11 +101,11 @@ func AddGoal(c *gin.Context) {
 			return
 		}
 
-		sql := `INSERT INTO goals(id, smartSpecific, smartMeasurable, smartAchievable, smartRelevant, smartTimeBound, purpose, loss, user_id, image_url) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)`
+		sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 		// sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
 
 		// _, err = db.DB.Exec(sql, req.ID, title[0], text[0], userID[0], imageUrl)
-		_, err = db.DB.Exec(sql, req.ID, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0, userID[0], imageUrl)
+		_, err = db.DB.Exec(sql, req.ID, userID[0], imageUrl, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
