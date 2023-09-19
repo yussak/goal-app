@@ -4,6 +4,7 @@ import { RefObject } from "react";
 type GoalFormProps = {
   // setTitle: (title: string) => void;
   // setText: (text: string) => void;
+  SetPurpose: (purpose: string) => void;
   SetSmartSpecific: (smartSpecific: string) => void;
   SetSmartMeasurable: (smartMeasurable: string) => void;
   SetSmartAchievable: (smartAchievable: string) => void;
@@ -13,6 +14,7 @@ type GoalFormProps = {
   addGoal: () => void;
   // title: string;
   // text: string;
+  purpose: string;
   smartSpecific: string;
   smartMeasurable: string;
   smartAchievable: string;
@@ -24,6 +26,7 @@ type GoalFormProps = {
 const GoalForm = ({
   // setTitle,
   // setText,
+  SetPurpose,
   SetSmartSpecific,
   SetSmartMeasurable,
   SetSmartAchievable,
@@ -33,6 +36,7 @@ const GoalForm = ({
   addGoal,
   // title,
   // text,
+  purpose,
   smartSpecific,
   smartMeasurable,
   smartAchievable,
@@ -53,6 +57,11 @@ const GoalForm = ({
           value={text}
           onChange={(e) => setText(e.target.value)}
         /> */}
+        <TextField
+          label="purpose"
+          value={purpose}
+          onChange={(e) => SetPurpose(e.target.value)}
+        />
         <TextField
           label="smartSpecific"
           value={smartSpecific}

@@ -13,6 +13,7 @@ export default function Goals() {
 
   // const [title, setTitle] = useState<string>("");
   // const [text, setText] = useState<string>("");
+  const [purpose, SetPurpose] = useState<string>("");
   const [smartSpecific, SetSmartSpecific] = useState<string>("");
   const [smartMeasurable, SetSmartMeasurable] = useState<string>("");
   const [smartAchievable, SetSmartAchievable] = useState<string>("");
@@ -83,6 +84,7 @@ export default function Goals() {
           <GoalForm
             // setTitle={setTitle}
             // setText={setText}
+            SetPurpose={SetPurpose}
             SetSmartSpecific={SetSmartSpecific}
             SetSmartMeasurable={SetSmartMeasurable}
             SetSmartAchievable={SetSmartAchievable}
@@ -92,6 +94,7 @@ export default function Goals() {
             addGoal={addGoal}
             // title={title}
             // text={text}
+            purpose={purpose}
             smartSpecific={smartSpecific}
             smartMeasurable={smartMeasurable}
             smartAchievable={smartAchievable}
