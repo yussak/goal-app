@@ -14,6 +14,7 @@ export default function Goals() {
   // const [title, setTitle] = useState<string>("");
   // const [text, setText] = useState<string>("");
   const [purpose, SetPurpose] = useState<string>("");
+  const [loss, SetLoss] = useState<string>("");
   const [smartSpecific, SetSmartSpecific] = useState<string>("");
   const [smartMeasurable, SetSmartMeasurable] = useState<string>("");
   const [smartAchievable, SetSmartAchievable] = useState<string>("");
@@ -39,6 +40,7 @@ export default function Goals() {
     // formData.append("title", title);
     // formData.append("text", text);
     formData.append("purpose", purpose);
+    formData.append("loss", loss);
     formData.append("smartSpecific", smartSpecific);
     formData.append("smartMeasurable", smartMeasurable);
     formData.append("smartAchievable", smartAchievable);
@@ -86,6 +88,7 @@ export default function Goals() {
             // setTitle={setTitle}
             // setText={setText}
             SetPurpose={SetPurpose}
+            SetLoss={SetLoss}
             SetSmartSpecific={SetSmartSpecific}
             SetSmartMeasurable={SetSmartMeasurable}
             SetSmartAchievable={SetSmartAchievable}
@@ -96,6 +99,7 @@ export default function Goals() {
             // title={title}
             // text={text}
             purpose={purpose}
+            loss={loss}
             smartSpecific={smartSpecific}
             smartMeasurable={smartMeasurable}
             smartAchievable={smartAchievable}

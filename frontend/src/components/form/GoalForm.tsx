@@ -5,6 +5,7 @@ type GoalFormProps = {
   // setTitle: (title: string) => void;
   // setText: (text: string) => void;
   SetPurpose: (purpose: string) => void;
+  SetLoss: (loss: string) => void;
   SetSmartSpecific: (smartSpecific: string) => void;
   SetSmartMeasurable: (smartMeasurable: string) => void;
   SetSmartAchievable: (smartAchievable: string) => void;
@@ -15,6 +16,7 @@ type GoalFormProps = {
   // title: string;
   // text: string;
   purpose: string;
+  loss: string;
   smartSpecific: string;
   smartMeasurable: string;
   smartAchievable: string;
@@ -27,6 +29,7 @@ const GoalForm = ({
   // setTitle,
   // setText,
   SetPurpose,
+  SetLoss,
   SetSmartSpecific,
   SetSmartMeasurable,
   SetSmartAchievable,
@@ -37,6 +40,7 @@ const GoalForm = ({
   // title,
   // text,
   purpose,
+  loss,
   smartSpecific,
   smartMeasurable,
   smartAchievable,
@@ -61,6 +65,11 @@ const GoalForm = ({
           label="purpose"
           value={purpose}
           onChange={(e) => SetPurpose(e.target.value)}
+        />
+        <TextField
+          label="loss"
+          value={loss}
+          onChange={(e) => SetLoss(e.target.value)}
         />
         <TextField
           label="smartSpecific"
