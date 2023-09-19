@@ -32,8 +32,8 @@ export default function EditGoal() {
   const getGoal = async () => {
     try {
       const { data } = await axios.get(`/goals/${id}`);
-      setTitle(data.title);
-      setText(data.text);
+      // setTitle(data.title);
+      // setText(data.text);
       setImageURL(data.image_url);
     } catch (error) {
       console.error(error);
