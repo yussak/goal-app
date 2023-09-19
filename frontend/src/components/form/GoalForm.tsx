@@ -2,8 +2,6 @@ import { Button, Container, Stack, TextField } from "@mui/material";
 import { RefObject } from "react";
 
 type GoalFormProps = {
-  // setTitle: (title: string) => void;
-  // setText: (text: string) => void;
   SetPurpose: (purpose: string) => void;
   SetLoss: (loss: string) => void;
   SetSmartSpecific: (smartSpecific: string) => void;
@@ -13,8 +11,6 @@ type GoalFormProps = {
   SetSmartTimeBound: (smartTimeBound: string) => void;
   setFile: (file: File | null) => void;
   addGoal: () => void;
-  // title: string;
-  // text: string;
   purpose: string;
   loss: string;
   smartSpecific: string;
@@ -26,8 +22,6 @@ type GoalFormProps = {
 };
 
 const GoalForm = ({
-  // setTitle,
-  // setText,
   SetPurpose,
   SetLoss,
   SetSmartSpecific,
@@ -37,8 +31,6 @@ const GoalForm = ({
   SetSmartTimeBound,
   setFile,
   addGoal,
-  // title,
-  // text,
   purpose,
   loss,
   smartSpecific,
@@ -51,16 +43,6 @@ const GoalForm = ({
   return (
     <Container sx={{ pt: 3 }}>
       <Stack spacing={2}>
-        {/* <TextField
-          label="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <TextField
-          label="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        /> */}
         <TextField
           label="purpose"
           value={purpose}

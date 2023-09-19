@@ -66,8 +66,6 @@ func AddGoal(c *gin.Context) {
 	// fmt.Println(c.Request.PostForm)
 
 	// Parse form values
-	// title, titleOk := c.Request.PostForm["title"]
-	// text, textOk := c.Request.PostForm["text"]
 	purpose, purposeOk := c.Request.PostForm["purpose"]
 	loss, lossOk := c.Request.PostForm["loss"]
 	smartSpecific, smartSpecificOk := c.Request.PostForm["smartSpecific"]
@@ -85,7 +83,6 @@ func AddGoal(c *gin.Context) {
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
 		sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-		// sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?, ?, ?, NULL)`
 		_, execErr := db.DB.Exec(sql, req.ID, userID[0], smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
 
 		if execErr != nil {
@@ -102,9 +99,6 @@ func AddGoal(c *gin.Context) {
 		}
 
 		sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-		// sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
-
-		// _, err = db.DB.Exec(sql, req.ID, title[0], text[0], userID[0], imageUrl)
 		_, err = db.DB.Exec(sql, req.ID, userID[0], imageUrl, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
 
 		if err != nil {

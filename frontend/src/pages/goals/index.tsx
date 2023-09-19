@@ -11,8 +11,6 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 export default function Goals() {
   const { t } = useTranslation();
 
-  // const [title, setTitle] = useState<string>("");
-  // const [text, setText] = useState<string>("");
   const [purpose, SetPurpose] = useState<string>("");
   const [loss, SetLoss] = useState<string>("");
   const [smartSpecific, SetSmartSpecific] = useState<string>("");
@@ -37,8 +35,6 @@ export default function Goals() {
     if (file !== null) {
       formData.append("image", file);
     }
-    // formData.append("title", title);
-    // formData.append("text", text);
     formData.append("purpose", purpose);
     formData.append("loss", loss);
     formData.append("smartSpecific", smartSpecific);
@@ -85,8 +81,6 @@ export default function Goals() {
         <>
           debug用 id: {session?.user.id}
           <GoalForm
-            // setTitle={setTitle}
-            // setText={setText}
             SetPurpose={SetPurpose}
             SetLoss={SetLoss}
             SetSmartSpecific={SetSmartSpecific}
@@ -96,8 +90,6 @@ export default function Goals() {
             SetSmartTimeBound={SetSmartTimeBound}
             setFile={setFile}
             addGoal={addGoal}
-            // title={title}
-            // text={text}
             purpose={purpose}
             loss={loss}
             smartSpecific={smartSpecific}
