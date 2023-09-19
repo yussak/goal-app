@@ -6,8 +6,6 @@ export type User = {
 
 export type Goal = {
   id: string;
-  title: string;
-  text: string;
   user_id: string;
   image_url: string;
   CreatedAt: Date;
