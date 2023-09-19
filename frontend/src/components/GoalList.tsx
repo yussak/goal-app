@@ -22,6 +22,9 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>achievable: {goal.smart_achievable}</p>
             <p>relevant: {goal.smart_relevant}</p>
             <p>time_bound: {goal.smart_time_bound}</p>
+            <p>purpose: {goal.purpose}</p>
+            <p>loss: {goal.loss}</p>
+            <p>progress: {goal.progress}</p>
             <p>id: {goal.id}</p>
             <p>user_id（デバッグ用）: {goal.user_id}</p>
             <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
