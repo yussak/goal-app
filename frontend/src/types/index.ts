@@ -15,6 +15,9 @@ export type Goal = {
   smart_achievable: string;
   smart_relevant: string;
   smart_time_bound: string;
+  purpose: string;
+  loss: string;
+  progress: number;
 };
 
 export type GoalComment = {
