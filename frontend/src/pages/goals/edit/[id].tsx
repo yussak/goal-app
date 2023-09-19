@@ -8,8 +8,17 @@ export default function EditGoal() {
   const router = useRouter();
   const id = router.query.id;
 
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
+  // const [title, setTitle] = useState<string>("");
+  // const [text, setText] = useState<string>("");
+
+  const [purpose, SetPurpose] = useState<string>("");
+  const [loss, SetLoss] = useState<string>("");
+  const [smartSpecific, SetSmartSpecific] = useState<string>("");
+  const [smartMeasurable, SetSmartMeasurable] = useState<string>("");
+  const [smartAchievable, SetSmartAchievable] = useState<string>("");
+  const [smartRelevant, SetSmartRelevant] = useState<string>("");
+  const [smartTimeBound, SetSmartTimeBound] = useState<string>("");
+
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const { data: session } = useSession();
@@ -66,13 +75,27 @@ export default function EditGoal() {
       <h2>目標編集</h2>
 
       <EditGoalForm
-        setTitle={setTitle}
-        setText={setText}
+        // setTitle={setTitle}
+        // setText={setText}
+        SetPurpose={SetPurpose}
+        SetLoss={SetLoss}
+        SetSmartSpecific={SetSmartSpecific}
+        SetSmartMeasurable={SetSmartMeasurable}
+        SetSmartAchievable={SetSmartAchievable}
+        SetSmartRelevant={SetSmartRelevant}
+        SetSmartTimeBound={SetSmartTimeBound}
         setFile={setFile}
         editGoal={editGoal}
         deleteGoalImage={deleteGoalImage}
-        title={title}
-        text={text}
+        // title={title}
+        // text={text}
+        purpose={purpose}
+        loss={loss}
+        smartSpecific={smartSpecific}
+        smartMeasurable={smartMeasurable}
+        smartAchievable={smartAchievable}
+        smartRelevant={smartRelevant}
+        smartTimeBound={smartTimeBound}
         imageURL={imageURL}
         file={file}
       />
