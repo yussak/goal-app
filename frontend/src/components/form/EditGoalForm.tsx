@@ -3,7 +3,7 @@ import { Button, Container, Stack, TextField } from "@mui/material";
 type EditGoalFormProps = {
   // setTitle: (title: string) => void;
   // setText: (text: string) => void;
-  setPurpose: (purpose: string) => void;
+  SetPurpose: (purpose: string) => void;
   SetLoss: (loss: string) => void;
   seSetSmartSpecific: (smartSpecific: string) => void;
   SetSmartMeasurable: (smartMeasurable: string) => void;
