@@ -38,6 +38,7 @@ export default function Goals() {
     }
     // formData.append("title", title);
     // formData.append("text", text);
+    formData.append("purpose", purpose);
     formData.append("smartSpecific", smartSpecific);
     formData.append("smartMeasurable", smartMeasurable);
     formData.append("smartAchievable", smartAchievable);
