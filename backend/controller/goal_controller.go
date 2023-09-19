@@ -84,9 +84,9 @@ func AddGoal(c *gin.Context) {
 
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
-		sql := `INSERT INTO goals(id, smartSpecific, smartMeasurable, smartAchievable, smartRelevant, smartTimeBound, purpose, loss, user_id, image_url) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)`
+		sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 		// sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?, ?, ?, NULL)`
-		_, execErr := db.DB.Exec(sql, req.ID, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], userID[0])
+		_, execErr := db.DB.Exec(sql, req.ID, userID[0], smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
 
 		if execErr != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -105,7 +105,7 @@ func AddGoal(c *gin.Context) {
 		// sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
 
 		// _, err = db.DB.Exec(sql, req.ID, title[0], text[0], userID[0], imageUrl)
-		_, err = db.DB.Exec(sql, req.ID, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], userID[0], imageUrl)
+		_, err = db.DB.Exec(sql, req.ID, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0, userID[0], imageUrl)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
