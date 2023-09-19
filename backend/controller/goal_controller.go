@@ -66,19 +66,25 @@ func AddGoal(c *gin.Context) {
 	// fmt.Println(c.Request.PostForm)
 
 	// Parse form values
-	title, titleOk := c.Request.PostForm["title"]
-	text, textOk := c.Request.PostForm["text"]
+	// title, titleOk := c.Request.PostForm["title"]
+	// text, textOk := c.Request.PostForm["text"]
+	smartSpecific, smartSpecificOk := c.Request.PostForm["smartSpecific"]
+	smartMeasurable, smartMeasurableOk := c.Request.PostForm["smartMeasurable"]
+	smartAchievable, smartAchievableOk := c.Request.PostForm["smartAchievable"]
+	smartRelevant, smartRelevantOk := c.Request.PostForm["smartRelevant"]
+	smartTimeBound, smartTimeBoundOk := c.Request.PostForm["smartTimeBound"]
 	userID, userIDOk := c.Request.PostForm["user_id"]
 
-	if !titleOk || !textOk || !userIDOk {
+	if !smartSpecificOk || !smartMeasurableOk || !smartAchievableOk || !smartRelevantOk || !smartTimeBoundOk || !userIDOk {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
 		return
 	}
 
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
-		sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, NULL)`
-		_, execErr := db.DB.Exec(sql, req.ID, title[0], text[0], userID[0])
+		sql := `INSERT INTO goals(id, smartSpecific, smartMeasurable, smartAchievable, smartRelevant, smartTimeBound, user_id, image_url) VALUES(?, ?, ?, ?, ?, ?, ?, NULL)`
+		// sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?, ?, ?, NULL)`
+		_, execErr := db.DB.Exec(sql, req.ID, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], userID[0])
 
 		if execErr != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -93,8 +99,11 @@ func AddGoal(c *gin.Context) {
 			return
 		}
 
-		sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
-		_, err = db.DB.Exec(sql, req.ID, title[0], text[0], userID[0], imageUrl)
+		sql := `INSERT INTO goals(id, smartSpecific, smartMeasurable, smartAchievable, smartRelevant, smartTimeBound, user_id, image_url) VALUES(?, ?, ?, ?, ?, ?, ?, NULL)`
+		// sql := `INSERT INTO goals(id, title, text, user_id, image_url) VALUES(?, ?, ?, ?, ?)`
+
+		// _, err = db.DB.Exec(sql, req.ID, title[0], text[0], userID[0], imageUrl)
+		_, err = db.DB.Exec(sql, req.ID, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], userID[0], imageUrl)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

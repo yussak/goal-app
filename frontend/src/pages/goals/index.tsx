@@ -37,6 +37,11 @@ export default function Goals() {
     }
     // formData.append("title", title);
     // formData.append("text", text);
+    formData.append("smartSpecific", smartSpecific);
+    formData.append("smartMeasurable", smartMeasurable);
+    formData.append("smartAchievable", smartAchievable);
+    formData.append("smartRelevant", smartRelevant);
+    formData.append("smartTimeBound", smartTimeBound);
     if (session?.user) {
       formData.append("user_id", session?.user.id);
     }
