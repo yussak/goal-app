@@ -7,18 +7,31 @@ import { axios } from "@/utils/axios";
 import { fetcher } from "@/utils/fetcher";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GoalFormData } from "@/types";
 
 export default function Goals() {
   const { t } = useTranslation();
 
-  const [purpose, SetPurpose] = useState<string>("");
-  const [loss, SetLoss] = useState<string>("");
-  const [smartSpecific, SetSmartSpecific] = useState<string>("");
-  const [smartMeasurable, SetSmartMeasurable] = useState<string>("");
-  const [smartAchievable, SetSmartAchievable] = useState<string>("");
-  const [smartRelevant, SetSmartRelevant] = useState<string>("");
-  const [smartTimeBound, SetSmartTimeBound] = useState<string>("");
-  const [file, setFile] = useState<File | null>(null);
+  const [goalData, SetGoalData] = useState<GoalFormData>({
+    purpose: "",
+    loss: "",
+    smartSpecific: "",
+    smartMeasurable: "",
+    smartAchievable: "",
+    smartRelevant: "",
+    smartTimeBound: "",
+    file: null,
+  });
+
+  // const [purpose, SetPurpose] = useState<string>("");
+  // const [loss, SetLoss] = useState<string>("");
+  // const [smartSpecific, SetSmartSpecific] = useState<string>("");
+  // const [smartMeasurable, SetSmartMeasurable] = useState<string>("");
+  // const [smartAchievable, SetSmartAchievable] = useState<string>("");
+  // const [smartRelevant, SetSmartRelevant] = useState<string>("");
+  // const [smartTimeBound, SetSmartTimeBound] = useState<string>("");
+  // const [file, setFile] = useState<File | null>(null);
+
   const { data: session } = useSession();
 
   const user_id = session?.user ? session.user.id : null;
@@ -32,16 +45,16 @@ export default function Goals() {
 
   const addGoal = async () => {
     const formData = new FormData();
-    if (file !== null) {
-      formData.append("image", file);
+    if (goalData.file !== null) {
+      formData.append("image", goalData.file);
     }
-    formData.append("purpose", purpose);
-    formData.append("loss", loss);
-    formData.append("smartSpecific", smartSpecific);
-    formData.append("smartMeasurable", smartMeasurable);
-    formData.append("smartAchievable", smartAchievable);
-    formData.append("smartRelevant", smartRelevant);
-    formData.append("smartTimeBound", smartTimeBound);
+    formData.append("purpose", goalData.purpose);
+    formData.append("loss", goalData.loss);
+    formData.append("smartSpecific", goalData.smartSpecific);
+    formData.append("smartMeasurable", goalData.smartMeasurable);
+    formData.append("smartAchievable", goalData.smartAchievable);
+    formData.append("smartRelevant", goalData.smartRelevant);
+    formData.append("smartTimeBound", goalData.smartTimeBound);
     if (session?.user) {
       formData.append("user_id", session?.user.id);
     }
@@ -52,10 +65,11 @@ export default function Goals() {
       });
       // useSWRで書き換える
       mutate(`/${user_id}/goals`);
+      // TODO:フォームリセットしたい→地味に今までと違うやり方必要そうなので調べる
       // setTitle("");
       // setText("");
       // これがないとフォームはリセットできてても前のgoalの画像が次のgoalにも表示されてしまう;
-      setFile(null);
+      // setFile(null);
       // fileのリセット
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -81,22 +95,24 @@ export default function Goals() {
         <>
           debug用 id: {session?.user.id}
           <GoalForm
-            SetPurpose={SetPurpose}
-            SetLoss={SetLoss}
-            SetSmartSpecific={SetSmartSpecific}
-            SetSmartMeasurable={SetSmartMeasurable}
-            SetSmartAchievable={SetSmartAchievable}
-            SetSmartRelevant={SetSmartRelevant}
-            SetSmartTimeBound={SetSmartTimeBound}
-            setFile={setFile}
+            // SetPurpose={SetPurpose}
+            // SetLoss={SetLoss}
+            // SetSmartSpecific={SetSmartSpecific}
+            // SetSmartMeasurable={SetSmartMeasurable}
+            // SetSmartAchievable={SetSmartAchievable}
+            // SetSmartRelevant={SetSmartRelevant}
+            // SetSmartTimeBound={SetSmartTimeBound}
+            // setFile={setFile}
+            SetGoalData={SetGoalData}
+            goalData={goalData}
             addGoal={addGoal}
-            purpose={purpose}
-            loss={loss}
-            smartSpecific={smartSpecific}
-            smartMeasurable={smartMeasurable}
-            smartAchievable={smartAchievable}
-            smartRelevant={smartRelevant}
-            smartTimeBound={smartTimeBound}
+            // purpose={purpose}
+            // loss={loss}
+            // smartSpecific={smartSpecific}
+            // smartMeasurable={smartMeasurable}
+            // smartAchievable={smartAchievable}
+            // smartRelevant={smartRelevant}
+            // smartTimeBound={smartTimeBound}
             inputRef={inputRef}
           />
         </>
