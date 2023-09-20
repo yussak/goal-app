@@ -9,17 +9,6 @@ export default function EditGoal() {
   const router = useRouter();
   const id = router.query.id;
 
-  // const [title, setTitle] = useState<string>("");
-  // const [text, setText] = useState<string>("");
-
-  // const [purpose, SetPurpose] = useState<string>("");
-  // const [loss, SetLoss] = useState<string>("");
-  // const [smartSpecific, SetSmartSpecific] = useState<string>("");
-  // const [smartMeasurable, SetSmartMeasurable] = useState<string>("");
-  // const [smartAchievable, SetSmartAchievable] = useState<string>("");
-  // const [smartRelevant, SetSmartRelevant] = useState<string>("");
-  // const [smartTimeBound, SetSmartTimeBound] = useState<string>("");
-
   const [goalData, SetGoalData] = useState<GoalFormData>({
     purpose: "",
     loss: "",
@@ -39,8 +28,6 @@ export default function EditGoal() {
     SetGoalData((prev) => ({ ...prev, [key]: value }));
   };
 
-  // const [imageURL, setImageURL] = useState<string | null>(null);
-  // const [file, setFile] = useState<File | null>(null);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -64,16 +51,6 @@ export default function EditGoal() {
         smartTimeBound: data.smart_time_bound,
         imageURL: data.image_url,
       });
-      // handleSetGoalData("purpose", data.purpose);
-      // handleSetGoalData("loss", data.loss);
-      // SetPurpose(data.purpose);
-      // SetLoss(data.loss);
-      // SetSmartSpecific(data.smart_specific);
-      // SetSmartMeasurable(data.smart_measurable);
-      // SetSmartAchievable(data.smart_achievable);
-      // SetSmartRelevant(data.smart_relevant);
-      // SetSmartTimeBound(data.smart_time_bound);
-      // setImageURL(data.image_url);
     } catch (error) {
       console.error(error);
     }
@@ -84,8 +61,6 @@ export default function EditGoal() {
     if (goalData.file !== null) {
       formData.append("image", goalData.file);
     }
-    // formData.append("title", title);
-    // formData.append("text", text);
     formData.append("purpose", goalData.purpose);
     formData.append("loss", goalData.loss);
     formData.append("smartSpecific", goalData.smartSpecific);
@@ -121,31 +96,10 @@ export default function EditGoal() {
       <h2>目標編集</h2>
 
       <EditGoalForm
-        // setTitle={setTitle}
-        // setText={setText}
-        // SetPurpose={SetPurpose}
-        // SetLoss={SetLoss}
-        // SetSmartSpecific={SetSmartSpecific}
-        // SetSmartMeasurable={SetSmartMeasurable}
-        // SetSmartAchievable={SetSmartAchievable}
-        // SetSmartRelevant={SetSmartRelevant}
-        // SetSmartTimeBound={SetSmartTimeBound}
-        // setFile={setFile}
         editGoal={editGoal}
         deleteGoalImage={deleteGoalImage}
-        // title={title}
-        // text={text}
-        // purpose={purpose}
-        // loss={loss}
-        // smartSpecific={smartSpecific}
-        // smartMeasurable={smartMeasurable}
-        // smartAchievable={smartAchievable}
-        // smartRelevant={smartRelevant}
-        // smartTimeBound={smartTimeBound}
         SetGoalData={handleSetGoalData}
         goalData={goalData}
-        // imageURL={imageURL}
-        // file={file}
       />
     </>
   );
