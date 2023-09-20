@@ -187,7 +187,7 @@ func EditGoal(c *gin.Context) {
 
 		row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
 		var goal model.Goal
-		err = row.Scan(&goal.ID, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
+		err = row.Scan(&goal.ID, &goal.UserID, &goal.CreatedAt, &goal.UpdatedAt, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -202,8 +202,8 @@ func EditGoal(c *gin.Context) {
 			return
 		}
 
-		sql := `UPDATE goals SET smart_specific = ?, smart_measurable = ?, smart_achievable = ?, smart_relevant = ?, smart_time_bound = ?, purpose = ?, loss = ? WHERE id = ?`
-		_, err = db.DB.Exec(sql, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], imageUrl)
+		sql := `UPDATE goals SET image_url = ?, smart_specific = ?, smart_measurable = ?, smart_achievable = ?, smart_relevant = ?, smart_time_bound = ?, purpose = ?, loss = ? WHERE id = ?`
+		_, err = db.DB.Exec(sql, imageUrl, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], id)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
