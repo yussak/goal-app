@@ -32,6 +32,7 @@ export type GoalFormData = {
   purpose: string;
   loss: string;
   file: File | null;
+  imageURL: string | null;
 };
 
 export type GoalComment = {
