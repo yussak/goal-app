@@ -163,10 +163,6 @@ func EditGoal(c *gin.Context) {
 		return
 	}
 
-	// Parse form values
-	// title, titleOk := c.Request.PostForm["title"]
-	// text, textOk := c.Request.PostForm["text"]
-
 	purpose, purposeOk := c.Request.PostForm["purpose"]
 	loss, lossOk := c.Request.PostForm["loss"]
 	smartSpecific, smartSpecificOk := c.Request.PostForm["smartSpecific"]
@@ -181,8 +177,6 @@ func EditGoal(c *gin.Context) {
 	}
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
-		// sql := `UPDATE goals SET title = ?, text = ? WHERE id = ?`
-		// _, execErr := db.DB.Exec(sql, title[0], text[0], id)
 		sql := `UPDATE goals SET smart_specific = ?, smart_measurable = ?, smart_achievable = ?, smart_relevant = ?, smart_time_bound = ?, purpose = ?, loss = ? WHERE id = ?`
 		_, execErr := db.DB.Exec(sql, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], id)
 
@@ -208,8 +202,6 @@ func EditGoal(c *gin.Context) {
 			return
 		}
 
-		// sql := `UPDATE goals SET title = ?, text = ?, image_url = ?`
-		// _, err = db.DB.Exec(sql, title[0], text[0], imageUrl)
 		sql := `UPDATE goals SET smart_specific = ?, smart_measurable = ?, smart_achievable = ?, smart_relevant = ?, smart_time_bound = ?, purpose = ?, loss = ? WHERE id = ?`
 		_, err = db.DB.Exec(sql, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], imageUrl)
 
