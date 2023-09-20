@@ -6,20 +6,8 @@ type EditGoalFormProps = {
     key: K,
     value: GoalFormData[K]
   ) => void;
-  // setTitle: (title: string) => void;
-  // setText: (text: string) => void;
-  // SetPurpose: (purpose: string) => void;
-  // SetLoss: (loss: string) => void;
-  // SetSmartSpecific: (smartSpecific: string) => void;
-  // SetSmartMeasurable: (smartMeasurable: string) => void;
-  // SetSmartAchievable: (smartAchievable: string) => void;
-  // SetSmartRelevant: (smartRelevant: string) => void;
-  // SetSmartTimeBound: (smartTimeBound: string) => void;
-  // setFile: (file: File | null) => void;
   editGoal: () => void;
   deleteGoalImage: () => void;
-  // title: string;
-  // text: string;
   goalData: {
     purpose: string;
     loss: string;
@@ -31,57 +19,17 @@ type EditGoalFormProps = {
     file: File | null;
     imageURL: string | null;
   };
-  // purpose: string;
-  // loss: string;
-  // smartSpecific: string;
-  // smartMeasurable: string;
-  // smartAchievable: string;
-  // smartRelevant: string;
-  // smartTimeBound: string;
-  // imageURL: string | null;
-  // file: File | null;
 };
 
 const EditGoalForm = ({
   goalData,
   SetGoalData,
-  // setTitle,
-  // setText,
-  // SetPurpose,
-  // SetLoss,
-  // SetSmartSpecific,
-  // SetSmartMeasurable,
-  // SetSmartAchievable,
-  // SetSmartRelevant,
-  // SetSmartTimeBound,
-  // setFile,
   editGoal,
   deleteGoalImage,
-}: // title,
-// text,
-// purpose,
-// loss,
-// smartSpecific,
-// smartMeasurable,
-// smartAchievable,
-// smartRelevant,
-// smartTimeBound,
-// imageURL,
-EditGoalFormProps) => {
+}: EditGoalFormProps) => {
   return (
     <Container sx={{ pt: 3 }}>
       <Stack spacing={2}>
-        {/* <TextField
-          label="title"
-          value={title}
-          defaultValue={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <TextField
-          label="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        /> */}
         <TextField
           label="purpose"
           value={goalData.purpose}
