@@ -30,15 +30,6 @@ export default function Goals() {
     SetGoalData((prev) => ({ ...prev, [key]: value }));
   };
 
-  // const [purpose, SetPurpose] = useState<string>("");
-  // const [loss, SetLoss] = useState<string>("");
-  // const [smartSpecific, SetSmartSpecific] = useState<string>("");
-  // const [smartMeasurable, SetSmartMeasurable] = useState<string>("");
-  // const [smartAchievable, SetSmartAchievable] = useState<string>("");
-  // const [smartRelevant, SetSmartRelevant] = useState<string>("");
-  // const [smartTimeBound, SetSmartTimeBound] = useState<string>("");
-  // const [file, setFile] = useState<File | null>(null);
-
   const { data: session } = useSession();
 
   const user_id = session?.user ? session.user.id : null;
@@ -102,25 +93,9 @@ export default function Goals() {
         <>
           debug用 id: {session?.user.id}
           <GoalForm
-            // SetPurpose={SetPurpose}
-            // SetLoss={SetLoss}
-            // SetSmartSpecific={SetSmartSpecific}
-            // SetSmartMeasurable={SetSmartMeasurable}
-            // SetSmartAchievable={SetSmartAchievable}
-            // SetSmartRelevant={SetSmartRelevant}
-            // SetSmartTimeBound={SetSmartTimeBound}
-            // setFile={setFile}
             SetGoalData={handleSetGoalData}
-            // SetGoalData={SetGoalData}
             goalData={goalData}
             addGoal={addGoal}
-            // purpose={purpose}
-            // loss={loss}
-            // smartSpecific={smartSpecific}
-            // smartMeasurable={smartMeasurable}
-            // smartAchievable={smartAchievable}
-            // smartRelevant={smartRelevant}
-            // smartTimeBound={smartTimeBound}
             inputRef={inputRef}
           />
         </>
