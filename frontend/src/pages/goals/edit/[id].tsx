@@ -32,8 +32,16 @@ export default function EditGoal() {
   const getGoal = async () => {
     try {
       const { data } = await axios.get(`/goals/${id}`);
-      // setTitle(data.title);
-      // setText(data.text);
+      SetPurpose(data.purpose);
+      SetLoss(data.loss);
+      SetSmartSpecific(data.smart_specific);
+      SetSmartSpecific(data.smart_specific);
+      SetSmartMeasurable(data.smart_measurable);
+      SetSmartAchievable(data.smart_achievable);
+      SetSmartRelevant(data.smart_relevant);
+      SetSmartTimeBound(data.smart_time_bound);
+
+      console.log("asdf", data);
       setImageURL(data.image_url);
     } catch (error) {
       console.error(error);
