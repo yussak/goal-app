@@ -59,13 +59,6 @@ const GoalForm = ({
           value={goalData.purpose}
           onChange={(e) => SetGoalData("purpose", e.target.value)}
         />
-        <p>やらないとどうなるかを書いてみましょう</p>
-        <TextField
-          label="loss"
-          value={goalData.loss}
-          // onChange={(e) => SetLoss(e.target.value)}
-          onChange={(e) => SetGoalData("loss", e.target.value)}
-        />
         <p>それをSMARTに書きましょう（必須）</p>
         <TextField
           label="smartSpecific"
@@ -96,6 +89,13 @@ const GoalForm = ({
           value={goalData.smartTimeBound}
           // onChange={(e) => SetSmartTimeBound(e.target.value)}
           onChange={(e) => SetGoalData("smartTimeBound", e.target.value)}
+        />
+        <p>やらないとどうなるかを書いてみましょう</p>
+        <TextField
+          label="loss"
+          value={goalData.loss}
+          // onChange={(e) => SetLoss(e.target.value)}
+          onChange={(e) => SetGoalData("loss", e.target.value)}
         />
         <input
           type="file"
