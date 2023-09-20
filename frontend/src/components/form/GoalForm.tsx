@@ -53,17 +53,20 @@ const GoalForm = ({
   return (
     <Container sx={{ pt: 3 }}>
       <Stack spacing={2}>
+        <p>達成したいことを書きましょう（必須）</p>
         <TextField
           label="purpose"
           value={goalData.purpose}
           onChange={(e) => SetGoalData("purpose", e.target.value)}
         />
+        <p>やらないとどうなるかを書いてみましょう</p>
         <TextField
           label="loss"
           value={goalData.loss}
           // onChange={(e) => SetLoss(e.target.value)}
           onChange={(e) => SetGoalData("loss", e.target.value)}
         />
+        <p>それをSMARTに書きましょう（必須）</p>
         <TextField
           label="smartSpecific"
           value={goalData.smartSpecific}
