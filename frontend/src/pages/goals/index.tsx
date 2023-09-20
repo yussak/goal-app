@@ -23,6 +23,13 @@ export default function Goals() {
     file: null,
   });
 
+  const handleSetGoalData = <K extends keyof GoalFormData>(
+    key: K,
+    value: GoalFormData[K]
+  ) => {
+    SetGoalData((prev) => ({ ...prev, [key]: value }));
+  };
+
   // const [purpose, SetPurpose] = useState<string>("");
   // const [loss, SetLoss] = useState<string>("");
   // const [smartSpecific, SetSmartSpecific] = useState<string>("");
@@ -103,7 +110,8 @@ export default function Goals() {
             // SetSmartRelevant={SetSmartRelevant}
             // SetSmartTimeBound={SetSmartTimeBound}
             // setFile={setFile}
-            SetGoalData={SetGoalData}
+            SetGoalData={handleSetGoalData}
+            // SetGoalData={SetGoalData}
             goalData={goalData}
             addGoal={addGoal}
             // purpose={purpose}
