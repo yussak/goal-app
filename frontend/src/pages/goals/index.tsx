@@ -21,6 +21,7 @@ export default function Goals() {
     smartRelevant: "",
     smartTimeBound: "",
     file: null,
+    imageURL: null,
   });
 
   const handleSetGoalData = <K extends keyof GoalFormData>(
