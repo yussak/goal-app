@@ -31,7 +31,7 @@ func FetchUserGoals(c *gin.Context) {
 
 	for rows.Next() {
 		var goal model.Goal
-		err = rows.Scan(&goal.ID, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
+		err = rows.Scan(&goal.ID, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt, &goal.Specific, &goal.Measurable, &goal.Achievable, &goal.Relevant, &goal.TimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -140,7 +140,7 @@ func FetchGoalDetails(c *gin.Context) {
 	row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
 
 	var goal model.Goal
-	err := row.Scan(&goal.ID, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
+	err := row.Scan(&goal.ID, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt, &goal.Specific, &goal.Measurable, &goal.Achievable, &goal.Relevant, &goal.TimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": "No goal with the provided ID."})
@@ -187,7 +187,7 @@ func EditGoal(c *gin.Context) {
 
 		row := db.DB.QueryRow("SELECT id, user_id, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase FROM goals WHERE id = ?", id)
 		var goal model.Goal
-		err = row.Scan(&goal.ID, &goal.UserID, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase)
+		err = row.Scan(&goal.ID, &goal.UserID, &goal.Specific, &goal.Measurable, &goal.Achievable, &goal.Relevant, &goal.TimeBound, &goal.Purpose, &goal.Loss, &goal.Phase)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -212,7 +212,7 @@ func EditGoal(c *gin.Context) {
 
 		row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
 		var goal model.Goal
-		err = row.Scan(&goal.ID, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
+		err = row.Scan(&goal.ID, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt, &goal.Specific, &goal.Measurable, &goal.Achievable, &goal.Relevant, &goal.TimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
