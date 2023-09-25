@@ -185,9 +185,9 @@ func EditGoal(c *gin.Context) {
 			return
 		}
 
-		row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
+		row := db.DB.QueryRow("SELECT id, user_id, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase FROM goals WHERE id = ?", id)
 		var goal model.Goal
-		err = row.Scan(&goal.ID, &goal.UserID, &goal.CreatedAt, &goal.UpdatedAt, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
+		err = row.Scan(&goal.ID, &goal.UserID, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
