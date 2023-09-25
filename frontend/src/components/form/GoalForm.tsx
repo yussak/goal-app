@@ -11,11 +11,11 @@ type GoalFormProps = {
   goalData: {
     purpose: string;
     loss: string;
-    Specific: string;
-    Measurable: string;
-    Achievable: string;
-    Relevant: string;
-    TimeBound: string;
+    specific: string;
+    measurable: string;
+    achievable: string;
+    relevant: string;
+    timeBound: string;
   };
   inputRef: RefObject<HTMLInputElement>;
 };
@@ -37,29 +37,29 @@ const GoalForm = ({
         />
         <p>それをSMARTに書きましょう（必須）</p>
         <TextField
-          label="Specific"
-          value={goalData.Specific}
-          onChange={(e) => SetGoalData("Specific", e.target.value)}
+          label="specific"
+          value={goalData.specific}
+          onChange={(e) => SetGoalData("specific", e.target.value)}
         />
         <TextField
-          label="Measurable"
-          value={goalData.Measurable}
-          onChange={(e) => SetGoalData("Measurable", e.target.value)}
+          label="measurable"
+          value={goalData.measurable}
+          onChange={(e) => SetGoalData("measurable", e.target.value)}
         />
         <TextField
-          label="smartAchievable"
-          value={goalData.Achievable}
-          onChange={(e) => SetGoalData("Achievable", e.target.value)}
+          label="smartachievable"
+          value={goalData.achievable}
+          onChange={(e) => SetGoalData("achievable", e.target.value)}
         />
         <TextField
-          label="Relevant"
-          value={goalData.Relevant}
-          onChange={(e) => SetGoalData("Relevant", e.target.value)}
+          label="relevant"
+          value={goalData.relevant}
+          onChange={(e) => SetGoalData("relevant", e.target.value)}
         />
         <TextField
-          label="TimeBound"
-          value={goalData.TimeBound}
-          onChange={(e) => SetGoalData("TimeBound", e.target.value)}
+          label="timeBound"
+          value={goalData.timeBound}
+          onChange={(e) => SetGoalData("timeBound", e.target.value)}
         />
         <p>やらないとどうなるかを書いてみましょう</p>
         <TextField

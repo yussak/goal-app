@@ -24,11 +24,11 @@ export type Goal = {
 
 // フォーム用に用意した方がいい
 export type GoalFormData = {
-  Specific: string;
-  Measurable: string;
-  Achievable: string;
-  Relevant: string;
-  TimeBound: string;
+  specific: string;
+  measurable: string;
+  achievable: string;
+  relevant: string;
+  timeBound: string;
   purpose: string;
   loss: string;
   file: File | null;

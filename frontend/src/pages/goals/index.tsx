@@ -15,11 +15,11 @@ export default function Goals() {
   const [goalData, SetGoalData] = useState<GoalFormData>({
     purpose: "",
     loss: "",
-    Specific: "",
-    Measurable: "",
-    Achievable: "",
-    Relevant: "",
-    TimeBound: "",
+    specific: "",
+    measurable: "",
+    achievable: "",
+    relevant: "",
+    timeBound: "",
     file: null,
     imageURL: null,
   });
@@ -49,11 +49,11 @@ export default function Goals() {
     }
     formData.append("purpose", goalData.purpose);
     formData.append("loss", goalData.loss);
-    formData.append("Specific", goalData.Specific);
-    formData.append("Measurable", goalData.Measurable);
-    formData.append("Achievable", goalData.Achievable);
-    formData.append("Relevant", goalData.Relevant);
-    formData.append("TimeBound", goalData.TimeBound);
+    formData.append("specific", goalData.specific);
+    formData.append("measurable", goalData.measurable);
+    formData.append("achievable", goalData.achievable);
+    formData.append("relevant", goalData.relevant);
+    formData.append("timeBound", goalData.timeBound);
     if (session?.user) {
       formData.append("user_id", session?.user.id);
     }

@@ -68,11 +68,11 @@ func AddGoal(c *gin.Context) {
 	// Parse form values
 	purpose, purposeOk := c.Request.PostForm["purpose"]
 	loss, lossOk := c.Request.PostForm["loss"]
-	Specific, SpecificOk := c.Request.PostForm["Specific"]
-	Measurable, MeasurableOk := c.Request.PostForm["Measurable"]
-	Achievable, AchievableOk := c.Request.PostForm["Achievable"]
-	Relevant, RelevantOk := c.Request.PostForm["Relevant"]
-	TimeBound, TimeBoundOk := c.Request.PostForm["TimeBound"]
+	Specific, SpecificOk := c.Request.PostForm["specific"]
+	Measurable, MeasurableOk := c.Request.PostForm["measurable"]
+	Achievable, AchievableOk := c.Request.PostForm["achievable"]
+	Relevant, RelevantOk := c.Request.PostForm["relevant"]
+	TimeBound, TimeBoundOk := c.Request.PostForm["timeBound"]
 	userID, userIDOk := c.Request.PostForm["user_id"]
 
 	if !purposeOk || !lossOk || !SpecificOk || !MeasurableOk || !AchievableOk || !RelevantOk || !TimeBoundOk || !userIDOk {
@@ -82,11 +82,11 @@ func AddGoal(c *gin.Context) {
 
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
-		sql := `INSERT INTO goals(id, user_id, image_url, specific, measurable, achievable, relevant, time_bound, purpose, loss, phase, progress) VALUES(?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-		_, execErr := db.DB.Exec(sql, req.ID, userID[0], Specific[0], Measurable[0], Achievable[0], Relevant[0], TimeBound[0], purpose[0], loss[0], "予定", 0)
+		sql := `INSERT INTO goals(id, user_id, specific, measurable, achievable, relevant, time_bound, purpose, loss) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`
+		_, execErr := db.DB.Exec(sql, req.ID, userID[0], Specific[0], Measurable[0], Achievable[0], Relevant[0], TimeBound[0], purpose[0], loss[0])
 
 		if execErr != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"eeeerror": err.Error()})
 			return
 		}
 		c.JSON(http.StatusOK, req)
@@ -94,7 +94,7 @@ func AddGoal(c *gin.Context) {
 	} else {
 		imageUrl, err := utils.UploadToS3(file, header)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"erroｇｇr": err.Error()})
 			return
 		}
 
@@ -181,7 +181,7 @@ func EditGoal(c *gin.Context) {
 		_, execErr := db.DB.Exec(sql, Specific[0], Measurable[0], Achievable[0], Relevant[0], TimeBound[0], purpose[0], loss[0], id)
 
 		if execErr != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"erroaar": err.Error()})
 			return
 		}
 
