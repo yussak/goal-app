@@ -3,6 +3,11 @@
 .DS_Store
 
 frontend/node_modules
+.next
+.eslintrc.json
+cypress
+
+backend/tmp
 
 .github
 
