@@ -11,11 +11,11 @@ type GoalFormProps = {
   goalData: {
     purpose: string;
     loss: string;
-    smartSpecific: string;
-    smartMeasurable: string;
-    smartAchievable: string;
-    smartRelevant: string;
-    smartTimeBound: string;
+    Specific: string;
+    Measurable: string;
+    Achievable: string;
+    Relevant: string;
+    TimeBound: string;
   };
   inputRef: RefObject<HTMLInputElement>;
 };
@@ -37,29 +37,29 @@ const GoalForm = ({
         />
         <p>それをSMARTに書きましょう（必須）</p>
         <TextField
-          label="smartSpecific"
-          value={goalData.smartSpecific}
-          onChange={(e) => SetGoalData("smartSpecific", e.target.value)}
+          label="Specific"
+          value={goalData.Specific}
+          onChange={(e) => SetGoalData("Specific", e.target.value)}
         />
         <TextField
-          label="smartMeasurable"
-          value={goalData.smartMeasurable}
-          onChange={(e) => SetGoalData("smartMeasurable", e.target.value)}
+          label="Measurable"
+          value={goalData.Measurable}
+          onChange={(e) => SetGoalData("Measurable", e.target.value)}
         />
         <TextField
           label="smartAchievable"
-          value={goalData.smartAchievable}
-          onChange={(e) => SetGoalData("smartAchievable", e.target.value)}
+          value={goalData.Achievable}
+          onChange={(e) => SetGoalData("Achievable", e.target.value)}
         />
         <TextField
-          label="smartRelevant"
-          value={goalData.smartRelevant}
-          onChange={(e) => SetGoalData("smartRelevant", e.target.value)}
+          label="Relevant"
+          value={goalData.Relevant}
+          onChange={(e) => SetGoalData("Relevant", e.target.value)}
         />
         <TextField
-          label="smartTimeBound"
-          value={goalData.smartTimeBound}
-          onChange={(e) => SetGoalData("smartTimeBound", e.target.value)}
+          label="TimeBound"
+          value={goalData.TimeBound}
+          onChange={(e) => SetGoalData("TimeBound", e.target.value)}
         />
         <p>やらないとどうなるかを書いてみましょう</p>
         <TextField

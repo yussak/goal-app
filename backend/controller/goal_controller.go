@@ -68,22 +68,22 @@ func AddGoal(c *gin.Context) {
 	// Parse form values
 	purpose, purposeOk := c.Request.PostForm["purpose"]
 	loss, lossOk := c.Request.PostForm["loss"]
-	smartSpecific, smartSpecificOk := c.Request.PostForm["smartSpecific"]
-	smartMeasurable, smartMeasurableOk := c.Request.PostForm["smartMeasurable"]
-	smartAchievable, smartAchievableOk := c.Request.PostForm["smartAchievable"]
-	smartRelevant, smartRelevantOk := c.Request.PostForm["smartRelevant"]
-	smartTimeBound, smartTimeBoundOk := c.Request.PostForm["smartTimeBound"]
+	Specific, SpecificOk := c.Request.PostForm["Specific"]
+	Measurable, MeasurableOk := c.Request.PostForm["Measurable"]
+	Achievable, AchievableOk := c.Request.PostForm["Achievable"]
+	Relevant, RelevantOk := c.Request.PostForm["Relevant"]
+	TimeBound, TimeBoundOk := c.Request.PostForm["TimeBound"]
 	userID, userIDOk := c.Request.PostForm["user_id"]
 
-	if !purposeOk || !lossOk || !smartSpecificOk || !smartMeasurableOk || !smartAchievableOk || !smartRelevantOk || !smartTimeBoundOk || !userIDOk {
+	if !purposeOk || !lossOk || !SpecificOk || !MeasurableOk || !AchievableOk || !RelevantOk || !TimeBoundOk || !userIDOk {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
 		return
 	}
 
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
-		sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-		_, execErr := db.DB.Exec(sql, req.ID, userID[0], smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
+		sql := `INSERT INTO goals(id, user_id, image_url, specific, measurable, achievable, relevant, time_bound, purpose, loss, phase, progress) VALUES(?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+		_, execErr := db.DB.Exec(sql, req.ID, userID[0], Specific[0], Measurable[0], Achievable[0], Relevant[0], TimeBound[0], purpose[0], loss[0], "予定", 0)
 
 		if execErr != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -98,8 +98,8 @@ func AddGoal(c *gin.Context) {
 			return
 		}
 
-		sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-		_, err = db.DB.Exec(sql, req.ID, userID[0], imageUrl, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
+		sql := `INSERT INTO goals(id, user_id, image_url, specific, measurable, achievable, relevant, time_bound, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+		_, err = db.DB.Exec(sql, req.ID, userID[0], imageUrl, Specific[0], Measurable[0], Achievable[0], Relevant[0], TimeBound[0], purpose[0], loss[0], "予定", 0)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -165,27 +165,27 @@ func EditGoal(c *gin.Context) {
 
 	purpose, purposeOk := c.Request.PostForm["purpose"]
 	loss, lossOk := c.Request.PostForm["loss"]
-	smartSpecific, smartSpecificOk := c.Request.PostForm["smartSpecific"]
-	smartMeasurable, smartMeasurableOk := c.Request.PostForm["smartMeasurable"]
-	smartAchievable, smartAchievableOk := c.Request.PostForm["smartAchievable"]
-	smartRelevant, smartRelevantOk := c.Request.PostForm["smartRelevant"]
-	smartTimeBound, smartTimeBoundOk := c.Request.PostForm["smartTimeBound"]
+	Specific, SpecificOk := c.Request.PostForm["Specific"]
+	Measurable, MeasurableOk := c.Request.PostForm["Measurable"]
+	Achievable, AchievableOk := c.Request.PostForm["Achievable"]
+	Relevant, RelevantOk := c.Request.PostForm["Relevant"]
+	TimeBound, TimeBoundOk := c.Request.PostForm["TimeBound"]
 
-	if !purposeOk || !lossOk || !smartSpecificOk || !smartMeasurableOk || !smartAchievableOk || !smartRelevantOk || !smartTimeBoundOk {
+	if !purposeOk || !lossOk || !SpecificOk || !MeasurableOk || !AchievableOk || !RelevantOk || !TimeBoundOk {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
 		return
 	}
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
-		sql := `UPDATE goals SET smart_specific = ?, smart_measurable = ?, smart_achievable = ?, smart_relevant = ?, smart_time_bound = ?, purpose = ?, loss = ? WHERE id = ?`
-		_, execErr := db.DB.Exec(sql, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], id)
+		sql := `UPDATE goals SET specific = ?, measurable = ?, achievable = ?, relevant = ?, time_bound = ?, purpose = ?, loss = ? WHERE id = ?`
+		_, execErr := db.DB.Exec(sql, Specific[0], Measurable[0], Achievable[0], Relevant[0], TimeBound[0], purpose[0], loss[0], id)
 
 		if execErr != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		row := db.DB.QueryRow("SELECT id, user_id, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase FROM goals WHERE id = ?", id)
+		row := db.DB.QueryRow("SELECT id, user_id, specific, measurable, achievable, relevant, time_bound, purpose, loss, phase FROM goals WHERE id = ?", id)
 		var goal model.Goal
 		err = row.Scan(&goal.ID, &goal.UserID, &goal.Specific, &goal.Measurable, &goal.Achievable, &goal.Relevant, &goal.TimeBound, &goal.Purpose, &goal.Loss, &goal.Phase)
 		if err != nil {
@@ -202,8 +202,8 @@ func EditGoal(c *gin.Context) {
 			return
 		}
 
-		sql := `UPDATE goals SET image_url = ?, smart_specific = ?, smart_measurable = ?, smart_achievable = ?, smart_relevant = ?, smart_time_bound = ?, purpose = ?, loss = ? WHERE id = ?`
-		_, err = db.DB.Exec(sql, imageUrl, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], id)
+		sql := `UPDATE goals SET image_url = ?, specific = ?, measurable = ?, achievable = ?, relevant = ?, time_bound = ?, purpose = ?, loss = ? WHERE id = ?`
+		_, err = db.DB.Exec(sql, imageUrl, Specific[0], Measurable[0], Achievable[0], Relevant[0], TimeBound[0], purpose[0], loss[0], id)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

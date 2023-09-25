@@ -5,18 +5,18 @@ export type User = {
 };
 
 // file追加した方がよさそう
-// smart分をキャメルに変えた方がよさそう
+// 分をキャメルに変えた方がよさそう
 export type Goal = {
   id: string;
   user_id: string;
   image_url: string;
   CreatedAt: Date;
   UpdatedAt: Date;
-  smart_specific: string;
-  smart_measurable: string;
-  smart_achievable: string;
-  smart_relevant: string;
-  smart_time_bound: string;
+  specific: string;
+  measurable: string;
+  achievable: string;
+  relevant: string;
+  time_bound: string;
   purpose: string;
   loss: string;
   progress: number;
@@ -24,11 +24,11 @@ export type Goal = {
 
 // フォーム用に用意した方がいい
 export type GoalFormData = {
-  smartSpecific: string;
-  smartMeasurable: string;
-  smartAchievable: string;
-  smartRelevant: string;
-  smartTimeBound: string;
+  Specific: string;
+  Measurable: string;
+  Achievable: string;
+  Relevant: string;
+  TimeBound: string;
   purpose: string;
   loss: string;
   file: File | null;
