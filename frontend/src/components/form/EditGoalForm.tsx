@@ -11,11 +11,11 @@ type EditGoalFormProps = {
   goalData: {
     purpose: string;
     loss: string;
-    smartSpecific: string;
-    smartMeasurable: string;
-    smartAchievable: string;
-    smartRelevant: string;
-    smartTimeBound: string;
+    specific: string;
+    measurable: string;
+    achievable: string;
+    relevant: string;
+    timeBound: string;
     file: File | null;
     imageURL: string | null;
   };
@@ -41,29 +41,29 @@ const EditGoalForm = ({
           onChange={(e) => SetGoalData("loss", e.target.value)}
         />
         <TextField
-          label="smartSpecific"
-          value={goalData.smartSpecific}
-          onChange={(e) => SetGoalData("smartSpecific", e.target.value)}
+          label="specific"
+          value={goalData.specific}
+          onChange={(e) => SetGoalData("specific", e.target.value)}
         />
         <TextField
-          label="smartMeasurable"
-          value={goalData.smartMeasurable}
-          onChange={(e) => SetGoalData("smartMeasurable", e.target.value)}
+          label="measurable"
+          value={goalData.measurable}
+          onChange={(e) => SetGoalData("measurable", e.target.value)}
         />
         <TextField
-          label="smartAchievable"
-          value={goalData.smartAchievable}
-          onChange={(e) => SetGoalData("smartAchievable", e.target.value)}
+          label="achievable"
+          value={goalData.achievable}
+          onChange={(e) => SetGoalData("achievable", e.target.value)}
         />
         <TextField
-          label="smartRelevant"
-          value={goalData.smartRelevant}
-          onChange={(e) => SetGoalData("smartRelevant", e.target.value)}
+          label="relevant"
+          value={goalData.relevant}
+          onChange={(e) => SetGoalData("relevant", e.target.value)}
         />
         <TextField
-          label="smartTimeBound"
-          value={goalData.smartTimeBound}
-          onChange={(e) => SetGoalData("smartTimeBound", e.target.value)}
+          label="timeBound"
+          value={goalData.timeBound}
+          onChange={(e) => SetGoalData("timeBound", e.target.value)}
         />
         {goalData.imageURL ? (
           <>
