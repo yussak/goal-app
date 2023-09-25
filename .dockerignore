@@ -1,6 +1,8 @@
 .git
-
 .DS_Store
+.vscode
+.github
+.gitignore
 
 frontend/node_modules
 .next
@@ -9,15 +11,9 @@ cypress
 
 backend/tmp
 
-.github
-
-.vscode
-
 design
 
 terraform
-
-.gitignore
 
 compose.yaml
 
