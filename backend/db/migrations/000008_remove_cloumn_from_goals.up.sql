@@ -1,3 +1,0 @@
-ALTER TABLE goals
-DROP COLUMN title,
-DROP COLUMN text;
