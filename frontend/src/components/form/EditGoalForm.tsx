@@ -7,7 +7,6 @@ type EditGoalFormProps = {
     value: GoalFormData[K]
   ) => void;
   editGoal: () => void;
-  deleteGoalImage: () => void;
   goalData: {
     purpose: string;
     loss: string;

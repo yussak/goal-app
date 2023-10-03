@@ -17,8 +17,6 @@ export default function EditGoal() {
     smartAchievable: "",
     smartRelevant: "",
     smartTimeBound: "",
-    file: null,
-    imageURL: null,
   });
 
   const handleSetGoalData = <K extends keyof GoalFormData>(
@@ -49,7 +47,6 @@ export default function EditGoal() {
         smartAchievable: data.smart_achievable,
         smartRelevant: data.smart_relevant,
         smartTimeBound: data.smart_time_bound,
-        imageURL: data.image_url,
       });
     } catch (error) {
       console.error(error);
@@ -58,9 +55,6 @@ export default function EditGoal() {
 
   const editGoal = async () => {
     const formData = new FormData();
-    if (goalData.file !== null) {
-      formData.append("image", goalData.file);
-    }
     formData.append("purpose", goalData.purpose);
     formData.append("loss", goalData.loss);
     formData.append("smartSpecific", goalData.smartSpecific);
@@ -82,22 +76,12 @@ export default function EditGoal() {
     }
   };
 
-  const deleteGoalImage = async () => {
-    try {
-      await axios.delete(`/goal/${id}/image`);
-      router.push(`/goals/${id}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <>
       <h2>目標編集</h2>
 
       <EditGoalForm
         editGoal={editGoal}
-        deleteGoalImage={deleteGoalImage}
         SetGoalData={handleSetGoalData}
         goalData={goalData}
       />
