@@ -7,7 +7,6 @@ type EditGoalFormProps = {
     value: GoalFormData[K]
   ) => void;
   editGoal: () => void;
-  deleteGoalImage: () => void;
   goalData: {
     purpose: string;
     loss: string;
@@ -16,8 +15,6 @@ type EditGoalFormProps = {
     smartAchievable: string;
     smartRelevant: string;
     smartTimeBound: string;
-    file: File | null;
-    imageURL: string | null;
   };
 };
 
@@ -25,7 +22,6 @@ const EditGoalForm = ({
   goalData,
   SetGoalData,
   editGoal,
-  deleteGoalImage,
 }: EditGoalFormProps) => {
   return (
     <Container sx={{ pt: 3 }}>
@@ -64,23 +60,6 @@ const EditGoalForm = ({
           label="smartTimeBound"
           value={goalData.smartTimeBound}
           onChange={(e) => SetGoalData("smartTimeBound", e.target.value)}
-        />
-        {goalData.imageURL ? (
-          <>
-            <p>画像あり（デバッグ用）</p>
-            <button onClick={deleteGoalImage}>画像削除</button>
-            <img className="image_box" src={goalData.imageURL} alt="asdf" />
-          </>
-        ) : (
-          <p>no image（デバッグ用）</p>
-        )}
-        <input
-          type="file"
-          onChange={(e) => {
-            if (e.target.files) {
-              SetGoalData("file", e.target.files[0]);
-            }
-          }}
         />
         <Button onClick={editGoal} variant="contained">
           更新
