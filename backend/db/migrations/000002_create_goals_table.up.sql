@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS goals (
   id varchar(26) NOT NULL PRIMARY KEY,
+  user_id varchar(26) NOT NULL,
   smart_specific varchar(50) NOT NULL,
   smart_measurable varchar(50) NOT NULL,
   smart_achievable varchar(50) NOT NULL,
