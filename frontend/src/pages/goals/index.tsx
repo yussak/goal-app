@@ -60,8 +60,6 @@ export default function Goals() {
       // TODO:フォームリセットしたい→地味に今までと違うやり方必要そうなので調べる
       // setTitle("");
       // setText("");
-      // これがないとフォームはリセットできてても前のgoalの画像が次のgoalにも表示されてしまう;
-      // setFile(null);
     } catch (error) {
       console.error(error);
     }
