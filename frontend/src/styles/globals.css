@@ -8,12 +8,6 @@
   display: flex;
 }
 
-/* 画像表示部分（仮なので要調整） */
-.image_box {
-  width: 400px;
-  height: 400px;
-}
-
 .goal-list {
   border-bottom: 1px solid black;
 }
