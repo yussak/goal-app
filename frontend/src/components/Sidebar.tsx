@@ -10,12 +10,17 @@ export default function Sidebar() {
     <ul>
       {session?.user ? (
         <>
-          {/* ログイン時のみ表示 */}
-          <p>ログイン済み（デバッグ用）</p>
-          {/* ログアウト時にログイン画面にリダイレクト */}
-          <button onClick={() => signOut({ callbackUrl: "/auth/login" })}>
-            ログアウト
-          </button>
+          <li>
+            {/* ログイン時のみ表示 */}
+            <p>ログイン済み（デバッグ用）</p>
+            {/* ログアウト時にログイン画面にリダイレクト */}
+            <button onClick={() => signOut({ callbackUrl: "/auth/login" })}>
+              ログアウト
+            </button>
+          </li>
+          <li>
+            <Link href="/goals/create">create goal</Link>
+          </li>
         </>
       ) : (
         <>
