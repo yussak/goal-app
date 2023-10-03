@@ -1,2 +1,0 @@
-ALTER TABLE goals DROP FOREIGN KEY fk_user_id;
-ALTER TABLE goals DROP COLUMN user_id;
