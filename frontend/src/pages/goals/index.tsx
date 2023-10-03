@@ -20,8 +20,6 @@ export default function Goals() {
     smartAchievable: "",
     smartRelevant: "",
     smartTimeBound: "",
-    file: null,
-    // imageURL: null,
   });
 
   const handleSetGoalData = <K extends keyof GoalFormData>(
@@ -39,14 +37,9 @@ export default function Goals() {
   if (error) {
     console.error(error);
   }
-  // ファイルリセット
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const addGoal = async () => {
     const formData = new FormData();
-    // if (goalData.file !== null) {
-    //   formData.append("image", goalData.file);
-    // }
     formData.append("purpose", goalData.purpose);
     formData.append("loss", goalData.loss);
     formData.append("smartSpecific", goalData.smartSpecific);
@@ -69,10 +62,6 @@ export default function Goals() {
       // setText("");
       // これがないとフォームはリセットできてても前のgoalの画像が次のgoalにも表示されてしまう;
       // setFile(null);
-      // fileのリセット
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
     } catch (error) {
       console.error(error);
     }
@@ -97,7 +86,6 @@ export default function Goals() {
             SetGoalData={handleSetGoalData}
             goalData={goalData}
             addGoal={addGoal}
-            // inputRef={inputRef}
           />
         </>
       )}

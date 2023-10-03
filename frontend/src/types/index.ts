@@ -4,7 +4,6 @@ export type User = {
   name: string;
 };
 
-// file追加した方がよさそう
 // smart分をキャメルに変えた方がよさそう
 export type Goal = {
   id: string;
