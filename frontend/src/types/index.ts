@@ -9,7 +9,7 @@ export type User = {
 export type Goal = {
   id: string;
   user_id: string;
-  image_url: string;
+  // image_url: string;
   CreatedAt: Date;
   UpdatedAt: Date;
   smart_specific: string;
@@ -32,7 +32,7 @@ export type GoalFormData = {
   purpose: string;
   loss: string;
   file: File | null;
-  imageURL: string | null;
+  // imageURL: string | null;
 };
 
 export type GoalComment = {

@@ -21,7 +21,7 @@ export default function Goals() {
     smartRelevant: "",
     smartTimeBound: "",
     file: null,
-    imageURL: null,
+    // imageURL: null,
   });
 
   const handleSetGoalData = <K extends keyof GoalFormData>(
@@ -44,9 +44,9 @@ export default function Goals() {
 
   const addGoal = async () => {
     const formData = new FormData();
-    if (goalData.file !== null) {
-      formData.append("image", goalData.file);
-    }
+    // if (goalData.file !== null) {
+    //   formData.append("image", goalData.file);
+    // }
     formData.append("purpose", goalData.purpose);
     formData.append("loss", goalData.loss);
     formData.append("smartSpecific", goalData.smartSpecific);
@@ -97,7 +97,7 @@ export default function Goals() {
             SetGoalData={handleSetGoalData}
             goalData={goalData}
             addGoal={addGoal}
-            inputRef={inputRef}
+            // inputRef={inputRef}
           />
         </>
       )}

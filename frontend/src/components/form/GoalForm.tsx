@@ -1,6 +1,6 @@
 import { GoalFormData } from "@/types";
 import { Button, Container, Stack, TextField } from "@mui/material";
-import { RefObject } from "react";
+// import { RefObject } from "react";
 
 type GoalFormProps = {
   SetGoalData: <K extends keyof GoalFormData>(
@@ -17,15 +17,15 @@ type GoalFormProps = {
     smartRelevant: string;
     smartTimeBound: string;
   };
-  inputRef: RefObject<HTMLInputElement>;
+  // inputRef: RefObject<HTMLInputElement>;
 };
 
 const GoalForm = ({
   goalData,
   SetGoalData,
   addGoal,
-  inputRef,
-}: GoalFormProps) => {
+}: // inputRef,
+GoalFormProps) => {
   return (
     <Container sx={{ pt: 3 }}>
       <Stack spacing={2}>
@@ -67,7 +67,7 @@ const GoalForm = ({
           value={goalData.loss}
           onChange={(e) => SetGoalData("loss", e.target.value)}
         />
-        <input
+        {/* <input
           type="file"
           ref={inputRef}
           onChange={(e) => {
@@ -75,7 +75,7 @@ const GoalForm = ({
               SetGoalData("file", e.target.files[0]);
             }
           }}
-        />
+        /> */}
         <Button onClick={addGoal} variant="contained">
           追加
         </Button>

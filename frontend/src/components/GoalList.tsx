@@ -29,12 +29,12 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>user_id（デバッグ用）: {goal.user_id}</p>
             <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
             <p>UpdatedAt: {goal.UpdatedAt.toLocaleString()}</p>
-            {goal.image_url && (
+            {/* {goal.image_url && (
               <>
                 <p>画像あり（デバッグ用）</p>
                 <img src={goal.image_url} alt="asdf" />
               </>
-            )}
+            )} */}
             <p>
               <Link href={`/goals/${goal.id}`}>detail</Link>
             </p>

@@ -79,36 +79,46 @@ func AddGoal(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
 		return
 	}
+	sql := `INSERT INTO goals(id, user_id, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	_, execErr := db.DB.Exec(sql, req.ID, userID[0], smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
 
-	file, header, err := c.Request.FormFile("image")
-	if err != nil {
-		sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-		_, execErr := db.DB.Exec(sql, req.ID, userID[0], smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
-
-		if execErr != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, req)
+	if execErr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
-	} else {
-		imageUrl, err := utils.UploadToS3(file, header)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-
-		sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-		_, err = db.DB.Exec(sql, req.ID, userID[0], imageUrl, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
-
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-
-		req.ImageURL = &imageUrl
 	}
 	c.JSON(http.StatusOK, req)
+	return
+
+	// 画像機能一時廃止したのでコメントアウト（戻す予定はあるので残しておく
+	// file, header, err := c.Request.FormFile("image")
+	// if err != nil {
+	// 	sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	// 	_, execErr := db.DB.Exec(sql, req.ID, userID[0], smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
+
+	// 	if execErr != nil {
+	// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// 		return
+	// 	}
+	// 	c.JSON(http.StatusOK, req)
+	// 	return
+	// } else {
+	// 	imageUrl, err := utils.UploadToS3(file, header)
+	// 	if err != nil {
+	// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// 		return
+	// 	}
+
+	// 	sql := `INSERT INTO goals(id, user_id, image_url, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	// 	_, err = db.DB.Exec(sql, req.ID, userID[0], imageUrl, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
+
+	// 	if err != nil {
+	// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// 		return
+	// 	}
+
+	// 	req.ImageURL = &imageUrl
+	// }
+	// c.JSON(http.StatusOK, req)
 }
 
 func DeleteGoal(c *gin.Context) {
