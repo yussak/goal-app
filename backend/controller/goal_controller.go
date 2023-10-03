@@ -31,7 +31,7 @@ func FetchUserGoals(c *gin.Context) {
 
 	for rows.Next() {
 		var goal model.Goal
-		err = rows.Scan(&goal.ID, &goal.UserID, &goal.CreatedAt, &goal.UpdatedAt, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
+		err = rows.Scan(&goal.ID, &goal.UserID, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
