@@ -150,7 +150,7 @@ func FetchGoalDetails(c *gin.Context) {
 	row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
 
 	var goal model.Goal
-	err := row.Scan(&goal.ID, &goal.UserID, &goal.ImageURL, &goal.CreatedAt, &goal.UpdatedAt, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress)
+	err := row.Scan(&goal.ID, &goal.UserID, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": "No goal with the provided ID."})
