@@ -1,5 +1,3 @@
-import { useRef, useState } from "react";
-import GoalForm from "@/components/form/GoalForm";
 import GoalList from "@/components/GoalList";
 import { useTranslation } from "next-i18next";
 import useSWR, { mutate } from "swr";
@@ -7,27 +5,9 @@ import { axios } from "@/utils/axios";
 import { fetcher } from "@/utils/fetcher";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { GoalFormData } from "@/types";
 
 export default function Goals() {
   const { t } = useTranslation();
-
-  const [goalData, SetGoalData] = useState<GoalFormData>({
-    purpose: "",
-    loss: "",
-    smartSpecific: "",
-    smartMeasurable: "",
-    smartAchievable: "",
-    smartRelevant: "",
-    smartTimeBound: "",
-  });
-
-  const handleSetGoalData = <K extends keyof GoalFormData>(
-    key: K,
-    value: GoalFormData[K]
-  ) => {
-    SetGoalData((prev) => ({ ...prev, [key]: value }));
-  };
 
   const { data: session } = useSession();
 
@@ -37,33 +17,6 @@ export default function Goals() {
   if (error) {
     console.error(error);
   }
-
-  const addGoal = async () => {
-    const formData = new FormData();
-    formData.append("purpose", goalData.purpose);
-    formData.append("loss", goalData.loss);
-    formData.append("smartSpecific", goalData.smartSpecific);
-    formData.append("smartMeasurable", goalData.smartMeasurable);
-    formData.append("smartAchievable", goalData.smartAchievable);
-    formData.append("smartRelevant", goalData.smartRelevant);
-    formData.append("smartTimeBound", goalData.smartTimeBound);
-    if (session?.user) {
-      formData.append("user_id", session?.user.id);
-    }
-    try {
-      // TODO:useSWRMutationで書き換えられそう？調べる
-      await axios.post("/goal", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      // useSWRで書き換える
-      mutate(`/${user_id}/goals`);
-      // TODO:フォームリセットしたい→地味に今までと違うやり方必要そうなので調べる
-      // setTitle("");
-      // setText("");
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const deleteGoal = async (id: string) => {
     try {
@@ -77,16 +30,6 @@ export default function Goals() {
   return (
     <>
       <h2>{t("goal_index.title")}</h2>
-      {session?.user && (
-        <>
-          debug用 id: {session?.user.id}
-          <GoalForm
-            SetGoalData={handleSetGoalData}
-            goalData={goalData}
-            addGoal={addGoal}
-          />
-        </>
-      )}
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
