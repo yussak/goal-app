@@ -2,10 +2,13 @@ import GoalForm from "@/components/form/GoalForm";
 import { GoalFormData } from "@/types";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { mutate } from "swr";
 
 export default function createGoal() {
+  const router = useRouter();
+
   const [goalData, SetGoalData] = useState<GoalFormData>({
     purpose: "",
     loss: "",
@@ -38,9 +41,13 @@ export default function createGoal() {
     }
     try {
       // TODO:useSWRMutationで書き換えられそう？調べる
-      await axios.post("/goal", formData, {
+      const res = await axios.post("/goal", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
+      const newGoalId = res.data.id;
+      router.push(`/goals/${newGoalId}`);
+
       // useSWRで書き換える
       mutate(`/${user_id}/goals`);
       // TODO:フォームリセットしたい→地味に今までと違うやり方必要そうなので調べる
