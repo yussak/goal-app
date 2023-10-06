@@ -47,12 +47,9 @@ export default function createGoal() {
 
       const newGoalId = res.data.id;
       router.push(`/goals/${newGoalId}`);
-
+      //   router.pushで移動するならフォームリセットは不要そう
       // useSWRで書き換える
       mutate(`/${user_id}/goals`);
-      // TODO:フォームリセットしたい→地味に今までと違うやり方必要そうなので調べる
-      // setTitle("");
-      // setText("");
     } catch (error) {
       console.error(error);
     }
