@@ -7,11 +7,11 @@ type Goal struct {
 	UserID          string    `json:"user_id"`
 	CreatedAt       time.Time `db:"created_at"`
 	UpdatedAt       time.Time `db:"updated_at"`
-	SmartS   string    `json:"smart_s"`
-	SmartM string    `json:"smart_m"`
-	SmartA string    `json:"smart_a"`
-	SmartR   string    `json:"smart_r"`
-	SmartT  string    `json:"smart_t"`
+	SmartS   string    `json:"smartS"`
+	SmartM string    `json:"smartM"`
+	SmartA string    `json:"smartA"`
+	SmartR   string    `json:"smartR"`
+	SmartT  string    `json:"smartT"`
 	Purpose         string    `json:"purpose"`
 	Loss            *string   `json:"loss"`
 	Phase           string    `json:"phase"`
