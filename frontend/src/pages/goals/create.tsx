@@ -30,12 +30,12 @@ export default function createGoal() {
   const addGoal = async (data: GoalFormData) => {
     const formData = new FormData();
     formData.append("purpose", data.purpose);
-    formData.append("loss", goalData.loss);
-    formData.append("smartSpecific", goalData.smartSpecific);
-    formData.append("smartMeasurable", goalData.smartMeasurable);
-    formData.append("smartAchievable", goalData.smartAchievable);
-    formData.append("smartRelevant", goalData.smartRelevant);
-    formData.append("smartTimeBound", goalData.smartTimeBound);
+    formData.append("loss", data.loss);
+    formData.append("smartSpecific", data.smartSpecific);
+    formData.append("smartMeasurable", data.smartMeasurable);
+    formData.append("smartAchievable", data.smartAchievable);
+    formData.append("smartRelevant", data.smartRelevant);
+    formData.append("smartTimeBound", data.smartTimeBound);
     if (session?.user) {
       formData.append("user_id", session?.user.id);
     }
