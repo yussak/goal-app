@@ -41,9 +41,9 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
 
   return (
     <Container sx={{ pt: 3 }}>
-      <Stack spacing={2}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <p>達成したいことを書きましょう（必須）</p>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <p>達成したいことを書きましょう（必須）</p>
+        <Stack spacing={2}>
           <TextField
             label="purpose"
             {...register("goalData.purpose", {
@@ -58,35 +58,37 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
           {errors.goalData?.purpose && (
             <span>{errors.goalData.purpose.message}</span>
           )}
-          <p>それをSMARTに書きましょう（必須）</p>
-          {smartFields.map((field) => {
-            return (
-              <>
-                <Stack spacing={2}>
-                  <TextField
-                    label={field}
-                    {...register(`goalData.${field}`, {
-                      required: "必須です",
-                      minLength: {
-                        value: 3,
-                        message: "3文字以上入力してください",
-                      },
-                      maxLength: {
-                        value: 5,
-                        message: "5文字以内で入力してください",
-                      },
-                    })}
-                    value={goalData[field]}
-                    onChange={(e) => SetGoalData(field, e.target.value)}
-                  />
-                </Stack>
-                {errors.goalData && errors.goalData[field] && (
-                  <span>{errors.goalData[field].message}</span>
-                )}
-              </>
-            );
-          })}
-          <p>やらないとどうなるかを書いてみましょう</p>
+        </Stack>
+        <p>それをSMARTに書きましょう（必須）</p>
+        {smartFields.map((field) => {
+          return (
+            <>
+              <Stack spacing={2}>
+                <TextField
+                  label={field}
+                  {...register(`goalData.${field}`, {
+                    required: "必須です",
+                    minLength: {
+                      value: 3,
+                      message: "3文字以上入力してください",
+                    },
+                    maxLength: {
+                      value: 5,
+                      message: "5文字以内で入力してください",
+                    },
+                  })}
+                  value={goalData[field]}
+                  onChange={(e) => SetGoalData(field, e.target.value)}
+                />
+              </Stack>
+              {errors.goalData && errors.goalData[field] && (
+                <span>{errors.goalData[field].message}</span>
+              )}
+            </>
+          );
+        })}
+        <p>やらないとどうなるかを書いてみましょう</p>
+        <Stack spacing={2}>
           <TextField
             label="loss"
             {...register("goalData.loss", {
@@ -100,8 +102,8 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
           <Button type="submit" variant="contained">
             追加
           </Button>
-        </form>
-      </Stack>
+        </Stack>
+      </form>
     </Container>
   );
 };
