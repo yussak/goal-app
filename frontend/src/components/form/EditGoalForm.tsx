@@ -34,6 +34,22 @@ const EditGoalForm = ({
     editGoal(data);
   };
 
+  type SmartFieldKeys = keyof {
+    smartSpecific: string;
+    smartMeasurable: string;
+    smartAchievable: string;
+    smartRelevant: string;
+    smartTimeBound: string;
+  };
+
+  const smartFields: SmartFieldKeys[] = [
+    "smartSpecific",
+    "smartMeasurable",
+    "smartAchievable",
+    "smartRelevant",
+    "smartTimeBound",
+  ];
+
   return (
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,31 +79,33 @@ const EditGoalForm = ({
           {errors.loss && (
             <span className="text-red">{errors.loss.message}</span>
           )}
-          <TextField
-            label="smartSpecific"
-            value={goalData.smartSpecific}
-            onChange={(e) => SetGoalData("smartSpecific", e.target.value)}
-          />
-          <TextField
-            label="smartMeasurable"
-            value={goalData.smartMeasurable}
-            onChange={(e) => SetGoalData("smartMeasurable", e.target.value)}
-          />
-          <TextField
-            label="smartAchievable"
-            value={goalData.smartAchievable}
-            onChange={(e) => SetGoalData("smartAchievable", e.target.value)}
-          />
-          <TextField
-            label="smartRelevant"
-            value={goalData.smartRelevant}
-            onChange={(e) => SetGoalData("smartRelevant", e.target.value)}
-          />
-          <TextField
-            label="smartTimeBound"
-            value={goalData.smartTimeBound}
-            onChange={(e) => SetGoalData("smartTimeBound", e.target.value)}
-          />
+          {smartFields.map((field, index) => {
+            return (
+              <div key={index}>
+                <Stack spacing={2}>
+                  <TextField
+                    label={field}
+                    {...register(field, {
+                      required: "必須です",
+                      minLength: {
+                        value: 3,
+                        message: "3文字以上入力してください",
+                      },
+                      maxLength: {
+                        value: 5,
+                        message: "5文字以内で入力してください",
+                      },
+                    })}
+                    value={goalData[field]}
+                    onChange={(e) => SetGoalData(field, e.target.value)}
+                  />
+                </Stack>
+                {errors[field] && (
+                  <span className="text-red">{errors[field]?.message}</span>
+                )}
+              </div>
+            );
+          })}
           <Button type="submit" variant="contained">
             更新
           </Button>
