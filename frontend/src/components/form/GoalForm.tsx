@@ -60,9 +60,9 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
           )}
         </Stack>
         <p>それをSMARTに書きましょう（必須）</p>
-        {smartFields.map((field) => {
+        {smartFields.map((field, index) => {
           return (
-            <>
+            <div key={index}>
               <Stack spacing={2}>
                 <TextField
                   label={field}
@@ -84,7 +84,7 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
               {errors.goalData && errors.goalData[field] && (
                 <span>{errors.goalData[field].message}</span>
               )}
-            </>
+            </div>
           );
         })}
         <p>やらないとどうなるかを書いてみましょう</p>
