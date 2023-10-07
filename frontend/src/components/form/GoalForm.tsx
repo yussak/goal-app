@@ -36,6 +36,7 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
       <Stack spacing={2}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <p>達成したいことを書きましょう（必須）</p>
+          {/* TODO:smart分共通化（mapとかでいけそう？ */}
           <TextField
             label="purpose"
             {...register("goalData.purpose", {
@@ -128,7 +129,6 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
           />
           {errors.goalData?.loss && <span>{errors.goalData.loss.message}</span>}
           <Button type="submit" variant="contained">
-            {/* <Button onClick={addGoal} variant="contained"> */}
             追加
           </Button>
         </form>
