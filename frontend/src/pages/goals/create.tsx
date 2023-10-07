@@ -27,9 +27,9 @@ export default function createGoal() {
   };
   const { data: session } = useSession();
 
-  const addGoal = async () => {
+  const addGoal = async (data: GoalFormData) => {
     const formData = new FormData();
-    formData.append("purpose", goalData.purpose);
+    formData.append("purpose", data.purpose);
     formData.append("loss", goalData.loss);
     formData.append("smartSpecific", goalData.smartSpecific);
     formData.append("smartMeasurable", goalData.smartMeasurable);
