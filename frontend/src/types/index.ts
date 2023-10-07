@@ -37,3 +37,20 @@ export type GoalComment = {
   title: string;
   text: string;
 };
+
+// map用に用意。配列の中身とそれぞれの型を指定
+export type SmartFieldKeys = keyof {
+  smartSpecific: string;
+  smartMeasurable: string;
+  smartAchievable: string;
+  smartRelevant: string;
+  smartTimeBound: string;
+};
+
+export const smartFields: SmartFieldKeys[] = [
+  "smartSpecific",
+  "smartMeasurable",
+  "smartAchievable",
+  "smartRelevant",
+  "smartTimeBound",
+];

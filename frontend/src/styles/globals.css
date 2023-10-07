@@ -11,3 +11,7 @@
 .goal-list {
   border-bottom: 1px solid black;
 }
+
+.text-red {
+  color: red;
+}

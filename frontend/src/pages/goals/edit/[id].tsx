@@ -53,21 +53,14 @@ export default function EditGoal() {
     }
   };
 
-  const editGoal = async () => {
-    const formData = new FormData();
-    formData.append("purpose", goalData.purpose);
-    formData.append("loss", goalData.loss);
-    formData.append("smartSpecific", goalData.smartSpecific);
-    formData.append("smartMeasurable", goalData.smartMeasurable);
-    formData.append("smartAchievable", goalData.smartAchievable);
-    formData.append("smartRelevant", goalData.smartRelevant);
-    formData.append("smartTimeBound", goalData.smartTimeBound);
-    if (session?.user?.id) {
-      formData.append("user_id", session?.user.id);
-    }
+  const editGoal = async (data: GoalFormData) => {
+    const params = {
+      ...data,
+      user_id: session?.user?.id,
+    };
 
     try {
-      await axios.put(`/goals/edit/${id}`, formData, {
+      await axios.put(`/goals/edit/${id}`, params, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       router.push(`/goals/${id}`);
