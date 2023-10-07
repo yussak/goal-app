@@ -59,6 +59,7 @@ export default function EditGoal() {
     };
 
     try {
+      // TODO:画像投稿消したのでheadersはいらないと思うので確認
       await axios.put(`/goals/edit/${id}`, params, {
         headers: { "Content-Type": "multipart/form-data" },
       });
