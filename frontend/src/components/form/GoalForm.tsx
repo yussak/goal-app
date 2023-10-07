@@ -41,6 +41,7 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
             {...register("goalData.purpose", {
               required: "必須です",
               minLength: { value: 3, message: "3文字以上入力してください" },
+              maxLength: { value: 5, message: "5文字以内で入力してください" },
             })}
             value={goalData.purpose}
             onChange={(e) => SetGoalData("purpose", e.target.value)}
