@@ -12,11 +12,11 @@ export default function createGoal() {
   const [goalData, SetGoalData] = useState<GoalFormData>({
     purpose: "",
     loss: "",
-    smartSpecific: "",
-    smartMeasurable: "",
-    smartAchievable: "",
-    smartRelevant: "",
-    smartTimeBound: "",
+    smartS: "",
+    smartM: "",
+    smartA: "",
+    smartR: "",
+    smartT: "",
   });
 
   const handleSetGoalData = <K extends keyof GoalFormData>(

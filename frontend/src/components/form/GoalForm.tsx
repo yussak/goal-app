@@ -8,14 +8,15 @@ type GoalFormProps = {
     value: GoalFormData[K]
   ) => void;
   addGoal: (data: GoalFormData) => void;
+  // TODO:ここGoalFormData読めないか確認
   goalData: {
     purpose: string;
     loss: string;
-    smartSpecific: string;
-    smartMeasurable: string;
-    smartAchievable: string;
-    smartRelevant: string;
-    smartTimeBound: string;
+    smartS: string;
+    smartM: string;
+    smartA: string;
+    smartR: string;
+    smartT: string;
   };
 };
 

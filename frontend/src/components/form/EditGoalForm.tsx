@@ -11,11 +11,11 @@ type EditGoalFormProps = {
   goalData: {
     purpose: string;
     loss: string;
-    smartSpecific: string;
-    smartMeasurable: string;
-    smartAchievable: string;
-    smartRelevant: string;
-    smartTimeBound: string;
+    smartS: string;
+    smartM: string;
+    smartA: string;
+    smartR: string;
+    smartT: string;
   };
 };
 

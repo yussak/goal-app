@@ -13,14 +13,15 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
   return goals && goals.length > 0 ? (
     <ul>
       {goals.map((goal, index) => {
+        // TODO:これいらないので消す
         const isEdited = goal.CreatedAt !== goal.UpdatedAt;
         return (
           <li key={index} className="goal-list">
-            <p>specific: {goal.smart_specific}</p>
-            <p>measurable: {goal.smart_measurable}</p>
-            <p>achievable: {goal.smart_achievable}</p>
-            <p>relevant: {goal.smart_relevant}</p>
-            <p>time_bound: {goal.smart_time_bound}</p>
+            <p>specific: {goal.smartS}</p>
+            <p>measurable: {goal.smartM}</p>
+            <p>achievable: {goal.smartA}</p>
+            <p>relevant: {goal.smartR}</p>
+            <p>time_bound: {goal.smartT}</p>
             <p>purpose: {goal.purpose}</p>
             <p>loss: {goal.loss}</p>
             <p>progress: {goal.progress}</p>
