@@ -31,13 +31,16 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
   };
   // console.log("error is", errors);
 
-  const smartFields: (
-    | "smartSpecific"
-    | "smartMeasurable"
-    | "smartAchievable"
-    | "smartRelevant"
-    | "smartTimeBound"
-  )[] = [
+  // map用に用意。配列の中身とそれぞれの型を指定
+  type SmartFieldKeys = keyof {
+    smartSpecific: string;
+    smartMeasurable: string;
+    smartAchievable: string;
+    smartRelevant: string;
+    smartTimeBound: string;
+  };
+
+  const smartFields: SmartFieldKeys[] = [
     "smartSpecific",
     "smartMeasurable",
     "smartAchievable",
