@@ -62,22 +62,24 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
           {smartFields.map((field) => {
             return (
               <>
-                <TextField
-                  label={field}
-                  {...register(`goalData.${field}`, {
-                    required: "必須です",
-                    minLength: {
-                      value: 3,
-                      message: "3文字以上入力してください",
-                    },
-                    maxLength: {
-                      value: 5,
-                      message: "5文字以内で入力してください",
-                    },
-                  })}
-                  value={goalData[field]}
-                  onChange={(e) => SetGoalData(field, e.target.value)}
-                />
+                <Stack spacing={2}>
+                  <TextField
+                    label={field}
+                    {...register(`goalData.${field}`, {
+                      required: "必須です",
+                      minLength: {
+                        value: 3,
+                        message: "3文字以上入力してください",
+                      },
+                      maxLength: {
+                        value: 5,
+                        message: "5文字以内で入力してください",
+                      },
+                    })}
+                    value={goalData[field]}
+                    onChange={(e) => SetGoalData(field, e.target.value)}
+                  />
+                </Stack>
                 {errors.goalData && errors.goalData[field] && (
                   <span>{errors.goalData[field].message}</span>
                 )}
