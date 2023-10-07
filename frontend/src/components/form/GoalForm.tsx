@@ -8,16 +8,7 @@ type GoalFormProps = {
     value: GoalFormData[K]
   ) => void;
   addGoal: (data: GoalFormData) => void;
-  // TODO:ここGoalFormData読めないか確認
-  goalData: {
-    purpose: string;
-    loss: string;
-    smartS: string;
-    smartM: string;
-    smartA: string;
-    smartR: string;
-    smartT: string;
-  };
+  goalData: GoalFormData;
 };
 
 const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
