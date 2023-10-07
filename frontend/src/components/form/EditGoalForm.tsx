@@ -8,15 +8,7 @@ type EditGoalFormProps = {
     value: GoalFormData[K]
   ) => void;
   editGoal: (data: GoalFormData) => void;
-  goalData: {
-    purpose: string;
-    loss: string;
-    smartSpecific: string;
-    smartMeasurable: string;
-    smartAchievable: string;
-    smartRelevant: string;
-    smartTimeBound: string;
-  };
+  goalData: GoalFormData;
 };
 
 const EditGoalForm = ({

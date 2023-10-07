@@ -10,11 +10,11 @@ export type Goal = {
   user_id: string;
   CreatedAt: Date;
   UpdatedAt: Date;
-  smart_specific: string;
-  smart_measurable: string;
-  smart_achievable: string;
-  smart_relevant: string;
-  smart_time_bound: string;
+  smartS: string;
+  smartM: string;
+  smartA: string;
+  smartR: string;
+  smartT: string;
   purpose: string;
   loss: string;
   progress: number;
@@ -22,11 +22,11 @@ export type Goal = {
 
 // フォーム用に用意した方がいい
 export type GoalFormData = {
-  smartSpecific: string;
-  smartMeasurable: string;
-  smartAchievable: string;
-  smartRelevant: string;
-  smartTimeBound: string;
+  smartS: string;
+  smartM: string;
+  smartA: string;
+  smartR: string;
+  smartT: string;
   purpose: string;
   loss: string;
 };
@@ -40,17 +40,17 @@ export type GoalComment = {
 
 // map用に用意。配列の中身とそれぞれの型を指定
 export type SmartFieldKeys = keyof {
-  smartSpecific: string;
-  smartMeasurable: string;
-  smartAchievable: string;
-  smartRelevant: string;
-  smartTimeBound: string;
+  smartS: string;
+  smartM: string;
+  smartA: string;
+  smartR: string;
+  smartT: string;
 };
 
 export const smartFields: SmartFieldKeys[] = [
-  "smartSpecific",
-  "smartMeasurable",
-  "smartAchievable",
-  "smartRelevant",
-  "smartTimeBound",
+  "smartS",
+  "smartM",
+  "smartA",
+  "smartR",
+  "smartT",
 ];

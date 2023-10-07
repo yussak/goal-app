@@ -30,7 +30,7 @@ func FetchUserGoals(c *gin.Context) {
 
 	for rows.Next() {
 		var goal model.Goal
-		err = rows.Scan(&goal.ID, &goal.UserID, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
+		err = rows.Scan(&goal.ID, &goal.UserID, &goal.SmartS, &goal.SmartM, &goal.SmartA, &goal.SmartR, &goal.SmartT, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -55,6 +55,7 @@ func AddGoal(c *gin.Context) {
 
 	req.ID = id.String()
 
+	// これ画像関係なら不要かもしれない
 	err = c.Request.ParseMultipartForm(10 << 20) // 10MB
 	if err != nil {
 		log.Printf("Error parsing form data: %s", err)
@@ -67,19 +68,19 @@ func AddGoal(c *gin.Context) {
 	// Parse form values
 	purpose, purposeOk := c.Request.PostForm["purpose"]
 	loss, lossOk := c.Request.PostForm["loss"]
-	smartSpecific, smartSpecificOk := c.Request.PostForm["smartSpecific"]
-	smartMeasurable, smartMeasurableOk := c.Request.PostForm["smartMeasurable"]
-	smartAchievable, smartAchievableOk := c.Request.PostForm["smartAchievable"]
-	smartRelevant, smartRelevantOk := c.Request.PostForm["smartRelevant"]
-	smartTimeBound, smartTimeBoundOk := c.Request.PostForm["smartTimeBound"]
+	smartS, smartSOk := c.Request.PostForm["smartS"]
+	smartM, smartMOk := c.Request.PostForm["smartM"]
+	smartA, smartAOk := c.Request.PostForm["smartA"]
+	smartR, smartROk := c.Request.PostForm["smartR"]
+	smartT, smartTOk := c.Request.PostForm["smartT"]
 	userID, userIDOk := c.Request.PostForm["user_id"]
 
-	if !purposeOk || !lossOk || !smartSpecificOk || !smartMeasurableOk || !smartAchievableOk || !smartRelevantOk || !smartTimeBoundOk || !userIDOk {
+	if !purposeOk || !lossOk || !smartSOk || !smartMOk || !smartAOk || !smartROk || !smartTOk || !userIDOk {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
 		return
 	}
-	sql := `INSERT INTO goals(id, user_id, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-	_, execErr := db.DB.Exec(sql, req.ID, userID[0], smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], "予定", 0)
+	sql := `INSERT INTO goals(id, user_id, smart_s, smart_m, smart_a, smart_r, smart_t, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	_, execErr := db.DB.Exec(sql, req.ID, userID[0], smartS[0], smartM[0], smartA[0], smartR[0], smartT[0], purpose[0], loss[0], "予定", 0)
 
 	if execErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -118,7 +119,7 @@ func FetchGoalDetails(c *gin.Context) {
 	row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
 
 	var goal model.Goal
-	err := row.Scan(&goal.ID, &goal.UserID, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
+	err := row.Scan(&goal.ID, &goal.UserID, &goal.SmartS, &goal.SmartM, &goal.SmartA, &goal.SmartR, &goal.SmartT, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": "No goal with the provided ID."})
@@ -143,28 +144,28 @@ func EditGoal(c *gin.Context) {
 
 	purpose, purposeOk := c.Request.PostForm["purpose"]
 	loss, lossOk := c.Request.PostForm["loss"]
-	smartSpecific, smartSpecificOk := c.Request.PostForm["smartSpecific"]
-	smartMeasurable, smartMeasurableOk := c.Request.PostForm["smartMeasurable"]
-	smartAchievable, smartAchievableOk := c.Request.PostForm["smartAchievable"]
-	smartRelevant, smartRelevantOk := c.Request.PostForm["smartRelevant"]
-	smartTimeBound, smartTimeBoundOk := c.Request.PostForm["smartTimeBound"]
+	smartS, smartSOk := c.Request.PostForm["smartS"]
+	smartM, smartMOk := c.Request.PostForm["smartM"]
+	smartA, smartAOk := c.Request.PostForm["smartA"]
+	smartR, smartROk := c.Request.PostForm["smartR"]
+	smartT, smartTOk := c.Request.PostForm["smartT"]
 
-	if !purposeOk || !lossOk || !smartSpecificOk || !smartMeasurableOk || !smartAchievableOk || !smartRelevantOk || !smartTimeBoundOk {
+	if !purposeOk || !lossOk || !smartSOk || !smartMOk || !smartAOk || !smartROk || !smartTOk {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
 		return
 	}
 
-	sql := `UPDATE goals SET smart_specific = ?, smart_measurable = ?, smart_achievable = ?, smart_relevant = ?, smart_time_bound = ?, purpose = ?, loss = ? WHERE id = ?`
-	_, execErr := db.DB.Exec(sql, smartSpecific[0], smartMeasurable[0], smartAchievable[0], smartRelevant[0], smartTimeBound[0], purpose[0], loss[0], id)
+	sql := `UPDATE goals SET smart_s = ?, smart_m = ?, smart_a = ?, smart_r = ?, smart_t = ?, purpose = ?, loss = ? WHERE id = ?`
+	_, execErr := db.DB.Exec(sql, smartS[0], smartM[0], smartA[0], smartR[0], smartT[0], purpose[0], loss[0], id)
 
 	if execErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	row := db.DB.QueryRow("SELECT id, user_id, smart_specific, smart_measurable, smart_achievable, smart_relevant, smart_time_bound, purpose, loss, phase FROM goals WHERE id = ?", id)
+	row := db.DB.QueryRow("SELECT id, user_id, smart_s, smart_m, smart_a, smart_r, smart_t, purpose, loss, phase FROM goals WHERE id = ?", id)
 	var goal model.Goal
-	err = row.Scan(&goal.ID, &goal.UserID, &goal.SmartSpecific, &goal.SmartMeasurable, &goal.SmartAchievable, &goal.SmartRelevant, &goal.SmartTimeBound, &goal.Purpose, &goal.Loss, &goal.Phase)
+	err = row.Scan(&goal.ID, &goal.UserID, &goal.SmartS, &goal.SmartM, &goal.SmartA, &goal.SmartR, &goal.SmartT, &goal.Purpose, &goal.Loss, &goal.Phase)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

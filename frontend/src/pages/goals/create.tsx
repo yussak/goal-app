@@ -12,11 +12,11 @@ export default function createGoal() {
   const [goalData, SetGoalData] = useState<GoalFormData>({
     purpose: "",
     loss: "",
-    smartSpecific: "",
-    smartMeasurable: "",
-    smartAchievable: "",
-    smartRelevant: "",
-    smartTimeBound: "",
+    smartS: "",
+    smartM: "",
+    smartA: "",
+    smartR: "",
+    smartT: "",
   });
 
   const handleSetGoalData = <K extends keyof GoalFormData>(
@@ -34,9 +34,7 @@ export default function createGoal() {
     };
     try {
       // TODO:useSWRMutationで書き換えられそう？調べる
-      const res = await axios.post("/goal", params, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post("/goal", params);
 
       const newGoalId = res.data.id;
       router.push(`/goals/${newGoalId}`);

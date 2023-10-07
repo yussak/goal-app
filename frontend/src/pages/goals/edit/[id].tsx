@@ -12,11 +12,11 @@ export default function EditGoal() {
   const [goalData, SetGoalData] = useState<GoalFormData>({
     purpose: "",
     loss: "",
-    smartSpecific: "",
-    smartMeasurable: "",
-    smartAchievable: "",
-    smartRelevant: "",
-    smartTimeBound: "",
+    smartS: "",
+    smartM: "",
+    smartA: "",
+    smartR: "",
+    smartT: "",
   });
 
   const handleSetGoalData = <K extends keyof GoalFormData>(
@@ -42,11 +42,11 @@ export default function EditGoal() {
         ...goalData,
         purpose: data.purpose,
         loss: data.loss,
-        smartSpecific: data.smart_specific,
-        smartMeasurable: data.smart_measurable,
-        smartAchievable: data.smart_achievable,
-        smartRelevant: data.smart_relevant,
-        smartTimeBound: data.smart_time_bound,
+        smartS: data.smartS,
+        smartM: data.smartM,
+        smartA: data.smartA,
+        smartR: data.smartR,
+        smartT: data.smartT,
       });
     } catch (error) {
       console.error(error);
