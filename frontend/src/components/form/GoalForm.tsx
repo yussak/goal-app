@@ -53,35 +53,80 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
           <p>それをSMARTに書きましょう（必須）</p>
           <TextField
             label="smartSpecific"
+            {...register("goalData.smartSpecific", {
+              required: "必須です",
+              minLength: { value: 3, message: "3文字以上入力してください" },
+              maxLength: { value: 5, message: "5文字以内で入力してください" },
+            })}
             value={goalData.smartSpecific}
             onChange={(e) => SetGoalData("smartSpecific", e.target.value)}
           />
+          {errors.goalData?.smartSpecific && (
+            <span>{errors.goalData.smartSpecific.message}</span>
+          )}
           <TextField
             label="smartMeasurable"
+            {...register("goalData.smartSpecific", {
+              required: "必須です",
+              minLength: { value: 3, message: "3文字以上入力してください" },
+              maxLength: { value: 5, message: "5文字以内で入力してください" },
+            })}
             value={goalData.smartMeasurable}
             onChange={(e) => SetGoalData("smartMeasurable", e.target.value)}
           />
+          {errors.goalData?.smartMeasurable && (
+            <span>{errors.goalData.smartMeasurable.message}</span>
+          )}
           <TextField
             label="smartAchievable"
+            {...register("goalData.smartAchievable", {
+              required: "必須です",
+              minLength: { value: 3, message: "3文字以上入力してください" },
+              maxLength: { value: 5, message: "5文字以内で入力してください" },
+            })}
             value={goalData.smartAchievable}
             onChange={(e) => SetGoalData("smartAchievable", e.target.value)}
           />
+          {errors.goalData?.smartAchievable && (
+            <span>{errors.goalData.smartAchievable.message}</span>
+          )}
           <TextField
             label="smartRelevant"
+            {...register("goalData.smartRelevant", {
+              required: "必須です",
+              minLength: { value: 3, message: "3文字以上入力してください" },
+              maxLength: { value: 5, message: "5文字以内で入力してください" },
+            })}
             value={goalData.smartRelevant}
             onChange={(e) => SetGoalData("smartRelevant", e.target.value)}
           />
+          {errors.goalData?.smartRelevant && (
+            <span>{errors.goalData.smartRelevant.message}</span>
+          )}
           <TextField
             label="smartTimeBound"
+            {...register("goalData.smartTimeBound", {
+              required: "必須です",
+              minLength: { value: 3, message: "3文字以上入力してください" },
+              maxLength: { value: 5, message: "5文字以内で入力してください" },
+            })}
             value={goalData.smartTimeBound}
             onChange={(e) => SetGoalData("smartTimeBound", e.target.value)}
           />
+          {errors.goalData?.smartTimeBound && (
+            <span>{errors.goalData.smartTimeBound.message}</span>
+          )}
           <p>やらないとどうなるかを書いてみましょう</p>
           <TextField
             label="loss"
+            {...register("goalData.loss", {
+              minLength: { value: 3, message: "3文字以上入力してください" },
+              maxLength: { value: 5, message: "5文字以内で入力してください" },
+            })}
             value={goalData.loss}
             onChange={(e) => SetGoalData("loss", e.target.value)}
           />
+          {errors.goalData?.loss && <span>{errors.goalData.loss.message}</span>}
           <Button type="submit" variant="contained">
             {/* <Button onClick={addGoal} variant="contained"> */}
             追加
