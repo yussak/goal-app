@@ -1,4 +1,4 @@
-import { GoalFormData } from "@/types";
+import { GoalFormData, smartFields } from "@/types";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -33,22 +33,6 @@ const EditGoalForm = ({
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
     editGoal(data);
   };
-
-  type SmartFieldKeys = keyof {
-    smartSpecific: string;
-    smartMeasurable: string;
-    smartAchievable: string;
-    smartRelevant: string;
-    smartTimeBound: string;
-  };
-
-  const smartFields: SmartFieldKeys[] = [
-    "smartSpecific",
-    "smartMeasurable",
-    "smartAchievable",
-    "smartRelevant",
-    "smartTimeBound",
-  ];
 
   return (
     <Container sx={{ pt: 3 }}>
