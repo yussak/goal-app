@@ -10,7 +10,6 @@ type GoalListProps = {
 const GoalList = ({ goals, onDelete }: GoalListProps) => {
   const { data: session } = useSession();
 
-  // TODO: 新しいのを上にする
   return goals && goals.length > 0 ? (
     <ul>
       {goals.map((goal, index) => {
