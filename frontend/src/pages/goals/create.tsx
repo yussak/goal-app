@@ -28,20 +28,13 @@ export default function createGoal() {
   const { data: session } = useSession();
 
   const addGoal = async (data: GoalFormData) => {
-    const formData = new FormData();
-    formData.append("purpose", data.purpose);
-    formData.append("loss", data.loss);
-    formData.append("smartSpecific", data.smartSpecific);
-    formData.append("smartMeasurable", data.smartMeasurable);
-    formData.append("smartAchievable", data.smartAchievable);
-    formData.append("smartRelevant", data.smartRelevant);
-    formData.append("smartTimeBound", data.smartTimeBound);
-    if (session?.user) {
-      formData.append("user_id", session?.user.id);
-    }
+    const params = {
+      ...data,
+      user_id: session?.user?.id,
+    };
     try {
       // TODO:useSWRMutationで書き換えられそう？調べる
-      const res = await axios.post("/goal", formData, {
+      const res = await axios.post("/goal", params, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
