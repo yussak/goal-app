@@ -29,7 +29,7 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
     addGoal(data);
   };
-  console.log("errd", errors);
+  // console.log("error is", errors);
 
   const smartFields = [
     "smartSpecific",
