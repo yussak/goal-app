@@ -7,7 +7,7 @@ type GoalFormProps = {
     key: K,
     value: GoalFormData[K]
   ) => void;
-  addGoal: () => void;
+  addGoal: (data: GoalFormData) => void;
   goalData: {
     purpose: string;
     loss: string;
