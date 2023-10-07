@@ -63,7 +63,9 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
             value={goalData.purpose}
             onChange={(e) => SetGoalData("purpose", e.target.value)}
           />
-          {errors.purpose && <span>{errors.purpose.message}</span>}
+          {errors.purpose && (
+            <span className="text-red">{errors.purpose.message}</span>
+          )}
         </Stack>
         <p>それをSMARTに書きましょう（必須）</p>
         {smartFields.map((field, index) => {
@@ -87,7 +89,9 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
                   onChange={(e) => SetGoalData(field, e.target.value)}
                 />
               </Stack>
-              {errors[field] && <span>{errors[field]?.message}</span>}
+              {errors[field] && (
+                <span className="text-red">{errors[field]?.message}</span>
+              )}
             </div>
           );
         })}
@@ -102,7 +106,9 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
             value={goalData.loss}
             onChange={(e) => SetGoalData("loss", e.target.value)}
           />
-          {errors.loss && <span>{errors.loss.message}</span>}
+          {errors.loss && (
+            <span className="text-red">{errors.loss.message}</span>
+          )}
           <Button type="submit" variant="contained">
             追加
           </Button>
