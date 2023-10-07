@@ -37,7 +37,6 @@ export default function EditGoal() {
   const getGoal = async () => {
     try {
       const { data } = await axios.get(`/goals/${id}`);
-      console.log("asdf", data);
       SetGoalData({
         ...goalData,
         purpose: data.purpose,
