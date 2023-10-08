@@ -27,6 +27,12 @@ const EditGoalForm = ({
     defaultValues: {
       purpose: goalData.purpose,
       loss: goalData.loss,
+      // TODO:うまく書き換え
+      smartS: goalData.smartS,
+      smartM: goalData.smartM,
+      smartA: goalData.smartA,
+      smartR: goalData.smartR,
+      smartT: goalData.smartT,
     },
   });
   console.log("sd", goalData);
@@ -37,6 +43,12 @@ const EditGoalForm = ({
   useEffect(() => {
     setValue("purpose", goalData.purpose);
     setValue("loss", goalData.loss);
+    // TODO:うまく書き換え
+    setValue("smartS", goalData.smartS);
+    setValue("smartM", goalData.smartM);
+    setValue("smartA", goalData.smartA);
+    setValue("smartR", goalData.smartR);
+    setValue("smartT", goalData.smartT);
   }, [control, goalData]);
   // }, [control, goalData.purpose]);
 
@@ -90,13 +102,14 @@ const EditGoalForm = ({
           {errors.loss && (
             <span className="text-red">{errors.loss.message}</span>
           )}
-          {smartFields.map((field, index) => {
+          {smartFields.map((smartField, index) => {
             return (
               <div key={index}>
                 <Stack spacing={2}>
-                  <TextField
-                    label={field}
-                    {...register(field, {
+                  <Controller
+                    name={smartField}
+                    control={control}
+                    rules={{
                       required: "必須です",
                       minLength: {
                         value: 3,
@@ -106,13 +119,23 @@ const EditGoalForm = ({
                         value: 5,
                         message: "5文字以内で入力してください",
                       },
-                    })}
-                    value={goalData[field]}
-                    onChange={(e) => SetGoalData(field, e.target.value)}
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        label={smartField}
+                        {...field}
+                        value={goalData[smartField]}
+                        onChange={(e) =>
+                          SetGoalData(smartField, e.target.value)
+                        }
+                      />
+                    )}
                   />
                 </Stack>
-                {errors[field] && (
-                  <span className="text-red">{errors[field]?.message}</span>
+                {errors[smartField] && (
+                  <span className="text-red">
+                    {errors[smartField]?.message}
+                  </span>
                 )}
               </div>
             );
