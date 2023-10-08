@@ -47,7 +47,6 @@ const EditGoalForm = ({
       setValue(field, goalData[field]);
     });
   }, [control, goalData]);
-  // }, [control, goalData.purpose]);
 
   return (
     <Container sx={{ pt: 3 }}>
