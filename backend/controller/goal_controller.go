@@ -136,37 +136,35 @@ func FetchGoalDetails(c *gin.Context) {
 func EditGoal(c *gin.Context) {
 	id := c.Param("id")
 
-	err := c.Request.ParseMultipartForm(10 << 20) // 10MB
-	if err != nil {
-		log.Printf("Error parsing form data: %s", err)
+	var params map[string]string
+	if err := c.BindJSON(&params); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
 		return
 	}
 
-	purpose, purposeOk := c.Request.PostForm["purpose"]
-	loss, lossOk := c.Request.PostForm["loss"]
-	smartS, smartSOk := c.Request.PostForm["smartS"]
-	smartM, smartMOk := c.Request.PostForm["smartM"]
-	smartA, smartAOk := c.Request.PostForm["smartA"]
-	smartR, smartROk := c.Request.PostForm["smartR"]
-	smartT, smartTOk := c.Request.PostForm["smartT"]
+	missingFields := []string{}
+	for _, field := range []string{"purpose", "loss", "smartS", "smartM", "smartA", "smartR", "smartT"} {
+		if _, ok := params[field]; !ok {
+			missingFields = append(missingFields, field)
+		}
+	}
 
-	if !purposeOk || !lossOk || !smartSOk || !smartMOk || !smartAOk || !smartROk || !smartTOk {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
+	if len(missingFields) > 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields", "fields": missingFields})
 		return
 	}
 
 	sql := `UPDATE goals SET smart_s = ?, smart_m = ?, smart_a = ?, smart_r = ?, smart_t = ?, purpose = ?, loss = ? WHERE id = ?`
-	_, execErr := db.DB.Exec(sql, smartS[0], smartM[0], smartA[0], smartR[0], smartT[0], purpose[0], loss[0], id)
+	_, execErr := db.DB.Exec(sql, params["smartS"], params["smartM"], params["smartA"], params["smartR"], params["smartT"], params["purpose"], params["loss"], id)
 
 	if execErr != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": execErr.Error()})
 		return
 	}
 
 	row := db.DB.QueryRow("SELECT id, user_id, smart_s, smart_m, smart_a, smart_r, smart_t, purpose, loss, phase FROM goals WHERE id = ?", id)
 	var goal model.Goal
-	err = row.Scan(&goal.ID, &goal.UserID, &goal.SmartS, &goal.SmartM, &goal.SmartA, &goal.SmartR, &goal.SmartT, &goal.Purpose, &goal.Loss, &goal.Phase)
-	if err != nil {
+	if err := row.Scan(&goal.ID, &goal.UserID, &goal.SmartS, &goal.SmartM, &goal.SmartA, &goal.SmartR, &goal.SmartT, &goal.Purpose, &goal.Loss, &goal.Phase); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
