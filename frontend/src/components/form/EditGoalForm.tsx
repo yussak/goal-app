@@ -26,16 +26,19 @@ const EditGoalForm = ({
   } = useForm<GoalFormData>({
     defaultValues: {
       purpose: goalData.purpose,
+      loss: goalData.loss,
     },
   });
-
+  console.log("sd", goalData);
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
     editGoal(data);
   };
 
   useEffect(() => {
     setValue("purpose", goalData.purpose);
-  }, [control, goalData.purpose]);
+    setValue("loss", goalData.loss);
+  }, [control, goalData]);
+  // }, [control, goalData.purpose]);
 
   return (
     <Container sx={{ pt: 3 }}>
@@ -44,6 +47,8 @@ const EditGoalForm = ({
           <Controller
             name="purpose"
             control={control}
+            // TODO:共通化(以下参考)
+            // https://zenn.dev/longbridge/articles/640710005e11b1
             rules={{
               required: "必須です",
               minLength: { value: 3, message: "3文字以上入力してください" },
@@ -60,18 +65,27 @@ const EditGoalForm = ({
               />
             )}
           />
-
           {errors.purpose && (
             <span className="text-red">{errors.purpose.message}</span>
           )}
-          <TextField
-            label="loss"
-            {...register("loss", {
+          <Controller
+            name="loss"
+            control={control}
+            rules={{
+              required: "必須です",
               minLength: { value: 3, message: "3文字以上入力してください" },
               maxLength: { value: 5, message: "5文字以内で入力してください" },
-            })}
-            value={goalData.loss}
-            onChange={(e) => SetGoalData("loss", e.target.value)}
+            }}
+            render={({ field }) => (
+              <TextField
+                label="loss"
+                {...field}
+                onChange={(e) => {
+                  field.onChange(e);
+                  SetGoalData("loss", e.target.value);
+                }}
+              />
+            )}
           />
           {errors.loss && (
             <span className="text-red">{errors.loss.message}</span>
