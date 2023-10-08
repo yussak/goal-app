@@ -1,6 +1,7 @@
 import { GoalFormData, smartFields } from "@/types";
 import { Button, Container, Stack, TextField } from "@mui/material";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 type EditGoalFormProps = {
   SetGoalData: <K extends keyof GoalFormData>(
@@ -20,26 +21,46 @@ const EditGoalForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<GoalFormData>();
+    control,
+    setValue,
+  } = useForm<GoalFormData>({
+    defaultValues: {
+      purpose: goalData.purpose,
+    },
+  });
 
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
     editGoal(data);
   };
 
+  useEffect(() => {
+    setValue("purpose", goalData.purpose);
+  }, [control, goalData.purpose]);
+
   return (
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
-          <TextField
-            label="purpose"
-            {...register("purpose", {
+          <Controller
+            name="purpose"
+            control={control}
+            rules={{
               required: "必須です",
               minLength: { value: 3, message: "3文字以上入力してください" },
               maxLength: { value: 5, message: "5文字以内で入力してください" },
-            })}
-            value={goalData.purpose}
-            onChange={(e) => SetGoalData("purpose", e.target.value)}
+            }}
+            render={({ field }) => (
+              <TextField
+                label="purpose"
+                {...field}
+                onChange={(e) => {
+                  field.onChange(e);
+                  SetGoalData("purpose", e.target.value);
+                }}
+              />
+            )}
           />
+
           {errors.purpose && (
             <span className="text-red">{errors.purpose.message}</span>
           )}
