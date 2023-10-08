@@ -26,15 +26,12 @@ const EditGoalForm = ({
     defaultValues: {
       purpose: goalData.purpose,
       loss: goalData.loss,
-      // TODO:うまく書き換え
-      smartS: goalData.smartS,
-      smartM: goalData.smartM,
-      smartA: goalData.smartA,
-      smartR: goalData.smartR,
-      smartT: goalData.smartT,
+      // smartS: goalData.smartS,..の分
+      ...Object.fromEntries(
+        smartFields.map((field) => [field, goalData[field]])
+      ),
     },
   });
-  console.log("sd", goalData);
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
     editGoal(data);
   };
