@@ -18,7 +18,6 @@ const EditGoalForm = ({
   editGoal,
 }: EditGoalFormProps) => {
   const {
-    register,
     handleSubmit,
     formState: { errors },
     control,
