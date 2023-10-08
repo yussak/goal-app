@@ -43,12 +43,9 @@ const EditGoalForm = ({
   useEffect(() => {
     setValue("purpose", goalData.purpose);
     setValue("loss", goalData.loss);
-    // TODO:うまく書き換え
-    setValue("smartS", goalData.smartS);
-    setValue("smartM", goalData.smartM);
-    setValue("smartA", goalData.smartA);
-    setValue("smartR", goalData.smartR);
-    setValue("smartT", goalData.smartT);
+    smartFields.forEach((field) => {
+      setValue(field, goalData[field]);
+    });
   }, [control, goalData]);
   // }, [control, goalData.purpose]);
 
