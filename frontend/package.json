@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "cypress": "cypress open",
-    "test": "jest"
+    "test": "vitest"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
