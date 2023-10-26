@@ -11,8 +11,6 @@ cypress
 
 backend/tmp
 
-design
-
 terraform
 
 compose.yaml
