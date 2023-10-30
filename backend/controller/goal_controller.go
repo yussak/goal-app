@@ -3,7 +3,6 @@ package controller
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -47,43 +46,18 @@ func AddGoal(c *gin.Context) {
 	id := ulid.MustNew(ulid.Timestamp(t), entropy)
 
 	var req model.Goal
-	err := c.Bind(&req)
-	if err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	req.ID = id.String()
 
-	// これ画像関係なら不要かもしれない
-	err = c.Request.ParseMultipartForm(10 << 20) // 10MB
-	if err != nil {
-		log.Printf("Error parsing form data: %s", err)
-		return
-	}
-
-	// formDataを受け取る
-	// fmt.Println(c.Request.PostForm)
-
-	// Parse form values
-	purpose, purposeOk := c.Request.PostForm["purpose"]
-	loss, lossOk := c.Request.PostForm["loss"]
-	smartS, smartSOk := c.Request.PostForm["smartS"]
-	smartM, smartMOk := c.Request.PostForm["smartM"]
-	smartA, smartAOk := c.Request.PostForm["smartA"]
-	smartR, smartROk := c.Request.PostForm["smartR"]
-	smartT, smartTOk := c.Request.PostForm["smartT"]
-	userID, userIDOk := c.Request.PostForm["user_id"]
-
-	if !purposeOk || !lossOk || !smartSOk || !smartMOk || !smartAOk || !smartROk || !smartTOk || !userIDOk {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
-		return
-	}
 	sql := `INSERT INTO goals(id, user_id, smart_s, smart_m, smart_a, smart_r, smart_t, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-	_, execErr := db.DB.Exec(sql, req.ID, userID[0], smartS[0], smartM[0], smartA[0], smartR[0], smartT[0], purpose[0], loss[0], "予定", 0)
+	_, execErr := db.DB.Exec(sql, req.ID, req.UserID, req.SmartS, req.SmartM, req.SmartA, req.SmartR, req.SmartT, req.Purpose, req.Loss, "予定", 0)
 
 	if execErr != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": execErr.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, req)
