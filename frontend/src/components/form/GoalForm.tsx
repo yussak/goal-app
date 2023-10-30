@@ -1,4 +1,5 @@
 import { GoalFormData, smartFields } from "@/types";
+import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -22,12 +23,6 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
     addGoal(data);
   };
   // console.log("error is", errors);
-
-  const validationRules = {
-    required: "必須です",
-    minLength: { value: 3, message: "3文字以上入力してください" },
-    maxLength: { value: 5, message: "5文字以内で入力してください" },
-  };
 
   const renderTextField = (
     label: string,
