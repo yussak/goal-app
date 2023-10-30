@@ -23,6 +23,12 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
   };
   // console.log("error is", errors);
 
+  const validationRules = {
+    required: "必須です",
+    minLength: { value: 3, message: "3文字以上入力してください" },
+    maxLength: { value: 5, message: "5文字以内で入力してください" },
+  };
+
   return (
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -30,11 +36,7 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
         <Stack spacing={2}>
           <TextField
             label="purpose"
-            {...register("purpose", {
-              required: "必須です",
-              minLength: { value: 3, message: "3文字以上入力してください" },
-              maxLength: { value: 5, message: "5文字以内で入力してください" },
-            })}
+            {...register("purpose", validationRules)}
             value={goalData.purpose}
             onChange={(e) => SetGoalData("purpose", e.target.value)}
           />
@@ -49,17 +51,7 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
               <Stack spacing={2}>
                 <TextField
                   label={field}
-                  {...register(field, {
-                    required: "必須です",
-                    minLength: {
-                      value: 3,
-                      message: "3文字以上入力してください",
-                    },
-                    maxLength: {
-                      value: 5,
-                      message: "5文字以内で入力してください",
-                    },
-                  })}
+                  {...register(field, validationRules)}
                   value={goalData[field]}
                   onChange={(e) => SetGoalData(field, e.target.value)}
                 />
@@ -74,10 +66,7 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
         <Stack spacing={2}>
           <TextField
             label="loss"
-            {...register("loss", {
-              minLength: { value: 3, message: "3文字以上入力してください" },
-              maxLength: { value: 5, message: "5文字以内で入力してください" },
-            })}
+            {...register("loss", validationRules)}
             value={goalData.loss}
             onChange={(e) => SetGoalData("loss", e.target.value)}
           />
