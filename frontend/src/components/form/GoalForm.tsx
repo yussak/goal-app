@@ -29,54 +29,59 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
     maxLength: { value: 5, message: "5文字以内で入力してください" },
   };
 
+  const renderTextField = (
+    label: string,
+    // todo:anyじゃなくしたい
+    register: any,
+    value: string,
+    SetGoalData: any,
+    errors: any
+  ) => {
+    return (
+      <Stack spacing={2}>
+        <TextField
+          label={label}
+          {...register(label, validationRules)}
+          value={value}
+          onChange={(e) => SetGoalData(label, e.target.value)}
+        />
+        {errors[label] && (
+          <span className="text-red">{errors[label]?.message}</span>
+        )}
+      </Stack>
+    );
+  };
+
   return (
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <p>達成したいことを書きましょう（必須）</p>
-        <Stack spacing={2}>
-          <TextField
-            label="purpose"
-            {...register("purpose", validationRules)}
-            value={goalData.purpose}
-            onChange={(e) => SetGoalData("purpose", e.target.value)}
-          />
-          {errors.purpose && (
-            <span className="text-red">{errors.purpose.message}</span>
-          )}
-        </Stack>
+        {renderTextField(
+          "purpose",
+          register,
+          goalData.purpose,
+          SetGoalData,
+          errors
+        )}
         <p>それをSMARTに書きましょう（必須）</p>
         {smartFields.map((field, index) => {
           return (
             <div key={index}>
-              <Stack spacing={2}>
-                <TextField
-                  label={field}
-                  {...register(field, validationRules)}
-                  value={goalData[field]}
-                  onChange={(e) => SetGoalData(field, e.target.value)}
-                />
-              </Stack>
-              {errors[field] && (
-                <span className="text-red">{errors[field]?.message}</span>
+              {renderTextField(
+                field,
+                register,
+                goalData[field],
+                SetGoalData,
+                errors
               )}
             </div>
           );
         })}
         <p>やらないとどうなるかを書いてみましょう</p>
-        <Stack spacing={2}>
-          <TextField
-            label="loss"
-            {...register("loss", validationRules)}
-            value={goalData.loss}
-            onChange={(e) => SetGoalData("loss", e.target.value)}
-          />
-          {errors.loss && (
-            <span className="text-red">{errors.loss.message}</span>
-          )}
-          <Button type="submit" variant="contained">
-            追加
-          </Button>
-        </Stack>
+        {renderTextField("loss", register, goalData.loss, SetGoalData, errors)}
+        <Button type="submit" variant="contained">
+          追加
+        </Button>
       </form>
     </Container>
   );
