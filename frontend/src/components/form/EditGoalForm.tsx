@@ -1,4 +1,5 @@
 import { GoalFormData, smartFields } from "@/types";
+import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -36,6 +37,7 @@ const EditGoalForm = ({
     editGoal(data);
   };
 
+  // todo:このやり方ダメそうなので確認
   useEffect(() => {
     setValue("purpose", goalData.purpose);
     setValue("loss", goalData.loss);
@@ -44,92 +46,40 @@ const EditGoalForm = ({
     });
   }, [control, goalData]);
 
+  const renderField = (name: keyof GoalFormData, label: string) => {
+    return (
+      <>
+        {/* todo:goalformはcontrollerがない。なくても問題ないかを確認 */}
+        <Controller
+          name={name}
+          control={control}
+          rules={validationRules}
+          render={({ field }) => (
+            <TextField
+              label={label}
+              {...field}
+              onChange={(e) => {
+                field.onChange(e);
+                SetGoalData(name, e.target.value);
+              }}
+            />
+          )}
+        />
+        {errors[name] && (
+          <span className="text-red">{errors[name]?.message}</span>
+        )}
+      </>
+    );
+  };
+
   return (
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
-          <Controller
-            name="purpose"
-            control={control}
-            // TODO:共通化(以下参考)
-            // https://zenn.dev/longbridge/articles/640710005e11b1
-            rules={{
-              required: "必須です",
-              minLength: { value: 3, message: "3文字以上入力してください" },
-              maxLength: { value: 5, message: "5文字以内で入力してください" },
-            }}
-            render={({ field }) => (
-              <TextField
-                label="purpose"
-                {...field}
-                onChange={(e) => {
-                  field.onChange(e);
-                  SetGoalData("purpose", e.target.value);
-                }}
-              />
-            )}
-          />
-          {errors.purpose && (
-            <span className="text-red">{errors.purpose.message}</span>
-          )}
-          <Controller
-            name="loss"
-            control={control}
-            rules={{
-              minLength: { value: 3, message: "3文字以上入力してください" },
-              maxLength: { value: 5, message: "5文字以内で入力してください" },
-            }}
-            render={({ field }) => (
-              <TextField
-                label="loss"
-                {...field}
-                onChange={(e) => {
-                  field.onChange(e);
-                  SetGoalData("loss", e.target.value);
-                }}
-              />
-            )}
-          />
-          {errors.loss && (
-            <span className="text-red">{errors.loss.message}</span>
-          )}
+          {renderField("purpose", "purpose")}
+          {renderField("loss", "loss")}
           {smartFields.map((smartField, index) => {
-            return (
-              <div key={index}>
-                <Stack spacing={2}>
-                  <Controller
-                    name={smartField}
-                    control={control}
-                    rules={{
-                      required: "必須です",
-                      minLength: {
-                        value: 3,
-                        message: "3文字以上入力してください",
-                      },
-                      maxLength: {
-                        value: 5,
-                        message: "5文字以内で入力してください",
-                      },
-                    }}
-                    render={({ field }) => (
-                      <TextField
-                        label={smartField}
-                        {...field}
-                        value={goalData[smartField]}
-                        onChange={(e) =>
-                          SetGoalData(smartField, e.target.value)
-                        }
-                      />
-                    )}
-                  />
-                </Stack>
-                {errors[smartField] && (
-                  <span className="text-red">
-                    {errors[smartField]?.message}
-                  </span>
-                )}
-              </div>
-            );
+            return <div key={index}>{renderField(smartField, smartField)}</div>;
           })}
           <Button type="submit" variant="contained">
             更新
