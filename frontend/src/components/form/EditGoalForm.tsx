@@ -37,7 +37,6 @@ const EditGoalForm = ({
     editGoal(data);
   };
 
-  // todo:このやり方ダメそうなので確認
   useEffect(() => {
     setValue("purpose", goalData.purpose);
     setValue("loss", goalData.loss);
