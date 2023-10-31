@@ -21,18 +21,9 @@ const EditGoalForm = ({
   const {
     handleSubmit,
     formState: { errors },
-    control,
     setValue,
-  } = useForm<GoalFormData>({
-    defaultValues: {
-      purpose: goalData.purpose,
-      loss: goalData.loss,
-      // smartS: goalData.smartS,..の分
-      ...Object.fromEntries(
-        smartFields.map((field) => [field, goalData[field]])
-      ),
-    },
-  });
+    register,
+  } = useForm<GoalFormData>({});
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
     editGoal(data);
   };
@@ -43,26 +34,19 @@ const EditGoalForm = ({
     smartFields.forEach((field) => {
       setValue(field, goalData[field]);
     });
-  }, [control, goalData]);
+    // }
+  }, [goalData]);
 
   const renderField = (name: keyof GoalFormData, label: string) => {
     return (
       <>
-        {/* todo:goalformはcontrollerがない。なくても問題ないかを確認 */}
-        <Controller
-          name={name}
-          control={control}
-          rules={validationRules}
-          render={({ field }) => (
-            <TextField
-              label={label}
-              {...field}
-              onChange={(e) => {
-                field.onChange(e);
-                SetGoalData(name, e.target.value);
-              }}
-            />
-          )}
+        <TextField
+          // todo:labelとフォームの中身が被ってしまうので修正
+          // label={label}
+          {...register(name, validationRules)}
+          onChange={(e) => {
+            SetGoalData(name, e.target.value);
+          }}
         />
         {errors[name] && (
           <span className="text-red">{errors[name]?.message}</span>
