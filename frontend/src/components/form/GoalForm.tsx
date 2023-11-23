@@ -42,7 +42,10 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
           onChange={(e) => SetGoalData(label, e.target.value)}
         />
         {errors[label] && (
-          <span className="text-red">{errors[label]?.message}</span>
+          // テストで使用するためdata-testidをつける
+          <span data-testid={`error-${label}`} className="text-red">
+            {errors[label]?.message}
+          </span>
         )}
       </Stack>
     );
