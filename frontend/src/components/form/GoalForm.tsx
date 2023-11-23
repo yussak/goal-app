@@ -1,4 +1,5 @@
-import { GoalFormData, smartFields } from "@/types";
+import { smartFields } from "@/types";
+import { GoalFormData } from "@/types/GoalForm";
 import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -41,7 +42,10 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
           onChange={(e) => SetGoalData(label, e.target.value)}
         />
         {errors[label] && (
-          <span className="text-red">{errors[label]?.message}</span>
+          // テストで使用するためdata-testidをつける
+          <span data-testid={`error-${label}`} className="text-red">
+            {errors[label]?.message}
+          </span>
         )}
       </Stack>
     );

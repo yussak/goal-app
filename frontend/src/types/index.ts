@@ -1,3 +1,5 @@
+// TODO:d.tsを使うべきか調べる
+
 // type interfaceの違いを調べたい
 export type User = {
   id: string;
