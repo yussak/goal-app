@@ -1,4 +1,5 @@
-import { GoalFormData, smartFields } from "@/types";
+import { smartFields } from "@/types";
+import { GoalFormData } from "@/types/GoalForm";
 import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
