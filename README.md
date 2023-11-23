@@ -5,7 +5,7 @@
   - TypeScript
   - Next.js
   - MUI
-  - Cypress
+  - Vitest/Testing Library
   - ESLint/Prettier
 - バックエンド
   - Go
