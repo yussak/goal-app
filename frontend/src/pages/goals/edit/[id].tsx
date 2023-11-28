@@ -10,13 +10,9 @@ export default function EditGoal() {
   const id = router.query.id;
 
   const [goalData, SetGoalData] = useState<GoalFormData>({
+    content: "",
     purpose: "",
     loss: "",
-    smartS: "",
-    smartM: "",
-    smartA: "",
-    smartR: "",
-    smartT: "",
   });
 
   const handleSetGoalData = <K extends keyof GoalFormData>(
@@ -39,13 +35,9 @@ export default function EditGoal() {
       const { data } = await axios.get(`/goals/${id}`);
       SetGoalData({
         ...goalData,
+        content: data.content,
         purpose: data.purpose,
         loss: data.loss,
-        smartS: data.smartS,
-        smartM: data.smartM,
-        smartA: data.smartA,
-        smartR: data.smartR,
-        smartT: data.smartT,
       });
     } catch (error) {
       console.error(error);

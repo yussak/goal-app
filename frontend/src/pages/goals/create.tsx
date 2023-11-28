@@ -10,13 +10,9 @@ export default function createGoal() {
   const router = useRouter();
 
   const [goalData, SetGoalData] = useState<GoalFormData>({
+    content: "",
     purpose: "",
     loss: "",
-    smartS: "",
-    smartM: "",
-    smartA: "",
-    smartR: "",
-    smartT: "",
   });
 
   const handleSetGoalData = <K extends keyof GoalFormData>(

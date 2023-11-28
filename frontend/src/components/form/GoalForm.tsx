@@ -1,4 +1,3 @@
-import { smartFields } from "@/types";
 import { GoalFormData } from "@/types/GoalForm";
 import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
@@ -63,19 +62,13 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
           errors
         )}
         <p>それをSMARTに書きましょう（必須）</p>
-        {smartFields.map((field, index) => {
-          return (
-            <div key={index}>
-              {renderTextField(
-                field,
-                register,
-                goalData[field],
-                SetGoalData,
-                errors
-              )}
-            </div>
-          );
-        })}
+        {renderTextField(
+          "content",
+          register,
+          goalData.content,
+          SetGoalData,
+          errors
+        )}
         <p>やらないとどうなるかを書いてみましょう</p>
         {renderTextField("loss", register, goalData.loss, SetGoalData, errors)}
         <Button type="submit" variant="contained">

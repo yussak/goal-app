@@ -1,8 +1,8 @@
-import { GoalFormData, smartFields } from "@/types";
+import { GoalFormData } from "@/types";
 import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { useEffect } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type EditGoalFormProps = {
   SetGoalData: <K extends keyof GoalFormData>(
@@ -29,12 +29,9 @@ const EditGoalForm = ({
   };
 
   useEffect(() => {
+    setValue("content", goalData.content);
     setValue("purpose", goalData.purpose);
     setValue("loss", goalData.loss);
-    smartFields.forEach((field) => {
-      setValue(field, goalData[field]);
-    });
-    // }
   }, [goalData]);
 
   const renderField = (name: keyof GoalFormData, label: string) => {
@@ -59,11 +56,9 @@ const EditGoalForm = ({
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
+          {renderField("content", "content")}
           {renderField("purpose", "purpose")}
           {renderField("loss", "loss")}
-          {smartFields.map((smartField, index) => {
-            return <div key={index}>{renderField(smartField, smartField)}</div>;
-          })}
           <Button type="submit" variant="contained">
             更新
           </Button>

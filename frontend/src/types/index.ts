@@ -12,11 +12,7 @@ export type Goal = {
   user_id: string;
   CreatedAt: Date;
   UpdatedAt: Date;
-  smartS: string;
-  smartM: string;
-  smartA: string;
-  smartR: string;
-  smartT: string;
+  content: string;
   purpose: string;
   loss: string;
   progress: number;
@@ -24,11 +20,7 @@ export type Goal = {
 
 // フォーム用に用意した方がいい
 export type GoalFormData = {
-  smartS: string;
-  smartM: string;
-  smartA: string;
-  smartR: string;
-  smartT: string;
+  content: string;
   purpose: string;
   loss: string;
 };
@@ -39,20 +31,3 @@ export type GoalComment = {
   title: string;
   text: string;
 };
-
-// map用に用意。配列の中身とそれぞれの型を指定
-export type SmartFieldKeys = keyof {
-  smartS: string;
-  smartM: string;
-  smartA: string;
-  smartR: string;
-  smartT: string;
-};
-
-export const smartFields: SmartFieldKeys[] = [
-  "smartS",
-  "smartM",
-  "smartA",
-  "smartR",
-  "smartT",
-];

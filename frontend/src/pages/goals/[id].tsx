@@ -85,11 +85,7 @@ export default function GoalDetail() {
           ) : (
             "not my goal（デバッグ用）"
           )}
-          <p>specific: {goal.smartS}</p>
-          <p>measurable: {goal.smartM}</p>
-          <p>achievable: {goal.smartA}</p>
-          <p>relevant: {goal.smartR}</p>
-          <p>time_bound: {goal.smartT}</p>
+          <p>content: {goal.content}</p>
           <p>purpose: {goal.purpose}</p>
           <p>loss: {goal.loss}</p>
           <p>progress: {goal.progress}</p>

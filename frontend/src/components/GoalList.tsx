@@ -15,11 +15,7 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
       {goals.map((goal, index) => {
         return (
           <li key={index} className="goal-list">
-            <p>specific: {goal.smartS}</p>
-            <p>measurable: {goal.smartM}</p>
-            <p>achievable: {goal.smartA}</p>
-            <p>relevant: {goal.smartR}</p>
-            <p>time_bound: {goal.smartT}</p>
+            <p>content: {goal.content}</p>
             <p>purpose: {goal.purpose}</p>
             <p>loss: {goal.loss}</p>
             <p>progress: {goal.progress}</p>
