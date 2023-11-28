@@ -1,11 +1,7 @@
 CREATE TABLE IF NOT EXISTS goals (
   id varchar(26) NOT NULL PRIMARY KEY,
   user_id varchar(26) NOT NULL,
-  smart_s varchar(50) NOT NULL,
-  smart_m varchar(50) NOT NULL,
-  smart_a varchar(50) NOT NULL,
-  smart_r varchar(50) NOT NULL,
-  smart_t varchar(50) NOT NULL,
+  content varchar(100) NOT NULL,
   purpose varchar(50) NOT NULL,
   loss varchar(50),
   phase varchar(10) NOT NULL DEFAULT '予定',
