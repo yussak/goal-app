@@ -14,8 +14,8 @@ import (
 func FetchGoalComments(c *gin.Context) {
 	goal_comments := []model.GoalComment{}
 	goal_id := c.Param("id")
-	
-	rows, err := db.DB.Query("SELECT id, goal_id, title, text FROM goal_comments WHERE goal_id = ?", goal_id)
+
+	rows, err := db.DB.Query("SELECT id, user_id, goal_id, text FROM milestones WHERE goal_id = ?", goal_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -24,7 +24,7 @@ func FetchGoalComments(c *gin.Context) {
 
 	for rows.Next() {
 		var goal_comment model.GoalComment
-		err = rows.Scan(&goal_comment.ID, &goal_comment.GoalID, &goal_comment.Title, &goal_comment.Text)
+		err = rows.Scan(&goal_comment.ID, &goal_comment.UserID, &goal_comment.GoalID, &goal_comment.Content)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -35,7 +35,7 @@ func FetchGoalComments(c *gin.Context) {
 	c.JSON(http.StatusOK, goal_comments)
 }
 
-func AddGoalComment(c *gin.Context) {
+func AddMilestone(c *gin.Context) {
 	t := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
 	id := ulid.MustNew(ulid.Timestamp(t), entropy)
@@ -50,8 +50,8 @@ func AddGoalComment(c *gin.Context) {
 	req.ID = id.String()
 	req.GoalID = c.Param("id")
 
-	sql := `INSERT INTO goal_comments(id, goal_id, title, text) VALUES(?, ?, ?, ?)`
-	_, err = db.DB.Exec(sql, req.ID, req.GoalID, req.Title, req.Text)
+	sql := `INSERT INTO milestones(id, user_id, goal_id, content) VALUES(?, ?, ?, ?)`
+	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.GoalID, req.Content)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

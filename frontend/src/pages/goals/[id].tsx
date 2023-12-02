@@ -2,17 +2,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
 import { Goal, GoalComment } from "@/types";
-import GoalCommentForm from "@/components/form/GoalCommentForm";
-import GoalCommentList from "@/components/GoalCommentList";
+import MilestoneForm from "@/components/form/MilestoneForm";
+// import GoalCommentList from "@/components/GoalCommentList";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 export default function GoalDetail() {
   const [goal, setGoal] = useState<Goal | null>(null);
-  const [comments, setComments] = useState<GoalComment[]>([]);
 
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
+  const [milestones, setMilestones] = useState<GoalComment[]>([]);
+  const [milestoneContent, setMilestoneContent] = useState<string>("");
 
   const { data: session } = useSession();
 
@@ -22,7 +21,7 @@ export default function GoalDetail() {
   useEffect(() => {
     if (router.isReady) {
       getGoalDetails();
-      getComments();
+      getMilestones();
     }
   }, [router.isReady]);
 
@@ -35,35 +34,35 @@ export default function GoalDetail() {
     }
   };
 
-  const addComment = async () => {
-    const comment = {
+  const addMilestone = async () => {
+    const params = {
       goal_id: id,
-      title: title,
-      text: text,
+      content: milestoneContent,
+      user_id: session?.user?.id,
     };
     try {
-      await axios.post(`/goals/${id}/comments`, comment);
-      await getComments();
-      setTitle("");
-      setText("");
+      const res = await axios.post(`/goals/${id}/milestones`, params);
+      // await getMilestones();
+      setMilestoneContent("");
+      // console.log(res.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getComments = async () => {
+  const getMilestones = async () => {
     try {
-      const { data } = await axios.get(`/goals/${id}/comments`);
-      setComments(data);
+      const { data } = await axios.get(`/goals/${id}/milestones`);
+      setMilestones(data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const deleteComment = async (comment_id: string) => {
+  const deleteMilestone = async (comment_id: string) => {
     try {
-      await axios.delete(`/goals/${id}/comments/${comment_id}`);
-      await getComments();
+      await axios.delete(`/goals/${id}/milestones/${comment_id}`);
+      await getMilestones();
     } catch (error) {
       console.error(error);
     }
@@ -96,18 +95,17 @@ export default function GoalDetail() {
       )}
       {session?.user && (
         <>
-          <h3>コメントを追加</h3>
-          <GoalCommentForm
-            setTitle={setTitle}
-            setText={setText}
-            addComment={addComment}
-            title={title}
-            text={text}
+          {/* TODO:コメント周りのコード消す */}
+          <h3>中目標を追加</h3>
+          <MilestoneForm
+            setContent={setMilestoneContent}
+            addMilestone={addMilestone}
+            content={milestoneContent}
           />
         </>
       )}
-      <h3>コメント一覧</h3>
-      <GoalCommentList comments={comments} onDelete={deleteComment} />
+      {/* <h3>コメント一覧</h3> */}
+      {/* <GoalCommentList milestones={milestones} onDelete={deleteMilestone} /> */}
     </>
   );
 }
