@@ -62,14 +62,14 @@ func AddMilestone(c *gin.Context) {
 }
 
 func DeleteMilestone(c *gin.Context) {
-	comment_id := c.Param("comment_id")
+	milestone_id := c.Param("milestone_id")
 
-	if comment_id == "" {
+	if milestone_id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ID must be provided"})
 		return
 	}
 
-	_, err := db.DB.Exec("DELETE FROM milestones WHERE id = ?", comment_id)
+	_, err := db.DB.Exec("DELETE FROM milestones WHERE id = ?", milestone_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
