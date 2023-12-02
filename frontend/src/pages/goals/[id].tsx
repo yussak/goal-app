@@ -58,9 +58,9 @@ export default function GoalDetail() {
     }
   };
 
-  const deleteMilestone = async (comment_id: string) => {
+  const deleteMilestone = async (milestone_id: string) => {
     try {
-      await axios.delete(`/goals/${id}/milestones/${comment_id}`);
+      await axios.delete(`/goals/${id}/milestones/${milestone_id}`);
       await getMilestones();
     } catch (error) {
       console.error(error);

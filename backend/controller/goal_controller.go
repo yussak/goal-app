@@ -72,7 +72,7 @@ func DeleteGoal(c *gin.Context) {
 		return
 	}
 
-	_, err := db.DB.Exec("DELETE FROM goal_comments WHERE goal_id = ?", id)
+	_, err := db.DB.Exec("DELETE FROM milestones WHERE goal_id = ?", id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

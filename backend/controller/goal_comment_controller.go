@@ -62,6 +62,7 @@ func AddMilestone(c *gin.Context) {
 }
 
 func DeleteMilestone(c *gin.Context) {
+	// TODO:mile削除時にtodoも消すようにする
 	milestone_id := c.Param("milestone_id")
 
 	if milestone_id == "" {
