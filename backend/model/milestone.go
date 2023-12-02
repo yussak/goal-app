@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type GoalComment struct {
+type Milestone struct {
 	ID        string    `json:"id"`
 	UserID    string    `json:"user_id"`
 	GoalID    string    `json:"goal_id"`

@@ -25,9 +25,11 @@ export type GoalFormData = {
   loss: string;
 };
 
-export type GoalComment = {
+export type Milestone = {
   id: string;
+  user_id: string;
   goal_id: string;
-  title: string;
-  text: string;
+  CreatedAt: Date;
+  UpdatedAt: Date;
+  content: string;
 };

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
-import { Goal, GoalComment } from "@/types";
+import { Goal, Milestone } from "@/types";
 import MilestoneForm from "@/components/form/MilestoneForm";
-// import GoalCommentList from "@/components/GoalCommentList";
+import MilestoneList from "@/components/MilestoneList";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 export default function GoalDetail() {
   const [goal, setGoal] = useState<Goal | null>(null);
 
-  const [milestones, setMilestones] = useState<GoalComment[]>([]);
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [milestoneContent, setMilestoneContent] = useState<string>("");
 
   const { data: session } = useSession();
@@ -42,9 +42,8 @@ export default function GoalDetail() {
     };
     try {
       const res = await axios.post(`/goals/${id}/milestones`, params);
-      // await getMilestones();
+      await getMilestones();
       setMilestoneContent("");
-      // console.log(res.data);
     } catch (error) {
       console.error(error);
     }
@@ -104,8 +103,8 @@ export default function GoalDetail() {
           />
         </>
       )}
-      {/* <h3>コメント一覧</h3> */}
-      {/* <GoalCommentList milestones={milestones} onDelete={deleteMilestone} /> */}
+      <h3>中目標一覧</h3>
+      <MilestoneList milestones={milestones} onDelete={deleteMilestone} />
     </>
   );
 }

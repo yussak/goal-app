@@ -11,11 +11,11 @@ import (
 	"github.com/oklog/ulid"
 )
 
-func FetchGoalComments(c *gin.Context) {
-	goal_comments := []model.GoalComment{}
+func FetchMilestones(c *gin.Context) {
+	milestones := []model.Milestone{}
 	goal_id := c.Param("id")
 
-	rows, err := db.DB.Query("SELECT id, user_id, goal_id, text FROM milestones WHERE goal_id = ?", goal_id)
+	rows, err := db.DB.Query("SELECT id, user_id, goal_id, content FROM milestones WHERE goal_id = ?", goal_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -23,16 +23,16 @@ func FetchGoalComments(c *gin.Context) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var goal_comment model.GoalComment
-		err = rows.Scan(&goal_comment.ID, &goal_comment.UserID, &goal_comment.GoalID, &goal_comment.Content)
+		var milestone model.Milestone
+		err = rows.Scan(&milestone.ID, &milestone.UserID, &milestone.GoalID, &milestone.Content)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		goal_comments = append(goal_comments, goal_comment)
+		milestones = append(milestones, milestone)
 	}
 
-	c.JSON(http.StatusOK, goal_comments)
+	c.JSON(http.StatusOK, milestones)
 }
 
 func AddMilestone(c *gin.Context) {
@@ -40,7 +40,7 @@ func AddMilestone(c *gin.Context) {
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
 	id := ulid.MustNew(ulid.Timestamp(t), entropy)
 
-	var req model.GoalComment
+	var req model.Milestone
 	err := c.Bind(&req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -61,7 +61,7 @@ func AddMilestone(c *gin.Context) {
 	c.JSON(http.StatusOK, req)
 }
 
-func DeleteGoalComment(c *gin.Context) {
+func DeleteMilestone(c *gin.Context) {
 	comment_id := c.Param("comment_id")
 
 	if comment_id == "" {
@@ -69,7 +69,7 @@ func DeleteGoalComment(c *gin.Context) {
 		return
 	}
 
-	_, err := db.DB.Exec("DELETE FROM goal_comments WHERE id = ?", comment_id)
+	_, err := db.DB.Exec("DELETE FROM milestones WHERE id = ?", comment_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
