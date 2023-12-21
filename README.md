@@ -1,22 +1,19 @@
 # 使用技術
 
 - フロントエンド
-  - HTML/CSS
+  - React/Next.js
   - TypeScript
-  - Next.js
   - MUI
   - Vitest/Testing Library
   - ESLint/Prettier
 - バックエンド
-  - Go
-  - Gin
+  - Go/Gin
   - Air
 - インフラ・開発環境
   - Docker/Docker-compose
   - AWS
   - Github Actions
   - Terraform
-- データベース
   - MySQL
 
 ## ER 図（順次更新）
