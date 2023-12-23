@@ -103,6 +103,7 @@ export default function GoalDetail() {
 
   // TodoListからバケツリレーしてる
   // todo:状態管理ツールで書き換えたい
+  // todo:stateでもいけるかもなので確認
   const deleteTodo = async (todo_id: string) => {
     try {
       await axios.delete(`/todos/${todo_id}`);
