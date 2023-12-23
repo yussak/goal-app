@@ -33,3 +33,13 @@ export type Milestone = {
   UpdatedAt: Date;
   content: string;
 };
+
+export type Todo = {
+  id: string;
+  parent_id: string;
+  user_id: string;
+  content: string;
+  isCompleted: boolean;
+  CreatedAt: Date;
+  UpdatedAt: Date;
+};
