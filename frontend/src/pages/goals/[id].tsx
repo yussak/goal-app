@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
-import { Goal, Milestone } from "@/types";
+import { Goal, Milestone, Todo } from "@/types";
 import MilestoneForm from "@/components/form/MilestoneForm";
 import MilestoneList from "@/components/MilestoneList";
 import Link from "next/link";
@@ -15,6 +15,10 @@ export default function GoalDetail() {
 
   const { data: session } = useSession();
 
+  // todosは「キーがstring、バリューがTodo型の配列」のオブジェクトである
+  // 各マイルストーンに対するtodoを扱うためキーを使用している
+  const [todos, setTodos] = useState<{ [key: string]: Todo[] }>({});
+
   const router = useRouter();
   const id = router.query.id;
 
@@ -24,6 +28,10 @@ export default function GoalDetail() {
       getMilestones();
     }
   }, [router.isReady]);
+
+  useEffect(() => {
+    fetchTodos();
+  }, [milestones]);
 
   const getGoalDetails = async () => {
     try {
@@ -54,6 +62,7 @@ export default function GoalDetail() {
     try {
       const { data } = await axios.get(`/goals/${id}/milestones`);
       setMilestones(data);
+      fetchTodos();
     } catch (error) {
       console.error(error);
     }
@@ -66,6 +75,30 @@ export default function GoalDetail() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const fetchTodos = async () => {
+    let newTodos = { ...todos };
+    for (let milestone of milestones) {
+      try {
+        const { data } = await axios.get(`/milestones/${milestone.id}/todos`);
+        newTodos[milestone.id] = data;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setTodos(newTodos);
+  };
+
+  // addTodo時にstateのtodosを更新する
+  // todo:型をちゃんと書く
+  const addTodosToState = (milestoneId: string, newTodo: any) => {
+    const updatedTodos = {
+      ...todos,
+      // todo:コメント残す
+      [milestoneId]: [...todos[milestoneId], newTodo],
+    };
+    setTodos(updatedTodos);
   };
 
   const isMyGoal =
@@ -105,7 +138,12 @@ export default function GoalDetail() {
         </>
       )}
       <h3>中目標一覧</h3>
-      <MilestoneList milestones={milestones} onDelete={deleteMilestone} />
+      <MilestoneList
+        milestones={milestones}
+        onDelete={deleteMilestone}
+        todos={todos}
+        addTodosToState={addTodosToState}
+      />
     </>
   );
 }

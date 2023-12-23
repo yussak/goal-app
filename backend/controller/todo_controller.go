@@ -11,6 +11,30 @@ import (
 	"github.com/oklog/ulid"
 )
 
+func FetchTodos(c *gin.Context) {
+	todos := []model.Todo{}
+	parent_id := c.Param("id")
+
+	rows, err := db.DB.Query("SELECT content FROM todos WHERE parent_id = ?", parent_id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var todo model.Todo
+		err = rows.Scan(&todo.Content)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		todos = append(todos, todo)
+	}
+
+	c.JSON(http.StatusOK, todos)
+}
+
 func AddTodo(c *gin.Context) {
 	t := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)

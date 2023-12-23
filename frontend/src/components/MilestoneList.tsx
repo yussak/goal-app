@@ -1,4 +1,4 @@
-import { Milestone } from "@/types";
+import { Milestone, Todo } from "@/types";
 import {
   Accordion,
   AccordionDetails,
@@ -13,10 +13,17 @@ import { useSession } from "next-auth/react";
 
 type MilestoneListProps = {
   milestones: Milestone[];
+  todos: { [key: string]: Todo[] };
   onDelete: (id: string) => void;
+  addTodosToState: (id: string, newTodo: any) => void;
 };
 
-const MilestoneList = ({ milestones, onDelete }: MilestoneListProps) => {
+const MilestoneList = ({
+  milestones,
+  todos,
+  onDelete,
+  addTodosToState,
+}: MilestoneListProps) => {
   const { data: session } = useSession();
 
   const [todoContent, setTodoContent] = useState<string>("");
@@ -27,17 +34,21 @@ const MilestoneList = ({ milestones, onDelete }: MilestoneListProps) => {
       user_id: session?.user?.id,
       content: todoContent,
     };
+
     try {
       const res = await axios.post(`/milestones/${id}/todos`, params);
-      // await getTodos();
+      // 親側で更新
+      addTodosToState(id, res.data);
       setTodoContent("");
     } catch (error) {
       console.error(error);
     }
   };
+
   return milestones && milestones.length > 0 ? (
     <ul>
       {milestones.map((milestone, index) => {
+        const milestoneTodos = todos[milestone.id] || [];
         return (
           <li key={index}>
             <button onClick={() => onDelete(milestone.id)}>delete</button>
@@ -59,6 +70,12 @@ const MilestoneList = ({ milestones, onDelete }: MilestoneListProps) => {
                     addTodo={() => addTodo(milestone.id)}
                     content={todoContent}
                   />
+                  {/* todo:コンポーネントに分割 */}
+                  {/* todo:型書く */}
+                  {/* todo:null時のテキスト追加 */}
+                  {milestoneTodos.map((todo, ti) => {
+                    return <div>{todo.content}</div>;
+                  })}
                 </Typography>
               </AccordionDetails>
             </Accordion>
