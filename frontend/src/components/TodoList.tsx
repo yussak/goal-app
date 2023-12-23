@@ -1,16 +1,12 @@
 import { Todo } from "@/types";
-import { useSession } from "next-auth/react";
 
 type TodoListProps = {
   todos: Todo[];
-  //   onDelete: (id: string) => void;
+  onDeleteTodo: (id: string) => void;
   milestoneId?: string;
 };
 
-const TodoList = ({ todos, milestoneId }: TodoListProps) => {
-  // const TodoList = ({ todos, onDelete }: TodoListProps) => {
-  const { data: session } = useSession();
-
+const TodoList = ({ todos, milestoneId, onDeleteTodo }: TodoListProps) => {
   return (
     <div>
       <h3>Milestone（デバッグ用）: {milestoneId}</h3>
@@ -19,6 +15,7 @@ const TodoList = ({ todos, milestoneId }: TodoListProps) => {
           {todos.map((todo, index) => (
             <li key={index}>
               <p>content: {todo.content}</p>
+              <button onClick={() => onDeleteTodo(todo.id)}>delete</button>
             </li>
           ))}
         </ul>

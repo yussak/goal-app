@@ -101,6 +101,18 @@ export default function GoalDetail() {
     setTodos(updatedTodos);
   };
 
+  // TodoListからバケツリレーしてる
+  // todo:状態管理ツールで書き換えたい
+  const deleteTodo = async (todo_id: string) => {
+    try {
+      await axios.delete(`/todos/${todo_id}`);
+      await fetchTodos();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // TODO:これいらない気がするので確認
   const isMyGoal =
     goal && session?.user ? goal.user_id === session?.user?.id : false;
 
@@ -142,6 +154,7 @@ export default function GoalDetail() {
         onDelete={deleteMilestone}
         todos={todos}
         addTodosToState={addTodosToState}
+        onDeleteTodo={deleteTodo}
       />
     </>
   );

@@ -15,7 +15,7 @@ func FetchTodos(c *gin.Context) {
 	todos := []model.Todo{}
 	parent_id := c.Param("id")
 
-	rows, err := db.DB.Query("SELECT content FROM todos WHERE parent_id = ?", parent_id)
+	rows, err := db.DB.Query("SELECT id, content FROM todos WHERE parent_id = ?", parent_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -24,7 +24,7 @@ func FetchTodos(c *gin.Context) {
 
 	for rows.Next() {
 		var todo model.Todo
-		err = rows.Scan(&todo.Content)
+		err = rows.Scan(&todo.ID, &todo.Content)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -59,4 +59,21 @@ func AddTodo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, req)
+}
+
+func DeleteTodo(c *gin.Context) {
+	id := c.Param("id")
+
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID must be provided"})
+		return
+	}
+
+	_, err := db.DB.Exec("DELETE FROM todos WHERE id = ?", id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }

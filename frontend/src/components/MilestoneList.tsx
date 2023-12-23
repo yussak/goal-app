@@ -16,6 +16,7 @@ type MilestoneListProps = {
   milestones: Milestone[];
   todos: { [key: string]: Todo[] };
   onDelete: (id: string) => void;
+  onDeleteTodo: (id: string) => void;
   addTodosToState: (id: string, newTodo: any) => void;
 };
 
@@ -23,6 +24,7 @@ const MilestoneList = ({
   milestones,
   todos,
   onDelete,
+  onDeleteTodo,
   addTodosToState,
 }: MilestoneListProps) => {
   const { data: session } = useSession();
@@ -72,7 +74,11 @@ const MilestoneList = ({
                     content={todoContent}
                   />
                   {/* todosをマイルストーンのものに絞って渡す */}
-                  <TodoList todos={milestoneTodos} milestoneId={milestone.id} />
+                  <TodoList
+                    todos={milestoneTodos}
+                    milestoneId={milestone.id}
+                    onDeleteTodo={onDeleteTodo}
+                  />
                 </Typography>
               </AccordionDetails>
             </Accordion>
