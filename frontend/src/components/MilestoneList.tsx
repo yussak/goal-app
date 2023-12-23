@@ -10,6 +10,7 @@ import TodoForm from "./form/TodoForm";
 import { useState } from "react";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
+import TodoList from "./TodoList";
 
 type MilestoneListProps = {
   milestones: Milestone[];
@@ -62,7 +63,7 @@ const MilestoneList = ({
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  <p>id（デバッグ用）: {milestone.id}</p>
+                  <p>milestone_id（デバッグ用）: {milestone.id}</p>
                   <p>goal_id（デバッグ用）: {milestone.goal_id}</p>
                   <TodoForm
                     setContent={setTodoContent}
@@ -70,12 +71,8 @@ const MilestoneList = ({
                     addTodo={() => addTodo(milestone.id)}
                     content={todoContent}
                   />
-                  {/* todo:コンポーネントに分割 */}
-                  {/* todo:型書く */}
-                  {/* todo:null時のテキスト追加 */}
-                  {milestoneTodos.map((todo, ti) => {
-                    return <div>{todo.content}</div>;
-                  })}
+                  {/* todosをマイルストーンのものに絞って渡す */}
+                  <TodoList todos={milestoneTodos} milestoneId={milestone.id} />
                 </Typography>
               </AccordionDetails>
             </Accordion>
