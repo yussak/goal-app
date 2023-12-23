@@ -10,7 +10,6 @@ const TodoForm = ({ setContent, addTodo, content }: TodoFormProps) => {
   // TODO:react-hook-formで書き換える
   return (
     <Box component="form" noValidate autoComplete="off">
-      ちゅうもく
       <Stack spacing={2} direction="row">
         <TextField
           id="outlined-read-only-input"
