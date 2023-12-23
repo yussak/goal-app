@@ -128,7 +128,6 @@ export default function GoalDetail() {
       )}
       {session?.user && (
         <>
-          {/* TODO:コメント周りのコード消す */}
           <h3>中目標を追加</h3>
           <MilestoneForm
             setContent={setMilestoneContent}
