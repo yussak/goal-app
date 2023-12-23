@@ -42,6 +42,7 @@ export default function GoalDetail() {
     };
     try {
       const res = await axios.post(`/goals/${id}/milestones`, params);
+      // TODO:これ無駄が多い気がする。state使ったら良くなりそうなので確認（他のところも同じく
       await getMilestones();
       setMilestoneContent("");
     } catch (error) {
