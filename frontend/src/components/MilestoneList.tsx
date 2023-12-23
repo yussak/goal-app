@@ -24,11 +24,11 @@ const MilestoneList = ({ milestones, onDelete }: MilestoneListProps) => {
   const addTodo = async (id: string) => {
     const params = {
       parent_id: id,
-      content: todoContent,
       user_id: session?.user?.id,
+      content: todoContent,
     };
     try {
-      const res = await axios.post(`/goals/${id}/Todos`, params);
+      const res = await axios.post(`/milestones/${id}/todos`, params);
       // await getTodos();
       setTodoContent("");
     } catch (error) {
