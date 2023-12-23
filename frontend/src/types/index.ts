@@ -1,4 +1,5 @@
 // TODO:d.tsを使うべきか調べる
+// todo: キャメルなどそろえる
 
 // type interfaceの違いを調べたい
 export type User = {
@@ -39,7 +40,7 @@ export type Todo = {
   parent_id: string;
   user_id: string;
   content: string;
-  isCompleted: boolean;
+  is_completed: boolean;
   CreatedAt: Date;
   UpdatedAt: Date;
 };
