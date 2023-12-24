@@ -15,7 +15,7 @@ func FetchTodos(c *gin.Context) {
 	todos := []model.Todo{}
 	parent_id := c.Param("id")
 
-	rows, err := db.DB.Query("SELECT id, content FROM todos WHERE parent_id = ?", parent_id)
+	rows, err := db.DB.Query("SELECT id, content, is_completed FROM todos WHERE parent_id = ?", parent_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -24,7 +24,7 @@ func FetchTodos(c *gin.Context) {
 
 	for rows.Next() {
 		var todo model.Todo
-		err = rows.Scan(&todo.ID, &todo.Content)
+		err = rows.Scan(&todo.ID, &todo.Content, &todo.IsCompleted)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -76,4 +76,30 @@ func DeleteTodo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": "success"})
+}
+
+func UpdateTodoCheck(c *gin.Context) {
+	id := c.Param("id")
+
+	var todo model.Todo
+	if err := c.BindJSON(&todo); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// データベースを更新
+	_, err := db.DB.Exec("UPDATE todos SET is_completed = ? WHERE id = ?", todo.IsCompleted, id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 更新されたToDoを取得
+	err = db.DB.QueryRow("SELECT * FROM todos WHERE id = ?", id).Scan(&todo.ID, &todo.ParentID, &todo.UserID, &todo.Content, &todo.IsCompleted, &todo.CreatedAt, &todo.UpdatedAt)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, todo)
 }

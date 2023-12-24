@@ -26,4 +26,5 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("/milestones/:id/todos", controller.AddTodo)
 	r.GET("/milestones/:id/todos", controller.FetchTodos)
 	r.DELETE("/todos/:id", controller.DeleteTodo)
+	r.PUT("/todos/:id/is_completed", controller.UpdateTodoCheck)
 }

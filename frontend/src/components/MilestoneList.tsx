@@ -15,8 +15,10 @@ import TodoList from "./TodoList";
 type MilestoneListProps = {
   milestones: Milestone[];
   todos: { [key: string]: Todo[] };
+  // todo:milestone用に名前かえる
   onDelete: (id: string) => void;
   onDeleteTodo: (id: string) => void;
+  onUpdateTodoCheck: (id: string, checked: boolean) => void;
   addTodosToState: (id: string, newTodo: any) => void;
 };
 
@@ -25,6 +27,7 @@ const MilestoneList = ({
   todos,
   onDelete,
   onDeleteTodo,
+  onUpdateTodoCheck,
   addTodosToState,
 }: MilestoneListProps) => {
   const { data: session } = useSession();
@@ -78,6 +81,7 @@ const MilestoneList = ({
                     todos={milestoneTodos}
                     milestoneId={milestone.id}
                     onDeleteTodo={onDeleteTodo}
+                    onUpdateTodoCheck={onUpdateTodoCheck}
                   />
                 </Typography>
               </AccordionDetails>

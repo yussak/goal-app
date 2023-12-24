@@ -113,6 +113,15 @@ export default function GoalDetail() {
     }
   };
 
+  const updateTodoCheck = async (todo_id: string, is_completed: boolean) => {
+    try {
+      await axios.put(`/todos/${todo_id}/is_completed`, { is_completed });
+      fetchTodos();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // TODO:これいらない気がするので確認
   const isMyGoal =
     goal && session?.user ? goal.user_id === session?.user?.id : false;
@@ -156,6 +165,7 @@ export default function GoalDetail() {
         todos={todos}
         addTodosToState={addTodosToState}
         onDeleteTodo={deleteTodo}
+        onUpdateTodoCheck={updateTodoCheck}
       />
     </>
   );

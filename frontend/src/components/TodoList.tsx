@@ -1,12 +1,23 @@
 import { Todo } from "@/types";
+import { Checkbox } from "@mui/material";
 
 type TodoListProps = {
   todos: Todo[];
   onDeleteTodo: (id: string) => void;
+  onUpdateTodoCheck: (id: string, checked: boolean) => void;
   milestoneId?: string;
 };
 
-const TodoList = ({ todos, milestoneId, onDeleteTodo }: TodoListProps) => {
+const TodoList = ({
+  todos,
+  milestoneId,
+  onDeleteTodo,
+  onUpdateTodoCheck,
+}: TodoListProps) => {
+  const handleCheckboxChange = (todoId: string, checked: boolean) => {
+    onUpdateTodoCheck(todoId, checked);
+  };
+
   return (
     <div>
       <h3>Milestone（デバッグ用）: {milestoneId}</h3>
@@ -15,6 +26,14 @@ const TodoList = ({ todos, milestoneId, onDeleteTodo }: TodoListProps) => {
           {todos.map((todo, index) => (
             <li key={index}>
               <p>content: {todo.content}</p>
+              <p>進捗状況（デバッグ用）: {todo.is_completed.toString()}</p>
+              <Checkbox
+                checked={todo.is_completed}
+                onChange={(e) =>
+                  handleCheckboxChange(todo.id, e.target.checked)
+                }
+              />
+
               <button onClick={() => onDeleteTodo(todo.id)}>delete</button>
             </li>
           ))}
