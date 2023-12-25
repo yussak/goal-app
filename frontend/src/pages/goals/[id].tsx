@@ -70,10 +70,10 @@ export default function GoalDetail() {
 
   const deleteMilestone = async (milestone_id: string) => {
     try {
-      await axios.delete(`/goals/${id}/milestones/${milestone_id}`);
+      await axios.delete(`/milestones/${milestone_id}`);
       await getMilestones();
     } catch (error) {
-      console.error(error);
+      console.error("asdf", error);
     }
   };
 
@@ -161,7 +161,7 @@ export default function GoalDetail() {
       <h3>中目標一覧</h3>
       <MilestoneList
         milestones={milestones}
-        onDelete={deleteMilestone}
+        onDeleteMilestone={deleteMilestone}
         todos={todos}
         addTodosToState={addTodosToState}
         onDeleteTodo={deleteTodo}

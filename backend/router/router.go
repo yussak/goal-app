@@ -21,7 +21,7 @@ func SetupRouter(r *gin.Engine) {
 
 	r.POST("/goals/:id/milestones", controller.AddMilestone)
 	r.GET("/goals/:id/milestones", controller.FetchMilestones)
-	r.DELETE("/goals/:goal_id/milestones/:milestone_id", controller.DeleteMilestone)
+	r.DELETE("/milestones/:id", controller.DeleteMilestone)
 
 	r.POST("/milestones/:id/todos", controller.AddTodo)
 	r.GET("/milestones/:id/todos", controller.FetchTodos)
