@@ -62,7 +62,6 @@ func AddMilestone(c *gin.Context) {
 }
 
 func DeleteMilestone(c *gin.Context) {
-	// TODO:mile削除時にtodoも消すようにする
 	milestone_id := c.Param("milestone_id")
 
 	if milestone_id == "" {
@@ -70,7 +69,14 @@ func DeleteMilestone(c *gin.Context) {
 		return
 	}
 
-	_, err := db.DB.Exec("DELETE FROM milestones WHERE id = ?", milestone_id)
+	// todosも削除する。先に子を削除する必要がある
+	_, err := db.DB.Exec("DELETE FROM todos WHERE parent_id = ?", milestone_id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = db.DB.Exec("DELETE FROM milestones WHERE id = ?", milestone_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
