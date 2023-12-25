@@ -22,7 +22,6 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
     addGoal(data);
   };
-  // console.log("error is", errors);
 
   const renderTextField = (
     label: string,
