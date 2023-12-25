@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
-import { Goal, GoalComment } from "@/types";
-import GoalCommentForm from "@/components/form/GoalCommentForm";
-import GoalCommentList from "@/components/GoalCommentList";
+import { Goal, Milestone, Todo } from "@/types";
+import MilestoneForm from "@/components/form/MilestoneForm";
+import MilestoneList from "@/components/MilestoneList";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 export default function GoalDetail() {
   const [goal, setGoal] = useState<Goal | null>(null);
-  const [comments, setComments] = useState<GoalComment[]>([]);
 
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
+  const [milestoneContent, setMilestoneContent] = useState<string>("");
 
   const { data: session } = useSession();
+
+  // todosは「キーがstring、バリューがTodo型の配列」のオブジェクトである
+  // 各マイルストーンに対するtodoを扱うためキーを使用している
+  const [todos, setTodos] = useState<{ [key: string]: Todo[] }>({});
 
   const router = useRouter();
   const id = router.query.id;
@@ -22,9 +25,13 @@ export default function GoalDetail() {
   useEffect(() => {
     if (router.isReady) {
       getGoalDetails();
-      getComments();
+      getMilestones();
     }
   }, [router.isReady]);
+
+  useEffect(() => {
+    fetchTodos();
+  }, [milestones]);
 
   const getGoalDetails = async () => {
     try {
@@ -35,40 +42,87 @@ export default function GoalDetail() {
     }
   };
 
-  const addComment = async () => {
-    const comment = {
+  const addMilestone = async () => {
+    const params = {
       goal_id: id,
-      title: title,
-      text: text,
+      content: milestoneContent,
+      user_id: session?.user?.id,
     };
     try {
-      await axios.post(`/goals/${id}/comments`, comment);
-      await getComments();
-      setTitle("");
-      setText("");
+      const res = await axios.post(`/goals/${id}/milestones`, params);
+      // TODO:これ無駄が多い気がする。state使ったら良くなりそうなので確認（他のところも同じく
+      await getMilestones();
+      setMilestoneContent("");
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getComments = async () => {
+  const getMilestones = async () => {
     try {
-      const { data } = await axios.get(`/goals/${id}/comments`);
-      setComments(data);
+      const { data } = await axios.get(`/goals/${id}/milestones`);
+      setMilestones(data);
+      fetchTodos();
     } catch (error) {
       console.error(error);
     }
   };
 
-  const deleteComment = async (comment_id: string) => {
+  const deleteMilestone = async (milestone_id: string) => {
     try {
-      await axios.delete(`/goals/${id}/comments/${comment_id}`);
-      await getComments();
+      await axios.delete(`/milestones/${milestone_id}`);
+      await getMilestones();
+    } catch (error) {
+      console.error("asdf", error);
+    }
+  };
+
+  const fetchTodos = async () => {
+    let newTodos = { ...todos };
+    for (let milestone of milestones) {
+      try {
+        const { data } = await axios.get(`/milestones/${milestone.id}/todos`);
+        newTodos[milestone.id] = data;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setTodos(newTodos);
+  };
+
+  // addTodo時にstateのtodosを更新する
+  // todo:型をちゃんと書く
+  const addTodosToState = (milestoneId: string, newTodo: any) => {
+    const updatedTodos = {
+      ...todos,
+      // todo:コメント残す
+      [milestoneId]: [...todos[milestoneId], newTodo],
+    };
+    setTodos(updatedTodos);
+  };
+
+  // TodoListからバケツリレーしてる
+  // todo:状態管理ツールで書き換えたい
+  // todo:stateでもいけるかもなので確認
+  const deleteTodo = async (todo_id: string) => {
+    try {
+      await axios.delete(`/todos/${todo_id}`);
+      await fetchTodos();
     } catch (error) {
       console.error(error);
     }
   };
 
+  const updateTodoCheck = async (todo_id: string, is_completed: boolean) => {
+    try {
+      await axios.put(`/todos/${todo_id}/is_completed`, { is_completed });
+      fetchTodos();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // TODO:これいらない気がするので確認
   const isMyGoal =
     goal && session?.user ? goal.user_id === session?.user?.id : false;
 
@@ -96,18 +150,23 @@ export default function GoalDetail() {
       )}
       {session?.user && (
         <>
-          <h3>コメントを追加</h3>
-          <GoalCommentForm
-            setTitle={setTitle}
-            setText={setText}
-            addComment={addComment}
-            title={title}
-            text={text}
+          <h3>中目標を追加</h3>
+          <MilestoneForm
+            setContent={setMilestoneContent}
+            addMilestone={addMilestone}
+            content={milestoneContent}
           />
         </>
       )}
-      <h3>コメント一覧</h3>
-      <GoalCommentList comments={comments} onDelete={deleteComment} />
+      <h3>中目標一覧</h3>
+      <MilestoneList
+        milestones={milestones}
+        onDeleteMilestone={deleteMilestone}
+        todos={todos}
+        addTodosToState={addTodosToState}
+        onDeleteTodo={deleteTodo}
+        onUpdateTodoCheck={updateTodoCheck}
+      />
     </>
   );
 }

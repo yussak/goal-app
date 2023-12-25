@@ -11,11 +11,11 @@ import (
 	"github.com/oklog/ulid"
 )
 
-func FetchGoalComments(c *gin.Context) {
-	goal_comments := []model.GoalComment{}
+func FetchMilestones(c *gin.Context) {
+	milestones := []model.Milestone{}
 	goal_id := c.Param("id")
-	
-	rows, err := db.DB.Query("SELECT id, goal_id, title, text FROM goal_comments WHERE goal_id = ?", goal_id)
+
+	rows, err := db.DB.Query("SELECT id, user_id, goal_id, content FROM milestones WHERE goal_id = ?", goal_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -23,24 +23,24 @@ func FetchGoalComments(c *gin.Context) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var goal_comment model.GoalComment
-		err = rows.Scan(&goal_comment.ID, &goal_comment.GoalID, &goal_comment.Title, &goal_comment.Text)
+		var milestone model.Milestone
+		err = rows.Scan(&milestone.ID, &milestone.UserID, &milestone.GoalID, &milestone.Content)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		goal_comments = append(goal_comments, goal_comment)
+		milestones = append(milestones, milestone)
 	}
 
-	c.JSON(http.StatusOK, goal_comments)
+	c.JSON(http.StatusOK, milestones)
 }
 
-func AddGoalComment(c *gin.Context) {
+func AddMilestone(c *gin.Context) {
 	t := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
 	id := ulid.MustNew(ulid.Timestamp(t), entropy)
 
-	var req model.GoalComment
+	var req model.Milestone
 	err := c.Bind(&req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -50,8 +50,8 @@ func AddGoalComment(c *gin.Context) {
 	req.ID = id.String()
 	req.GoalID = c.Param("id")
 
-	sql := `INSERT INTO goal_comments(id, goal_id, title, text) VALUES(?, ?, ?, ?)`
-	_, err = db.DB.Exec(sql, req.ID, req.GoalID, req.Title, req.Text)
+	sql := `INSERT INTO milestones(id, user_id, goal_id, content) VALUES(?, ?, ?, ?)`
+	_, err = db.DB.Exec(sql, req.ID, req.UserID, req.GoalID, req.Content)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -61,15 +61,22 @@ func AddGoalComment(c *gin.Context) {
 	c.JSON(http.StatusOK, req)
 }
 
-func DeleteGoalComment(c *gin.Context) {
-	comment_id := c.Param("comment_id")
+func DeleteMilestone(c *gin.Context) {
+	id := c.Param("id")
 
-	if comment_id == "" {
+	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ID must be provided"})
 		return
 	}
 
-	_, err := db.DB.Exec("DELETE FROM goal_comments WHERE id = ?", comment_id)
+	// todosも削除する。先に子を削除する必要がある
+	_, err := db.DB.Exec("DELETE FROM todos WHERE parent_id = ?", id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = db.DB.Exec("DELETE FROM milestones WHERE id = ?", id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

@@ -19,7 +19,12 @@ func SetupRouter(r *gin.Engine) {
 	r.GET("/goals/:id", controller.FetchGoalDetails)
 	r.PUT("/goals/edit/:id", controller.EditGoal)
 
-	r.POST("/goals/:id/comments", controller.AddGoalComment)
-	r.GET("/goals/:id/comments", controller.FetchGoalComments)
-	r.DELETE("/goals/:goal_id/comments/:comment_id", controller.DeleteGoalComment)
+	r.POST("/goals/:id/milestones", controller.AddMilestone)
+	r.GET("/goals/:id/milestones", controller.FetchMilestones)
+	r.DELETE("/milestones/:id", controller.DeleteMilestone)
+
+	r.POST("/milestones/:id/todos", controller.AddTodo)
+	r.GET("/milestones/:id/todos", controller.FetchTodos)
+	r.DELETE("/todos/:id", controller.DeleteTodo)
+	r.PUT("/todos/:id/is_completed", controller.UpdateTodoCheck)
 }

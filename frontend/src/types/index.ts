@@ -1,4 +1,5 @@
 // TODO:d.tsを使うべきか調べる
+// todo: キャメルなどそろえる
 
 // type interfaceの違いを調べたい
 export type User = {
@@ -25,9 +26,21 @@ export type GoalFormData = {
   loss: string;
 };
 
-export type GoalComment = {
+export type Milestone = {
   id: string;
+  user_id: string;
   goal_id: string;
-  title: string;
-  text: string;
+  CreatedAt: Date;
+  UpdatedAt: Date;
+  content: string;
+};
+
+export type Todo = {
+  id: string;
+  parent_id: string;
+  user_id: string;
+  content: string;
+  is_completed: boolean;
+  CreatedAt: Date;
+  UpdatedAt: Date;
 };
