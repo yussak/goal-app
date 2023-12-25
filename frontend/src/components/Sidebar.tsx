@@ -12,7 +12,6 @@ export default function Sidebar() {
         <>
           <li>
             {/* ログイン時のみ表示 */}
-            <p>ログイン済み（デバッグ用）</p>
             {/* ログアウト時にログイン画面にリダイレクト */}
             <button onClick={() => signOut({ callbackUrl: "/auth/login" })}>
               ログアウト
