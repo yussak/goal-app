@@ -15,8 +15,7 @@ import TodoList from "./TodoList";
 type MilestoneListProps = {
   milestones: Milestone[];
   todos: { [key: string]: Todo[] };
-  // todo:milestone用に名前かえる
-  onDelete: (id: string) => void;
+  onDeleteMilestone: (id: string) => void;
   onDeleteTodo: (id: string) => void;
   onUpdateTodoCheck: (id: string, checked: boolean) => void;
   addTodosToState: (id: string, newTodo: any) => void;
@@ -25,7 +24,7 @@ type MilestoneListProps = {
 const MilestoneList = ({
   milestones,
   todos,
-  onDelete,
+  onDeleteMilestone,
   onDeleteTodo,
   onUpdateTodoCheck,
   addTodosToState,
@@ -57,7 +56,9 @@ const MilestoneList = ({
         const milestoneTodos = todos[milestone.id] || [];
         return (
           <li key={index}>
-            <button onClick={() => onDelete(milestone.id)}>delete</button>
+            <button onClick={() => onDeleteMilestone(milestone.id)}>
+              delete
+            </button>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
