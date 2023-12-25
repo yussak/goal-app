@@ -122,23 +122,12 @@ export default function GoalDetail() {
     }
   };
 
-  // TODO:これいらない気がするので確認
-  const isMyGoal =
-    goal && session?.user ? goal.user_id === session?.user?.id : false;
-
   return (
     <>
       <h2>目標詳細</h2>
       {goal && (
         <>
-          {isMyGoal ? (
-            <>
-              <Link href={`/goals/edit/${goal.id}`}>edit</Link>
-              <p>this is my goal（デバッグ用）</p>
-            </>
-          ) : (
-            "not my goal（デバッグ用）"
-          )}
+          <Link href={`/goals/edit/${goal.id}`}>edit</Link>
           <p>content: {goal.content}</p>
           <p>purpose: {goal.purpose}</p>
           <p>loss: {goal.loss}</p>
