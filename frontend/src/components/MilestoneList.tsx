@@ -55,6 +55,7 @@ const MilestoneList = ({
       {milestones.map((milestone, index) => {
         const milestoneTodos = todos[milestone.id] || [];
         return (
+          // todo:milestone中身をコンポーネントに切り出す
           <li key={index}>
             <button onClick={() => onDeleteMilestone(milestone.id)}>
               delete
