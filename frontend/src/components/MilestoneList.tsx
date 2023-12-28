@@ -11,6 +11,7 @@ import { useState } from "react";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import TodoList from "./TodoList";
+import { isAbsolute } from "path";
 
 type MilestoneListProps = {
   milestones: Milestone[];
@@ -50,10 +51,26 @@ const MilestoneList = ({
     }
   };
 
+  // milestoneが持っているtodoが全て完了隅になっているかの判定
+  const isMilestoneCompleted = (todos: any) => {
+    if (todos.length === 0) return false;
+
+    let isAllCompleted = true;
+    todos.forEach((todo: any) => {
+      if (!todo.is_completed) {
+        isAllCompleted = false;
+        return;
+      }
+    });
+
+    return isAllCompleted;
+  };
+
   return milestones && milestones.length > 0 ? (
     <ul>
       {milestones.map((milestone, index) => {
         const milestoneTodos = todos[milestone.id] || [];
+        const isAllCompleted = isMilestoneCompleted(milestoneTodos);
         return (
           // todo:milestone中身をコンポーネントに切り出す
           <li key={index}>
@@ -66,7 +83,13 @@ const MilestoneList = ({
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography>{milestone.content}</Typography>
+                {isAllCompleted ? (
+                  <Typography className="text-border">
+                    {milestone.content}
+                  </Typography>
+                ) : (
+                  <Typography>{milestone.content}</Typography>
+                )}
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
