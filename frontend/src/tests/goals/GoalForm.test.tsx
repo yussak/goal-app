@@ -12,6 +12,10 @@ describe("GoalForm component", () => {
     loss: "",
     content: "",
   };
+  afterEach(() => {
+    SetGoalDataMock.mockReset();
+    addGoalMock.mockReset();
+  });
 
   it("should submit when correct values are input", async () => {
     render(
@@ -33,7 +37,6 @@ describe("GoalForm component", () => {
       screen.getByRole("textbox", { name: "content" }),
       "内容です"
     );
-
     // 送信ボタンをクリック
     await user.click(screen.getByRole("button", { name: "追加" }));
 
@@ -45,31 +48,35 @@ describe("GoalForm component", () => {
     });
   });
 
-  // it("正しくないデータを受け取てエラーを出せる", async () => {
-  //   render(
-  //     <GoalForm
-  //       SetGoalData={handleSetGoalDataMock}
-  //       goalData={{}}
-  //       addGoal={addGoalMock}
-  //     />
-  //   );
-  //   const user = userEvent.setup();
+  it("should not submit when invalid values are input", async () => {
+    render(
+      <GoalForm
+        SetGoalData={SetGoalDataMock}
+        goalData={{}}
+        addGoal={addGoalMock}
+      />
+    );
+    const user = userEvent.setup();
 
-  //   await user.type(
-  //     screen.getByRole("textbox", { name: "purpose" }),
-  //     "aaaaaaaaaaa"
-  //   );
-  //   await user.type(screen.getByRole("textbox", { name: "smartS" }), "a");
+    await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
+    await user.type(
+      screen.getByRole("textbox", { name: "loss" }),
+      "ロスですロスですロスです"
+    );
 
-  //   // 送信ボタンをクリック
-  //   await user.click(screen.getByRole("button", { name: "追加" }));
+    // 送信ボタンをクリック
+    await user.click(screen.getByRole("button", { name: "追加" }));
+    expect(addGoalMock).not.toBeCalled();
 
-  //   // フォームにdata-testidをつけて指定
-  //   expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
-  //     "10文字以内で入力してください"
-  //   );
-  //   expect(screen.getByTestId(`error-smartS`)).toHaveTextContent(
-  //     "3文字以上で入力してください"
-  //   );
-  // });
+    // フォームにdata-testidをつけて指定
+    // expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
+    //   "3文字以上で入力してください"
+    // );
+    // expect(screen.getByTestId(`error-content`)).toHaveTextContent(
+    //   "3文字以上で入力してください"
+    // );
+    // expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
+    //   "3文字以上で入力してください"
+    // );
+  });
 });
