@@ -70,8 +70,8 @@ const MilestoneList = ({
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  <p>milestone_id（デバッグ用）: {milestone.id}</p>
-                  <p>goal_id（デバッグ用）: {milestone.goal_id}</p>
+                  {/* <p>milestone_id（デバッグ用）: {milestone.id}</p> */}
+                  {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
                   {milestoneTodos.length <= 5 ? (
                     <TodoForm
                       setContent={setTodoContent}
