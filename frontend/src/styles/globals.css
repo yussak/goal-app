@@ -15,3 +15,7 @@
 .text-red {
   color: red;
 }
+
+.text-border {
+  text-decoration: line-through;
+}
