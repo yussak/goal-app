@@ -83,13 +83,13 @@ const MilestoneList = ({
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                {isAllCompleted ? (
-                  <Typography className="text-border">
-                    {milestone.content}
-                  </Typography>
-                ) : (
-                  <Typography>{milestone.content}</Typography>
-                )}
+                <Typography>
+                  {isAllCompleted ? (
+                    <span className="text-border">{milestone.content}</span>
+                  ) : (
+                    milestone.content
+                  )}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
