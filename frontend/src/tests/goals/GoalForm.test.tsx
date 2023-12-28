@@ -87,7 +87,7 @@ describe("GoalForm component", () => {
     expect(screen.getByTestId(`error-loss`)).toHaveTextContent("必須です");
   });
 
-  it("should validate when short values are input", async () => {
+  it("should validate when too short values are input", async () => {
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
@@ -114,7 +114,7 @@ describe("GoalForm component", () => {
     );
   });
 
-  it("should validate when long values are input", async () => {
+  it("should validate when too long values are input", async () => {
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
