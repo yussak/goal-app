@@ -52,18 +52,17 @@ const MilestoneList = ({
   };
 
   // milestoneが持っているtodoが全て完了隅になっているかの判定
+  // todo: 型をちゃんと描く
   const isMilestoneCompleted = (todos: any) => {
     if (todos.length === 0) return false;
 
-    let isAllCompleted = true;
-    todos.forEach((todo: any) => {
+    for (const todo of todos) {
       if (!todo.is_completed) {
-        isAllCompleted = false;
-        return;
+        return false;
       }
-    });
+    }
 
-    return isAllCompleted;
+    return true;
   };
 
   return milestones && milestones.length > 0 ? (
@@ -77,7 +76,7 @@ const MilestoneList = ({
             <button onClick={() => onDeleteMilestone(milestone.id)}>
               delete
             </button>
-            <Accordion>
+            <Accordion defaultExpanded={isAllCompleted}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
