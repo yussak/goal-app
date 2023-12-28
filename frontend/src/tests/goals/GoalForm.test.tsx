@@ -13,7 +13,7 @@ describe("GoalForm component", () => {
     content: "",
   };
 
-  it("データを入力して送信できる", async () => {
+  it("should submit when correct values are input", async () => {
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
