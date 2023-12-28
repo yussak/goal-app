@@ -113,4 +113,40 @@ describe("GoalForm component", () => {
       "3文字以上で入力してください"
     );
   });
+
+  it("should validate when long values are input", async () => {
+    render(
+      <GoalForm
+        SetGoalData={SetGoalDataMock}
+        goalData={{}}
+        addGoal={addGoalMock}
+      />
+    );
+    const user = userEvent.setup();
+
+    await user.type(
+      screen.getByRole("textbox", { name: "purpose" }),
+      "目的目的目的目的目的目的"
+    );
+    await user.type(
+      screen.getByRole("textbox", { name: "loss" }),
+      "ロスロスロスロスロスロス"
+    );
+    await user.type(
+      screen.getByRole("textbox", { name: "content" }),
+      "内容内容内容内容内容内容"
+    );
+
+    await user.click(screen.getByRole("button", { name: "追加" }));
+
+    expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
+      "10文字以内で入力してください"
+    );
+    expect(screen.getByTestId(`error-content`)).toHaveTextContent(
+      "10文字以内で入力してください"
+    );
+    expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
+      "10文字以内で入力してください"
+    );
+  });
 });
