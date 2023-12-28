@@ -2,16 +2,11 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import GoalForm from "@/components/form/GoalForm";
 import userEvent from "@testing-library/user-event";
+import { GoalFormData } from "@/types";
 
 describe("GoalForm component", () => {
   const SetGoalDataMock = vi.fn();
   const addGoalMock = vi.fn();
-
-  const goalData = {
-    purpose: "",
-    loss: "",
-    content: "",
-  };
 
   afterEach(() => {
     SetGoalDataMock.mockReset();
@@ -22,7 +17,8 @@ describe("GoalForm component", () => {
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
-        goalData={{}}
+        // purpose:"",content:"",...と渡したら型エラーが出たため型を指定
+        goalData={{} as GoalFormData}
         addGoal={addGoalMock}
       />
     );
@@ -53,7 +49,7 @@ describe("GoalForm component", () => {
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
-        goalData={{}}
+        goalData={{} as GoalFormData}
         addGoal={addGoalMock}
       />
     );
@@ -66,14 +62,14 @@ describe("GoalForm component", () => {
     );
 
     await user.click(screen.getByRole("button", { name: "追加" }));
-    expect(addGoalMock).not.toBeCalled();
   });
+  expect(addGoalMock).not.toBeCalled();
 
   it("should validate when values are not input", async () => {
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
-        goalData={{}}
+        goalData={{} as GoalFormData}
         addGoal={addGoalMock}
       />
     );
@@ -91,7 +87,7 @@ describe("GoalForm component", () => {
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
-        goalData={{}}
+        goalData={{} as GoalFormData}
         addGoal={addGoalMock}
       />
     );
@@ -118,7 +114,7 @@ describe("GoalForm component", () => {
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
-        goalData={{}}
+        goalData={{} as GoalFormData}
         addGoal={addGoalMock}
       />
     );
