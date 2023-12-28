@@ -51,7 +51,6 @@ const MilestoneList = ({
   };
 
   // milestoneが持っているtodoが全て完了済みになっているかの判定
-  // todo: 型をちゃんと描く
   const isMilestoneCompleted = (todos: Todo[]) => {
     if (todos.length === 0) return false;
 
