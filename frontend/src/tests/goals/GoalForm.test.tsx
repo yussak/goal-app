@@ -12,6 +12,7 @@ describe("GoalForm component", () => {
     loss: "",
     content: "",
   };
+
   afterEach(() => {
     SetGoalDataMock.mockReset();
     addGoalMock.mockReset();
@@ -64,7 +65,6 @@ describe("GoalForm component", () => {
       "ロスですロスですロスです"
     );
 
-    // 送信ボタンをクリック
     await user.click(screen.getByRole("button", { name: "追加" }));
     expect(addGoalMock).not.toBeCalled();
   });
@@ -126,15 +126,15 @@ describe("GoalForm component", () => {
 
     await user.type(
       screen.getByRole("textbox", { name: "purpose" }),
-      "目的目的目的目的目的目的"
+      "サンプルテキストサンプルテキスト"
     );
     await user.type(
       screen.getByRole("textbox", { name: "loss" }),
-      "ロスロスロスロスロスロス"
+      "サンプルテキストサンプルテキスト"
     );
     await user.type(
       screen.getByRole("textbox", { name: "content" }),
-      "内容内容内容内容内容内容"
+      "サンプルテキストサンプルテキスト"
     );
 
     await user.click(screen.getByRole("button", { name: "追加" }));
