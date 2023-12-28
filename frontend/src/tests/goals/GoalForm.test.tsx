@@ -67,16 +67,36 @@ describe("GoalForm component", () => {
     // 送信ボタンをクリック
     await user.click(screen.getByRole("button", { name: "追加" }));
     expect(addGoalMock).not.toBeCalled();
+  });
+  it("空欄時のテスト追加", async () => {});
+
+  it("should validate when short values are input", async () => {
+    render(
+      <GoalForm
+        SetGoalData={SetGoalDataMock}
+        goalData={{}}
+        addGoal={addGoalMock}
+      />
+    );
+    const user = userEvent.setup();
+
+    await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
+    await user.type(screen.getByRole("textbox", { name: "loss" }), "ロス");
+    await user.type(screen.getByRole("textbox", { name: "content" }), "内容");
+
+    // 送信ボタンをクリック
+    await user.click(screen.getByRole("button", { name: "追加" }));
+    expect(addGoalMock).not.toBeCalled();
 
     // フォームにdata-testidをつけて指定
-    // expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
-    //   "3文字以上で入力してください"
-    // );
-    // expect(screen.getByTestId(`error-content`)).toHaveTextContent(
-    //   "3文字以上で入力してください"
-    // );
-    // expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
-    //   "3文字以上で入力してください"
-    // );
+    expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
+      "3文字以上で入力してください"
+    );
+    expect(screen.getByTestId(`error-content`)).toHaveTextContent(
+      "3文字以上で入力してください"
+    );
+    expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
+      "3文字以上で入力してください"
+    );
   });
 });
