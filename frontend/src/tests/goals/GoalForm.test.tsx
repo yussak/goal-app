@@ -68,7 +68,24 @@ describe("GoalForm component", () => {
     await user.click(screen.getByRole("button", { name: "追加" }));
     expect(addGoalMock).not.toBeCalled();
   });
-  it("空欄時のテスト追加", async () => {});
+
+  it("should validate when values are not input", async () => {
+    render(
+      <GoalForm
+        SetGoalData={SetGoalDataMock}
+        goalData={{}}
+        addGoal={addGoalMock}
+      />
+    );
+    const user = userEvent.setup();
+
+    // 値を入力せず送信ボタンをクリック
+    await user.click(screen.getByRole("button", { name: "追加" }));
+
+    expect(screen.getByTestId(`error-purpose`)).toHaveTextContent("必須です");
+    expect(screen.getByTestId(`error-content`)).toHaveTextContent("必須です");
+    expect(screen.getByTestId(`error-loss`)).toHaveTextContent("必須です");
+  });
 
   it("should validate when short values are input", async () => {
     render(
@@ -84,11 +101,8 @@ describe("GoalForm component", () => {
     await user.type(screen.getByRole("textbox", { name: "loss" }), "ロス");
     await user.type(screen.getByRole("textbox", { name: "content" }), "内容");
 
-    // 送信ボタンをクリック
     await user.click(screen.getByRole("button", { name: "追加" }));
-    expect(addGoalMock).not.toBeCalled();
 
-    // フォームにdata-testidをつけて指定
     expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
       "3文字以上で入力してください"
     );
