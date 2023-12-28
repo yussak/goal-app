@@ -20,7 +20,7 @@ const TodoList = ({
 
   return (
     <div>
-      <h3>Milestone（デバッグ用）: {milestoneId}</h3>
+      {/* <h3>Milestone（デバッグ用）: {milestoneId}</h3> */}
       {todos.length > 0 ? (
         <ul>
           {todos.map((todo, index) => (

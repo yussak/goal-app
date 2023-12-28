@@ -132,19 +132,23 @@ export default function GoalDetail() {
           <p>purpose: {goal.purpose}</p>
           <p>loss: {goal.loss}</p>
           <p>progress: {goal.progress}</p>
-          <p>user_id(デバッグ用): {goal.user_id}</p>
-          <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p>
-          <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p>
+          {/* <p>user_id(デバッグ用): {goal.user_id}</p> */}
+          {/* <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p> */}
+          {/* <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p> */}
         </>
       )}
       {session?.user && (
         <>
           <h3>中目標を追加</h3>
-          <MilestoneForm
-            setContent={setMilestoneContent}
-            addMilestone={addMilestone}
-            content={milestoneContent}
-          />
+          {milestones.length < 5 ? (
+            <MilestoneForm
+              setContent={setMilestoneContent}
+              addMilestone={addMilestone}
+              content={milestoneContent}
+            />
+          ) : (
+            <p>中目標は5個までです</p>
+          )}
         </>
       )}
       <h3>中目標一覧</h3>
