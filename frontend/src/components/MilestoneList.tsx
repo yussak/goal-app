@@ -11,7 +11,6 @@ import { useState } from "react";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import TodoList from "./TodoList";
-import { isAbsolute } from "path";
 
 type MilestoneListProps = {
   milestones: Milestone[];
@@ -51,9 +50,9 @@ const MilestoneList = ({
     }
   };
 
-  // milestoneが持っているtodoが全て完了隅になっているかの判定
+  // milestoneが持っているtodoが全て完了済みになっているかの判定
   // todo: 型をちゃんと描く
-  const isMilestoneCompleted = (todos: any) => {
+  const isMilestoneCompleted = (todos: Todo[]) => {
     if (todos.length === 0) return false;
 
     for (const todo of todos) {
