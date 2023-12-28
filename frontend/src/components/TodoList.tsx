@@ -25,15 +25,20 @@ const TodoList = ({
         <ul>
           {todos.map((todo, index) => (
             <li key={index}>
-              <p>content: {todo.content}</p>
-              <p>進捗状況（デバッグ用）: {todo.is_completed.toString()}</p>
-              <Checkbox
-                checked={todo.is_completed}
-                onChange={(e) =>
-                  handleCheckboxChange(todo.id, e.target.checked)
-                }
-              />
-
+              <div>
+                <Checkbox
+                  checked={todo.is_completed}
+                  onChange={(e) =>
+                    handleCheckboxChange(todo.id, e.target.checked)
+                  }
+                />
+                {todo.is_completed ? (
+                  <span className="text-border">content: {todo.content}</span>
+                ) : (
+                  <span>content: {todo.content}</span>
+                )}
+              </div>
+              {/* <p>進捗状況（デバッグ用）: {todo.is_completed.toString()}</p> */}
               <button onClick={() => onDeleteTodo(todo.id)}>delete</button>
             </li>
           ))}
