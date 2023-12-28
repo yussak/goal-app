@@ -140,11 +140,15 @@ export default function GoalDetail() {
       {session?.user && (
         <>
           <h3>中目標を追加</h3>
-          <MilestoneForm
-            setContent={setMilestoneContent}
-            addMilestone={addMilestone}
-            content={milestoneContent}
-          />
+          {milestones.length < 5 ? (
+            <MilestoneForm
+              setContent={setMilestoneContent}
+              addMilestone={addMilestone}
+              content={milestoneContent}
+            />
+          ) : (
+            <p>中目標は5個までです</p>
+          )}
         </>
       )}
       <h3>中目標一覧</h3>
