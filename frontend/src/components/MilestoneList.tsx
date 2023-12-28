@@ -95,7 +95,7 @@ const MilestoneList = ({
                 <Typography>
                   {/* <p>milestone_id（デバッグ用）: {milestone.id}</p> */}
                   {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
-                  {milestoneTodos.length <= 5 ? (
+                  {milestoneTodos.length < 5 ? (
                     <TodoForm
                       setContent={setTodoContent}
                       // milestone.idは親側でだけ必要。なので必要なところ（=ここ）でidを代入している
@@ -103,7 +103,7 @@ const MilestoneList = ({
                       content={todoContent}
                     />
                   ) : (
-                    <p>中目標は5個まで追加できます</p>
+                    <p>todoは5個まで追加できます</p>
                   )}
 
                   {/* todosをマイルストーンのものに絞って渡す */}
