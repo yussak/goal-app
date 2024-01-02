@@ -265,7 +265,7 @@ data "aws_route53_zone" "example" {
 
 # ホストゾーンを新規に作成
 resource "aws_route53_zone" "test_example" {
-  name = "test.goal-app.net"
+  name = "test.pf-goal-app.net"
 }
 
 # DNSレコードの定義
