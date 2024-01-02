@@ -260,7 +260,7 @@ resource "aws_lb_listener" "http" {
 # Route53でドメイン登録した場合は自動的に作成される
 # そのホストゾーンは以下で参照する
 data "aws_route53_zone" "example" {
-  name = "goal-app.net"
+  name = "pf-goal-app.net"
 }
 
 # ホストゾーンを新規に作成
