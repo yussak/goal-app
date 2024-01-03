@@ -504,7 +504,7 @@ module "backend_sg" {
   source      = "./security_group"
   name        = "backend-sg"
   vpc_id      = aws_vpc.example.id
-  port        = 80
+  port        = 5000
   cidr_blocks = [aws_vpc.example.cidr_block]
 }
 
@@ -549,7 +549,7 @@ module "frontend_sg" {
   source      = "./security_group"
   name        = "frontend-sg"
   vpc_id      = aws_vpc.example.id
-  port        = 80
+  port        = 3000
   cidr_blocks = [aws_vpc.example.cidr_block]
 }
 
