@@ -418,7 +418,7 @@ resource "aws_lb_target_group" "frontend" {
   deregistration_delay = 300
 
   health_check {
-    path = "/"
+    path = "/api/healthcheck"
     # 正常判定を行うまでのヘルスチェック実行回数
     healthy_threshold = 5
     # 異常判定を行うまでのヘルスチェック実行回数
