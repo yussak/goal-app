@@ -18,6 +18,8 @@ RUN go mod download
 
 COPY . .
 
-EXPOSE 8080
+# EXPOSE 8080
+# 本番環境では5000番ポートを使用する→後でdockerfileを分ける
+EXPOSE 5000
 
 CMD ["air", "-c", ".air.toml"]
