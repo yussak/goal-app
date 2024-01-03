@@ -4,6 +4,7 @@ services:
   backend:
     build:
       context: ./backend
+      # todo:環境変数ごとにDockerfileを分ける
       dockerfile: Dockerfile
     environment:
       DB_USERNAME: ${DB_USERNAME}
@@ -23,8 +24,8 @@ services:
     image: mysql:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: pwd
-      MYSQL_DATABASE: goal-db
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DBNAME}
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     volumes:
       - ./mysql/data:/var/lib/mysql
@@ -34,6 +35,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      # todo:環境変数ごとにDockerfileを分ける
       dockerfile: Dockerfile.dev
     env_file:
       - .env
