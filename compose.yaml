@@ -7,9 +7,9 @@ services:
       # todo:環境変数ごとにDockerfileを分ける
       dockerfile: Dockerfile
     environment:
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_DBNAME: ${DB_DBNAME}
+      DB_USERNAME: root
+      DB_PASSWORD: pwd
+      DB_DBNAME: goaldb
     env_file:
       - .env
     tty: true
