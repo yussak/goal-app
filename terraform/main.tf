@@ -177,13 +177,14 @@ resource "aws_nat_gateway" "nat_gateway_1" {
   depends_on    = [aws_internet_gateway.example]
 }
 
-module "example_sg" {
-  source      = "./security_group"
-  name        = "module-sg"
-  vpc_id      = aws_vpc.example.id
-  port        = 80
-  cidr_blocks = ["0.0.0.0/0"]
-}
+# TODO:不要なはずなので消す
+# module "example_sg" {
+#   source      = "./security_group"
+#   name        = "module-sg"
+#   vpc_id      = aws_vpc.example.id
+#   port        = 80
+#   cidr_blocks = ["0.0.0.0/0"]
+# }
 
 resource "aws_lb" "example" {
   name               = "example"
