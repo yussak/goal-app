@@ -209,6 +209,8 @@ resource "aws_lb" "example" {
     module.http_sg.security_group_id,
     module.https_sg.security_group_id,
     module.http_redirect_sg.security_group_id,
+    # todo:以下追加したが必要なのか確認
+    module.frontend_sg.security_group_id,
   ]
 }
 
@@ -405,7 +407,7 @@ resource "aws_lb_listener_rule" "backend" {
   }
   condition {
     path_pattern {
-      values = ["/*"]
+      values = ["/api/*"]
     }
   }
 }
