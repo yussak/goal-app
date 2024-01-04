@@ -13,8 +13,9 @@ export default NextAuth({
       },
       authorize: async (credentials) => {
         try {
+          // todo:環境変数で書き換え必要そう
           const res = await axios.post(
-            "http://backend:8080/auth/login",
+            "http://backend:5000/auth/login",
             credentials
           );
           if (res.data && res.data.user) {

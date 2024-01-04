@@ -16,8 +16,9 @@ export async function checkAuth(context: NextPageContext) {
   }
 
   try {
+    // todo:環境変数で書き換え必要そう
     const res = await axios.post(
-      "http://backend:8080/auth/decodeToken",
+      "http://backend:5000/auth/decodeToken",
       {},
       {
         headers: { Authorization: `Bearer ${token}` },
