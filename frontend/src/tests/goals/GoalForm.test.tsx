@@ -4,8 +4,6 @@ import GoalForm from "@/components/form/GoalForm";
 import userEvent from "@testing-library/user-event";
 import { GoalFormData } from "@/types";
 
-// todo: expect assertions追加する
-
 describe("GoalForm component", () => {
   const SetGoalDataMock = vi.fn();
   const addGoalMock = vi.fn();
@@ -16,6 +14,7 @@ describe("GoalForm component", () => {
   });
 
   it("should submit when correct values are input", async () => {
+    expect.assertions(1);
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
@@ -48,6 +47,7 @@ describe("GoalForm component", () => {
   });
 
   it("should not submit when invalid values are input", async () => {
+    expect.assertions(1);
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
@@ -64,10 +64,11 @@ describe("GoalForm component", () => {
     );
 
     await user.click(screen.getByRole("button", { name: "追加" }));
+    expect(addGoalMock).not.toBeCalled();
   });
-  expect(addGoalMock).not.toBeCalled();
 
   it("should validate when values are not input", async () => {
+    expect.assertions(3);
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
@@ -86,6 +87,7 @@ describe("GoalForm component", () => {
   });
 
   it("should validate when too short values are input", async () => {
+    expect.assertions(3);
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
@@ -113,6 +115,7 @@ describe("GoalForm component", () => {
   });
 
   it("should validate when too long values are input", async () => {
+    expect.assertions(3);
     render(
       <GoalForm
         SetGoalData={SetGoalDataMock}
