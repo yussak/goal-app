@@ -4,6 +4,8 @@ import GoalForm from "@/components/form/GoalForm";
 import userEvent from "@testing-library/user-event";
 import { GoalFormData } from "@/types";
 
+// todo: expect assertions追加する
+
 describe("GoalForm component", () => {
   const SetGoalDataMock = vi.fn();
   const addGoalMock = vi.fn();
