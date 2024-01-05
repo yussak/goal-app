@@ -38,7 +38,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      # 後で戻す
       - name: Build and push image for ECR backend
         uses: docker/build-push-action@v4
         with:
