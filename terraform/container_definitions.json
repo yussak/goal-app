@@ -48,6 +48,12 @@
         "awslogs-group": "/ecs/frontend"
       }
     },
+    "secrets": [
+      {
+        "name": "NEXTAUTH_SECRET",
+        "valueFrom": "/nextauth_secret"
+      }
+    ],
     "portMappings": [
       {
         "protocol": "tcp",
