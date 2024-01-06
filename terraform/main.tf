@@ -249,15 +249,13 @@ resource "aws_lb_listener" "http" {
 }
 
 # ホストゾーン
-# DNSレコードを束ねるリソース
-# Route53でドメイン登録した場合は自動的に作成される
-# そのホストゾーンは以下で参照する
+# DNSレコードを束ねるリソースで、Route53でドメイン登録した場合は自動的に作成される。そのホストゾーンは以下で参照する
 data "aws_route53_zone" "example" {
   name = "pf-goal-app.net"
 }
 
 # DNSレコードの定義
-# これで、設定したドメインでALBにアクセスできるようになる
+# 設定したドメインでALBにアクセスできるようになる
 resource "aws_route53_record" "example" {
   zone_id = data.aws_route53_zone.example.zone_id
   name    = data.aws_route53_zone.example.name
@@ -294,13 +292,11 @@ resource "aws_acm_certificate" "example" {
   subject_alternative_names = ["api.pf-goal-app.net"]
 
   # ドメインの所有権の検証方法を指定
-  # DNS検証かメール検証を選択できる
-  # SSL証明書を自動更新したい場合、DNS検証を選択
+  # DNS検証かメール検証を選択できる。SSL証明書を自動更新したい場合、DNS検証を選択
   validation_method = "DNS"
 
   lifecycle {
     # 新しい証明書を作ってから古いものと差し替える
-    # これによって証明書の再作成時の影響を小さくできる
     create_before_destroy = true
   }
 }
@@ -340,7 +336,7 @@ resource "aws_lb_listener" "https" {
 
     fixed_response {
       content_type = "text/plain"
-      message_body = "これはHTTPSですよ"
+      message_body = "これはHTTPSです"
       status_code  = "200"
     }
   }
@@ -363,7 +359,7 @@ resource "aws_lb_listener" "redirect_http_to_https" {
 }
 
 # ターゲットグループ
-# ALBがリクエストをフォワードする対象が「ターゲットグループ」
+# ALBがリクエストをフォワードする対象
 resource "aws_lb_target_group" "frontend" {
   name                 = "tg-frontend"
   target_type          = "ip"
@@ -395,15 +391,10 @@ resource "aws_lb_target_group" "frontend" {
 resource "aws_lb_listener_rule" "frontend" {
   listener_arn = aws_lb_listener.https.arn
   # 優先順位を指定。数字が小さいほど優先度が高い
-  # BEとずらすため一時的に101にした
-  # priority = 101
-
-  # 試しに入れ替える
   priority = 100
 
   action {
     type = "forward"
-    # フォワード先のtg
     target_group_arn = aws_lb_target_group.frontend.arn
   }
 
@@ -440,16 +431,12 @@ resource "aws_lb_target_group" "backend" {
   depends_on = [aws_lb.example]
 }
 
-# リスナールール
-# ターゲットグループにリクエストをフォワードするルール
 resource "aws_lb_listener_rule" "backend" {
   listener_arn = aws_lb_listener.https.arn
-  # 優先順位を指定。数字が小さいほど優先度が高い
   priority = 101
 
   action {
     type = "forward"
-    # フォワード先のtg
     target_group_arn = aws_lb_target_group.backend.arn
   }
 
@@ -465,21 +452,20 @@ resource "aws_ecs_cluster" "example" {
   name = "example"
 }
 
-# ECSサービスは起動するタスクの数を定義でき、指定した数のタスクを維持する
-# 何らかの理由でタスクが終了しても自動で新しいタスクを起動する
+# ECSサービスは起動するタスクの数を定義でき、指定した数のタスクを維持する。何らかの理由でタスクが終了しても自動で新しいタスクを起動する
 resource "aws_ecs_service" "backend" {
   name            = "backend"
   cluster         = aws_ecs_cluster.example.arn
   task_definition = aws_ecs_task_definition.example.arn
 
   # ECSサービスが維持するタスク数
-  # ここで1を指定すると、コンテナが以上終了するとECSサービスがタスクを再起動するまでアクセスできなくなる。なので2以上を指定
+  # 1を指定するとコンテナが異常終了するとECSサービスがタスクを再起動するまでアクセスできなくなるので2以上を指定
   desired_count = 2
 
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
 
-  # タスク起動時のヘルスチェック猶予期間を設定
+  # タスク起動時のヘルスチェック猶予期間
   # タスク起動に時間がかかる場合、十分な時間を用意しないとヘルスチェックに引っかかり、タスクの起動と終了が無限に続いてしまう。なので0以上を指定する
   health_check_grace_period_seconds = 60
 
@@ -517,15 +503,11 @@ resource "aws_ecs_service" "frontend" {
   cluster         = aws_ecs_cluster.example.arn
   task_definition = aws_ecs_task_definition.example.arn
 
-  # ECSサービスが維持するタスク数
-  # ここで1を指定すると、コンテナが以上終了するとECSサービスがタスクを再起動するまでアクセスできなくなる。なので2以上を指定
   desired_count = 2
 
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
 
-  # タスク起動時のヘルスチェック猶予期間を設定
-  # タスク起動に時間がかかる場合、十分な時間を用意しないとヘルスチェックに引っかかり、タスクの起動と終了が無限に続いてしまう。なので0以上を指定する
   health_check_grace_period_seconds = 60
 
   network_configuration {
@@ -558,7 +540,7 @@ module "frontend_sg" {
 }
 
 # cloudwatch ログ
-# Fargateではホストサーバーにログインできず、コンテナのログを直接確認できない。なのでログで確認できるようにする
+# Fargateではホストサーバーにログインできず、コンテナのログを直接確認できないのでログで確認できるようにする
 resource "aws_cloudwatch_log_group" "for_ecs_backend" {
   name              = "/ecs/backend"
   retention_in_days = 180
@@ -617,7 +599,6 @@ resource "aws_ecs_task_definition" "example" {
 }
 
 # cloudwatchイベントからECSを起動するためのIAMロールを作成する
-# これ消していいかもしれない
 module "ecs_events_role" {
   source     = "./iam_role"
   name       = "ecs-events"
@@ -655,21 +636,20 @@ resource "aws_ssm_parameter" "db_username" {
   name        = "/db/username"
   value       = "root"
   type        = "String"
-  description = "DBのユーザー名です!!"
+  description = "DBのユーザー名"
 }
 
 # ここでvalue指定したものを暗号化でもできるがセキュリティ的によくない。なのでダミー値を設定し後でAWS CLIで更新する
 
-# 以下コマンドでAWS CLIで上書きする
+# 以下コマンドでAWS CLIで上書きする（例）
 # aws ssm put-parameter --name '/db/password' --type SecureString \
-# --value 'ModifiedStrongPassword!' --overwrite
+# --value 'newPassword123!' --overwrite
 
-# batch-container-definitions.jsonでDB_PASSWORDをcw logsに出力してるけどこれ観れないように対策必要では
 resource "aws_ssm_parameter" "db_password" {
   name        = "/db/raw_password"
   value       = "uninitialized"
   type        = "SecureString"
-  description = "DBのパスワード!!"
+  description = "DBのパスワード"
 
   lifecycle {
     ignore_changes = [value]
@@ -680,17 +660,19 @@ resource "aws_ssm_parameter" "db_hostname" {
   name        = "/db/hostname"
   value       = aws_db_instance.example.address
   type        = "String"
-  description = "DBのhost名です!!"
+  description = "DBのhost名"
 }
 
 resource "aws_ssm_parameter" "db_dbname" {
   name        = "/db/dbname"
   value       = aws_db_instance.example.db_name
   type        = "String"
-  description = "DBのdb名です!!"
+  description = "DB名"
 }
 
-# nextauth_secretようテスト
+# 以下のコマンド（例）で更新する
+# aws ssm put-parameter --name '/nextauth_secret' --type SecureString \
+# --value 'nextauthsecret123' --overwrite
 resource "aws_ssm_parameter" "nextauth_secret" {
   name        = "/nextauth_secret"
   value       = "uninitialized"
@@ -754,9 +736,10 @@ resource "aws_db_instance" "example" {
   kms_key_id = aws_kms_key.example.arn
 
   username = aws_ssm_parameter.db_username.value
-  # このパスワードは使わず、以下のコマンドで上書きする
+
+  # このパスワードは使わず、以下のコマンド（例）で上書きする。ssmの/db/passwordと値を合わせる
   # aws rds modify-db-instance --db-instance-identifier 'example' \
-  # --master-user-password 'newPassword!'
+  # --master-user-password 'newPassword123!'
   password = "password"
 
 
