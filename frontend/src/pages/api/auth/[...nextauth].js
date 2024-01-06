@@ -2,6 +2,8 @@ import NextAuth from "next-auth";
 import axios from "axios";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+const AUTH_URL = process.env.NEXT_PUBLIC_API_URL + "/auth/login";
+
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -13,11 +15,7 @@ export default NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          // todo:環境変数で書き換え必要そう
-          const res = await axios.post(
-            "http://backend:5000/auth/login",
-            credentials
-          );
+          const res = await axios.post(AUTH_URL, credentials);
           if (res.data && res.data.user) {
             const user = res.data.user;
             return user;
