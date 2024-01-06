@@ -20,6 +20,9 @@ export default function Sidebar() {
           <li>
             <Link href="/goals/create">create goal</Link>
           </li>
+          <li>
+            <Link href="/goals">Goals</Link>
+          </li>
         </>
       ) : (
         <>
@@ -30,15 +33,11 @@ export default function Sidebar() {
           <li>
             <Link href="/auth/login">login</Link>
           </li>
-          <p>非ログイン（デバッグ用）</p>
         </>
       )}
       {/* 常に表示 */}
       <li>
         <Link href="/">Home</Link>
-      </li>
-      <li>
-        <Link href="/goals">Goals</Link>
       </li>
       <li>
         <Link href="/about">About</Link>
