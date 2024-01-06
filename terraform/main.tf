@@ -177,15 +177,6 @@ resource "aws_nat_gateway" "nat_gateway_1" {
   depends_on    = [aws_internet_gateway.example]
 }
 
-# TODO:不要なはずなので消す
-# module "example_sg" {
-#   source      = "./security_group"
-#   name        = "module-sg"
-#   vpc_id      = aws_vpc.example.id
-#   port        = 80
-#   cidr_blocks = ["0.0.0.0/0"]
-# }
-
 resource "aws_lb" "example" {
   name               = "example"
   load_balancer_type = "application"
@@ -267,9 +258,10 @@ data "aws_route53_zone" "example" {
 }
 
 # ホストゾーンを新規に作成
-resource "aws_route53_zone" "test_example" {
-  name = "test.pf-goal-app.net"
-}
+# name not resolved対応のため一時的にコメントアウト。不要らしいので
+# resource "aws_route53_zone" "api" {
+#   name = "api.pf-goal-app.net"
+# }
 
 # DNSレコードの定義
 # これで、設定したドメインでALBにアクセスできるようになる
@@ -285,6 +277,24 @@ resource "aws_route53_record" "example" {
   }
 }
 
+# 一旦フロントだけ表示したいので以下のようにする
+# resource "aws_route53_record" "api" {
+#   zone_id = data.aws_route53_zone.example.zone_id
+#   # サブじゃなくメインのホストゾーンを使用するらしいのでコメントアウト
+#   # zone_id = aws_route53_zone.api.zone_id
+
+#   # name not resolvedのため一時的にコメントアウト
+#   # name    = aws_route53_zone.api.name
+#   name    = "api.pf-goal-app.net"
+#   type    = "A"
+
+#   alias {
+#     name                   = aws_lb.example.dns_name
+#     zone_id                = aws_lb.example.zone_id
+#     evaluate_target_health = true
+#   }
+# }
+
 output "domain_name" {
   value = aws_route53_record.example.name
 }
@@ -294,6 +304,8 @@ resource "aws_acm_certificate" "example" {
   domain_name = aws_route53_record.example.name
 
   # ドメイン名を追加したい場合、以下に追加する。例えば["test.example.com"]
+  # subject_alternative_names = ["api.pf-goal-app.net"]
+  # 一旦フロントだけ表示したいので以下のようにする
   subject_alternative_names = []
 
   # ドメインの所有権の検証方法を指定
@@ -398,18 +410,32 @@ resource "aws_lb_target_group" "backend" {
 resource "aws_lb_listener_rule" "backend" {
   listener_arn = aws_lb_listener.https.arn
   # 優先順位を指定。数字が小さいほど優先度が高い
-  priority = 100
+  # priority = 100
+  # 試しに入れ替える
+  # priority = 200
+  priority = 101
 
   action {
     type = "forward"
     # フォワード先のtg
     target_group_arn = aws_lb_target_group.backend.arn
   }
+
   condition {
+    # 両方必要らしいのでありにする
     path_pattern {
       values = ["/api/*"]
+      # values = ["/*"]
     }
   }
+  # condition {
+  #   host_header {
+  #     values = ["api.pf-goal-app.net"]
+  #   }
+  #   # path_pattern {
+  #   #   values = ["/api/*"]
+  #   # }
+  # }
 }
 
 resource "aws_lb_target_group" "frontend" {
@@ -444,7 +470,10 @@ resource "aws_lb_listener_rule" "frontend" {
   listener_arn = aws_lb_listener.https.arn
   # 優先順位を指定。数字が小さいほど優先度が高い
   # BEとずらすため一時的に101にした
-  priority = 101
+  # priority = 101
+
+  # 試しに入れ替える
+  priority = 100
 
   action {
     type = "forward"
@@ -452,10 +481,24 @@ resource "aws_lb_listener_rule" "frontend" {
     target_group_arn = aws_lb_target_group.frontend.arn
   }
   condition {
+    # 両方必要らしいのでありにする
     path_pattern {
       values = ["/*"]
     }
   }
+  # condition {
+  #   # ハマったので試しに
+  #   host_header {
+  #     values = ["pf-goal-app.net"]
+  #   }
+  # }
+# 元々これだった
+# condition {
+#     # path_pattern {
+#     #   values = ["/*"]
+#     # }
+#   # }
+#   }
 }
 
 # # クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
@@ -686,6 +729,14 @@ resource "aws_ssm_parameter" "db_dbname" {
   value       = aws_db_instance.example.db_name
   type        = "String"
   description = "DBのdb名です!!"
+}
+
+# nextauth_secretようテスト
+resource "aws_ssm_parameter" "nextauth_secret" {
+  name        = "/nextauth_secret"
+  value       = "uninitialized"
+  type        = "SecureString"
+  description = "初期値"
 }
 
 # MySQLを使用
