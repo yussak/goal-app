@@ -35,7 +35,6 @@ services:
   frontend:
     build:
       context: ./frontend
-      # todo:環境変数ごとにDockerfileを分ける
       dockerfile: Dockerfile.dev
     env_file:
       - .env
