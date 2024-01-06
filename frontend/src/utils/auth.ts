@@ -8,17 +8,14 @@ export async function checkAuth(context: NextPageContext) {
   );
   const token = cookies.token;
 
-  // console.log("token is", token);
-
   // Tokenが存在しない場合はユーザー情報を空にする
   if (!token) {
     return null;
   }
 
   try {
-    // todo:環境変数で書き換え必要そう
     const res = await axios.post(
-      "http://backend:5000/auth/decodeToken",
+      process.env.NEXT_PUBLIC_API_URL + "/auth/decodeToken",
       {},
       {
         headers: { Authorization: `Bearer ${token}` },
