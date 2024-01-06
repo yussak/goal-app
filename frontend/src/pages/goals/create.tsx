@@ -3,7 +3,7 @@ import { GoalFormData } from "@/types";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { mutate } from "swr";
 
 export default function createGoal() {
@@ -22,6 +22,14 @@ export default function createGoal() {
     SetGoalData((prev) => ({ ...prev, [key]: value }));
   };
   const { data: session } = useSession();
+
+  // 非ログイン時にログインページにリダイレクト
+  // todo:共通化したい
+  useEffect(() => {
+    if (session?.user == null) {
+      router.push("/auth/login");
+    }
+  }, [session]);
 
   const addGoal = async (data: GoalFormData) => {
     const params = {
