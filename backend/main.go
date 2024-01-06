@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
@@ -19,7 +20,7 @@ func main() {
 
 	r := gin.Default()
 
-	r.Use(middleware.CorsMiddleware())
+	r.Use(cors.New(middleware.GetCorsConfig()))
 
 	router.SetupRouter(r)
 
