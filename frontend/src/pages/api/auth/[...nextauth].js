@@ -4,39 +4,19 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 // todo:本番でも使えるようにしないといけない
+// todo:これ消せないか確認
 const AUTH_URL = "http://backend:5000/auth/login";
 
 export default NextAuth({
+  // todo:これ消せないか確認
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: { label: "email", type: "text" },
-        password: { label: "Password", type: "password" },
-      },
-      authorize: async (credentials) => {
-        try {
-          const res = await axios.post(AUTH_URL, credentials);
-          if (res.data && res.data.user) {
-            const user = res.data.user;
-            return user;
-          } else {
-            console.error("Unexpected response:", res.data);
-            return Promise.reject("Authorization failed");
-          }
-        } catch (error) {
-          console.error("era-desu", error);
-          return Promise.reject(null);
-        }
-      },
-    }),
   ],
-
+  // todo:これ消せないか確認
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -51,6 +31,7 @@ export default NextAuth({
       return session;
     },
   },
+  // todo:これ消せないか確認
   session: {
     jwt: true,
   },

@@ -23,14 +23,6 @@ export default function createGoal() {
   };
   const { data: session } = useSession();
 
-  // 非ログイン時にログインページにリダイレクト
-  // todo:共通化したい
-  useEffect(() => {
-    if (session?.user == null) {
-      router.push("/auth/login");
-    }
-  }, [session]);
-
   const addGoal = async (data: GoalFormData) => {
     const params = {
       ...data,
