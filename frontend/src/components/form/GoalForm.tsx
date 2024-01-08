@@ -16,12 +16,17 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors = {} },
+    // formState: { errors },
   } = useForm<GoalFormData>();
 
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
     addGoal(data);
   };
+
+  // フォームに空欄が1つでもあるかどうか
+  const isAnyFieldEmpty =
+    !goalData.purpose || !goalData.content || !goalData.loss;
 
   const renderTextField = (
     label: string,
@@ -70,7 +75,7 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
         )}
         <p>やらないとどうなるかを書いてみましょう</p>
         {renderTextField("loss", register, goalData.loss, SetGoalData, errors)}
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={isAnyFieldEmpty}>
           追加
         </Button>
       </form>
