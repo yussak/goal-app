@@ -31,14 +31,16 @@ export default function signup() {
   };
 
   return (
-    <SignupForm
-      setName={setName}
-      setEmail={setEmail}
-      setPassword={setPassword}
-      register={register}
-      name={name}
-      email={email}
-      password={password}
-    />
+    <button onClick={() => signIn()}>新規登録</button>
+
+    // <SignupForm
+    //   setName={setName}
+    //   setEmail={setEmail}
+    //   setPassword={setPassword}
+    //   register={register}
+    //   name={name}
+    //   email={email}
+    //   password={password}
+    // />
   );
 }

@@ -680,6 +680,16 @@ resource "aws_ssm_parameter" "nextauth_secret" {
   description = "初期値"
 }
 
+# 以下のコマンド（例）で更新する
+# aws ssm put-parameter --name '/nextauth_secret' --type SecureString \
+# --value 'googleclientsecret123' --overwrite
+resource "aws_ssm_parameter" "google_client_secret" {
+  name        = "/google_client_secret"
+  value       = "uninitialized"
+  type        = "SecureString"
+  description = "初期値"
+}
+
 # MySQLを使用
 # MySQLのmy.cnfファイルに定義するようなDBの設定を以下のDBパラメータグループに書く
 resource "aws_db_parameter_group" "example" {

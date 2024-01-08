@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import axios from "axios";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 // todo:本番でも使えるようにしないといけない
 const AUTH_URL = "http://backend:5000/auth/login";
@@ -8,6 +9,10 @@ const AUTH_URL = "http://backend:5000/auth/login";
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
