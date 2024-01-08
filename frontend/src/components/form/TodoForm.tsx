@@ -40,7 +40,6 @@ const TodoForm = ({ setContent, addTodo, content }: TodoFormProps) => {
         </Stack>
       </form>
     </Container>
-    // </Box>
   );
 };
 
