@@ -4,7 +4,7 @@ import GoalForm from "@/components/form/GoalForm";
 import userEvent from "@testing-library/user-event";
 import { GoalFormData } from "@/types";
 
-describe("GoalForm component", () => {
+describe("Create goal", () => {
   const addGoalMock = vi.fn();
 
   afterEach(() => {
