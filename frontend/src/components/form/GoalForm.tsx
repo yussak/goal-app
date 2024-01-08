@@ -16,8 +16,7 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors = {} },
-    // formState: { errors },
+    formState: { errors },
   } = useForm<GoalFormData>();
 
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
