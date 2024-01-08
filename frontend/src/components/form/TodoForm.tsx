@@ -24,7 +24,6 @@ const TodoForm = ({ setContent, addTodo, content }: TodoFormProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2} direction="row">
           <TextField
-            id="outlined-read-only-input"
             label="content"
             {...register("content", validationRules)}
             value={content}
