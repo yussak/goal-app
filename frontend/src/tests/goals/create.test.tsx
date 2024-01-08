@@ -2,7 +2,6 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import GoalForm from "@/components/form/GoalForm";
 import userEvent from "@testing-library/user-event";
-import { GoalFormData } from "@/types";
 
 describe("Create goal", () => {
   const addGoalMock = vi.fn();
