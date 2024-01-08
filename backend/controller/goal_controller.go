@@ -72,7 +72,34 @@ func DeleteGoal(c *gin.Context) {
 		return
 	}
 
-	_, err := db.DB.Exec("DELETE FROM milestones WHERE goal_id = ?", id)
+	// milestone を取得
+	var milestoneIDs []string
+	rows, err := db.DB.Query("SELECT id FROM milestones WHERE goal_id = ?", id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var milestoneID string
+		if err := rows.Scan(&milestoneID); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		milestoneIDs = append(milestoneIDs, milestoneID)
+	}
+
+	// todo を削除
+	for _, milestoneID := range milestoneIDs {
+		_, err := db.DB.Exec("DELETE FROM todos WHERE parent_id = ?", milestoneID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
+	_, err = db.DB.Exec("DELETE FROM milestones WHERE goal_id = ?", id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
