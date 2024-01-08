@@ -39,6 +39,7 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
           {...register(name, validationRules)}
           error={!!errors[name]}
           helperText={errors[name]?.message}
+          data-testid={`error-${name}`}
         />
       </Stack>
     );
