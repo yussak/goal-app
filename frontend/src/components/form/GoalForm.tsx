@@ -1,21 +1,18 @@
 import { GoalFormData } from "@/types/GoalForm";
 import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 
 type GoalFormProps = {
-  SetGoalData: <K extends keyof GoalFormData>(
-    key: K,
-    value: GoalFormData[K]
-  ) => void;
   addGoal: (data: GoalFormData) => void;
-  goalData: GoalFormData;
 };
 
-const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
+const GoalForm = ({ addGoal }: GoalFormProps) => {
   const {
     register,
     handleSubmit,
+    watch,
+    control,
     formState: { errors },
   } = useForm<GoalFormData>();
 
@@ -23,32 +20,26 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
     addGoal(data);
   };
 
-  // フォームに空欄が1つでもあるかどうか
-  const isAnyFieldEmpty =
-    !goalData.purpose || !goalData.content || !goalData.loss;
+  // 値が空の時はdisabledにする
+  const purpose = watch("purpose");
+  const content = watch("content");
+  const loss = watch("loss");
+  const isAnyFieldEmpty = !purpose || !content || !loss;
 
   const renderTextField = (
-    label: string,
+    name: string,
     // todo:anyじゃなくしたい
     register: any,
-    value: string,
-    SetGoalData: any,
-    errors: any
+    errors: FieldErrors
   ) => {
     return (
       <Stack spacing={2}>
         <TextField
-          label={label}
-          {...register(label, validationRules)}
-          value={value}
-          onChange={(e) => SetGoalData(label, e.target.value)}
+          label={name}
+          {...register(name, validationRules)}
+          error={!!errors[name]}
+          helperText={errors[name]?.message}
         />
-        {errors[label] && (
-          // テストで使用するためdata-testidをつける
-          <span data-testid={`error-${label}`} className="text-red">
-            {errors[label]?.message}
-          </span>
-        )}
       </Stack>
     );
   };
@@ -57,23 +48,11 @@ const GoalForm = ({ goalData, SetGoalData, addGoal }: GoalFormProps) => {
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <p>達成したいことを書きましょう（必須）</p>
-        {renderTextField(
-          "purpose",
-          register,
-          goalData.purpose,
-          SetGoalData,
-          errors
-        )}
+        {renderTextField("purpose", register, errors)}
         <p>それをSMARTに書きましょう（必須）</p>
-        {renderTextField(
-          "content",
-          register,
-          goalData.content,
-          SetGoalData,
-          errors
-        )}
+        {renderTextField("content", register, errors)}
         <p>やらないとどうなるかを書いてみましょう</p>
-        {renderTextField("loss", register, goalData.loss, SetGoalData, errors)}
+        {renderTextField("loss", register, errors)}
         <Button type="submit" variant="contained" disabled={isAnyFieldEmpty}>
           追加
         </Button>
