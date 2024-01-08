@@ -3,24 +3,11 @@ import { GoalFormData } from "@/types";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { mutate } from "swr";
 
 export default function createGoal() {
   const router = useRouter();
 
-  const [goalData, SetGoalData] = useState<GoalFormData>({
-    content: "",
-    purpose: "",
-    loss: "",
-  });
-
-  const handleSetGoalData = <K extends keyof GoalFormData>(
-    key: K,
-    value: GoalFormData[K]
-  ) => {
-    SetGoalData((prev) => ({ ...prev, [key]: value }));
-  };
   const { data: session } = useSession();
 
   const addGoal = async (data: GoalFormData) => {
@@ -48,12 +35,8 @@ export default function createGoal() {
     <>
       {session?.user && (
         <>
-          debug用 id: {session?.user.id}
-          <GoalForm
-            SetGoalData={handleSetGoalData}
-            goalData={goalData}
-            addGoal={addGoal}
-          />
+          {/* debug用 id: {session?.user.id} */}
+          <GoalForm addGoal={addGoal} />
         </>
       )}
     </>
