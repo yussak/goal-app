@@ -7,38 +7,32 @@ import { mutate } from "swr";
 
 export default function createGoal() {
   const router = useRouter();
-
   const { data: session } = useSession();
+
+  const user_id = session?.user && session.user.id;
 
   const addGoal = async (data: GoalFormData) => {
     const params = {
       ...data,
-      user_id: session?.user?.id,
+      user_id: user_id,
     };
     try {
-      // TODO:useSWRMutationで書き換えられそう？調べる
       const res = await axios.post("/goal", params);
 
       const newGoalId = res.data.id;
       router.push(`/goals/${newGoalId}`);
-      //   router.pushで移動するならフォームリセットは不要そう
-      // useSWRで書き換える
       mutate(`/${user_id}/goals`);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const user_id = session?.user ? session.user.id : null;
-
   return (
     <>
-      {session?.user && (
-        <>
-          {/* debug用 id: {session?.user.id} */}
-          <GoalForm addGoal={addGoal} />
-        </>
-      )}
+      <>
+        {/* debug用 id: {session?.user.id} */}
+        <GoalForm addGoal={addGoal} />
+      </>
     </>
   );
 }

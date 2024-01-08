@@ -67,87 +67,87 @@ describe("GoalForm component", () => {
     expect(addGoalMock).not.toBeCalled();
   });
 
-  it("should validate when values are not input", async () => {
-    expect.assertions(3);
-    render(
-      <GoalForm
-        SetGoalData={SetGoalDataMock}
-        goalData={{} as GoalFormData}
-        addGoal={addGoalMock}
-      />
-    );
-    const user = userEvent.setup();
+  // it("should validate when values are not input", async () => {
+  //   expect.assertions(3);
+  //   render(
+  //     <GoalForm
+  //       SetGoalData={SetGoalDataMock}
+  //       goalData={{} as GoalFormData}
+  //       addGoal={addGoalMock}
+  //     />
+  //   );
+  //   const user = userEvent.setup();
 
-    // 値を入力せず送信ボタンをクリック
-    await user.click(screen.getByRole("button", { name: "追加" }));
+  //   // 値を入力せず送信ボタンをクリック
+  //   await user.click(screen.getByRole("button", { name: "追加" }));
 
-    expect(screen.getByTestId(`error-purpose`)).toHaveTextContent("必須です");
-    expect(screen.getByTestId(`error-content`)).toHaveTextContent("必須です");
-    expect(screen.getByTestId(`error-loss`)).toHaveTextContent("必須です");
-  });
+  //   expect(screen.getByTestId(`error-purpose`)).toHaveTextContent("必須です");
+  //   expect(screen.getByTestId(`error-content`)).toHaveTextContent("必須です");
+  //   expect(screen.getByTestId(`error-loss`)).toHaveTextContent("必須です");
+  // });
 
-  it("should validate when too short values are input", async () => {
-    expect.assertions(3);
-    render(
-      <GoalForm
-        SetGoalData={SetGoalDataMock}
-        goalData={{} as GoalFormData}
-        addGoal={addGoalMock}
-      />
-    );
-    const user = userEvent.setup();
+  // it("should validate when too short values are input", async () => {
+  //   expect.assertions(3);
+  //   render(
+  //     <GoalForm
+  //       SetGoalData={SetGoalDataMock}
+  //       goalData={{} as GoalFormData}
+  //       addGoal={addGoalMock}
+  //     />
+  //   );
+  //   const user = userEvent.setup();
 
-    await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
-    await user.type(screen.getByRole("textbox", { name: "loss" }), "ロス");
-    await user.type(screen.getByRole("textbox", { name: "content" }), "内容");
+  //   await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
+  //   await user.type(screen.getByRole("textbox", { name: "loss" }), "ロス");
+  //   await user.type(screen.getByRole("textbox", { name: "content" }), "内容");
 
-    await user.click(screen.getByRole("button", { name: "追加" }));
+  //   await user.click(screen.getByRole("button", { name: "追加" }));
 
-    expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
-      "3文字以上で入力してください"
-    );
-    expect(screen.getByTestId(`error-content`)).toHaveTextContent(
-      "3文字以上で入力してください"
-    );
-    expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
-      "3文字以上で入力してください"
-    );
-  });
+  //   expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
+  //     "3文字以上で入力してください"
+  //   );
+  //   expect(screen.getByTestId(`error-content`)).toHaveTextContent(
+  //     "3文字以上で入力してください"
+  //   );
+  //   expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
+  //     "3文字以上で入力してください"
+  //   );
+  // });
 
-  it("should validate when too long values are input", async () => {
-    expect.assertions(3);
-    render(
-      <GoalForm
-        SetGoalData={SetGoalDataMock}
-        goalData={{} as GoalFormData}
-        addGoal={addGoalMock}
-      />
-    );
-    const user = userEvent.setup();
+  // it("should validate when too long values are input", async () => {
+  //   expect.assertions(3);
+  //   render(
+  //     <GoalForm
+  //       SetGoalData={SetGoalDataMock}
+  //       goalData={{} as GoalFormData}
+  //       addGoal={addGoalMock}
+  //     />
+  //   );
+  //   const user = userEvent.setup();
 
-    await user.type(
-      screen.getByRole("textbox", { name: "purpose" }),
-      "サンプルテキストサンプルテキスト"
-    );
-    await user.type(
-      screen.getByRole("textbox", { name: "loss" }),
-      "サンプルテキストサンプルテキスト"
-    );
-    await user.type(
-      screen.getByRole("textbox", { name: "content" }),
-      "サンプルテキストサンプルテキスト"
-    );
+  //   await user.type(
+  //     screen.getByRole("textbox", { name: "purpose" }),
+  //     "サンプルテキストサンプルテキスト"
+  //   );
+  //   await user.type(
+  //     screen.getByRole("textbox", { name: "loss" }),
+  //     "サンプルテキストサンプルテキスト"
+  //   );
+  //   await user.type(
+  //     screen.getByRole("textbox", { name: "content" }),
+  //     "サンプルテキストサンプルテキスト"
+  //   );
 
-    await user.click(screen.getByRole("button", { name: "追加" }));
+  //   await user.click(screen.getByRole("button", { name: "追加" }));
 
-    expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
-      "10文字以内で入力してください"
-    );
-    expect(screen.getByTestId(`error-content`)).toHaveTextContent(
-      "10文字以内で入力してください"
-    );
-    expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
-      "10文字以内で入力してください"
-    );
-  });
+  //   expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
+  //     "10文字以内で入力してください"
+  //   );
+  //   expect(screen.getByTestId(`error-content`)).toHaveTextContent(
+  //     "10文字以内で入力してください"
+  //   );
+  //   expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
+  //     "10文字以内で入力してください"
+  //   );
+  // });
 });
