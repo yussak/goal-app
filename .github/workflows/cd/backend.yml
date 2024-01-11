@@ -5,7 +5,9 @@ on:
     paths:
       - "backend/**"
     branches:
-      - release/*
+      # 一時的
+      - feat/*
+    #   - release/*
 
 env:
   AWS_REGION: ap-northeast-1

@@ -5,8 +5,8 @@ on:
     paths:
       - "frontend/**"
     branches:
-      # todo:relesase/20240102のように日付指定した時にリリースさせる
-      - release/*
+      - feat/*
+      # - release/*
 
 defaults:
   run:
