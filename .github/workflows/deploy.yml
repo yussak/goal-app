@@ -4,6 +4,7 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches:
+      # todo:relesase/20240102のように日付指定した時にリリースさせる
       - release
 
 env:
