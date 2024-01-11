@@ -5,8 +5,7 @@ on:
     paths:
       - "frontend/**"
     branches:
-      - feat/*
-      # - release/*
+      - release/*
 
 defaults:
   run:

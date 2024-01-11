@@ -5,9 +5,7 @@ on:
     paths:
       - "backend/**"
     branches:
-      # 一時的
-      - feat/*
-    #   - release/*
+      - release/*
 
 defaults:
   run:
