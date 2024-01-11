@@ -4,10 +4,10 @@ import { Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type TodoFormProps = {
-  addTodo: (content: string) => void;
+  addTodoChild: (content: string) => void;
 };
 
-const TodoForm = ({ addTodo }: TodoFormProps) => {
+const TodoForm = ({ addTodoChild }: TodoFormProps) => {
   const {
     register,
     handleSubmit,
@@ -17,7 +17,7 @@ const TodoForm = ({ addTodo }: TodoFormProps) => {
   } = useForm<TodoFormData>();
 
   const onSubmit: SubmitHandler<TodoFormData> = (data) => {
-    addTodo(data.content);
+    addTodoChild(data.content);
     reset();
   };
 

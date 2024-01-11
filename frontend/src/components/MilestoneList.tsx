@@ -90,8 +90,8 @@ const MilestoneList = ({
                   {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
                   {milestoneTodos.length < 5 ? (
                     <TodoForm
-                      // milestone.idは親側でだけ必要。なので必要なところ（=ここ）でidを代入している
-                      addTodo={(content) => addTodo(milestone.id, content)}
+                      // 子コンポーネントにaddTodoChildを渡してcontentを受け取る。そのcontentを親（当コンポーネント）のaddTodoで受け取る。その際にmilestone.idも渡し、実行ている
+                      addTodoChild={(content) => addTodo(milestone.id, content)}
                     />
                   ) : (
                     <p>todoは5個まで追加できます</p>
