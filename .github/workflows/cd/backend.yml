@@ -9,6 +9,10 @@ on:
       - feat/*
     #   - release/*
 
+defaults:
+  run:
+    working-directory: backend
+
 env:
   AWS_REGION: ap-northeast-1
 
