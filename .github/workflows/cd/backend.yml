@@ -5,7 +5,7 @@ on:
     paths:
       - "backend/**"
     branches:
-      - release/*
+      - release-*
 
 defaults:
   run:
