@@ -12,7 +12,6 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
     register,
     handleSubmit,
     watch,
-    control,
     formState: { errors },
   } = useForm<GoalFormData>();
 
