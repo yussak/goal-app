@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import TodoForm from "./form/TodoForm";
-import { useState } from "react";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import TodoList from "./TodoList";
@@ -31,20 +30,17 @@ const MilestoneList = ({
 }: MilestoneListProps) => {
   const { data: session } = useSession();
 
-  const [todoContent, setTodoContent] = useState<string>("");
-
-  const addTodo = async (id: string) => {
+  const addTodo = async (parent_id: string, content: string) => {
     const params = {
-      parent_id: id,
+      parent_id: parent_id,
       user_id: session?.user?.id,
-      content: todoContent,
+      content: content,
     };
 
     try {
-      const res = await axios.post(`/milestones/${id}/todos`, params);
+      const res = await axios.post(`/milestones/${parent_id}/todos`, params);
       // 親側で更新
-      addTodosToState(id, res.data);
-      setTodoContent("");
+      addTodosToState(parent_id, res.data);
     } catch (error) {
       console.error(error);
     }
@@ -94,10 +90,8 @@ const MilestoneList = ({
                   {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
                   {milestoneTodos.length < 5 ? (
                     <TodoForm
-                      setContent={setTodoContent}
                       // milestone.idは親側でだけ必要。なので必要なところ（=ここ）でidを代入している
-                      addTodo={() => addTodo(milestone.id)}
-                      content={todoContent}
+                      addTodo={(content) => addTodo(milestone.id, content)}
                     />
                   ) : (
                     <p>todoは5個まで追加できます</p>

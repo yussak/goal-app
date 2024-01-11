@@ -1,23 +1,28 @@
+import { TodoFormData } from "@/types";
 import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type TodoFormProps = {
-  setContent: (content: string) => void;
-  addTodo: () => void;
-  content: string;
+  addTodo: (content: string) => void;
 };
 
-const TodoForm = ({ setContent, addTodo, content }: TodoFormProps) => {
+const TodoForm = ({ addTodo }: TodoFormProps) => {
   const {
     register,
     handleSubmit,
+    watch,
+    reset,
     formState: { errors },
-  } = useForm<TodoFormProps>();
+  } = useForm<TodoFormData>();
 
-  const onSubmit: SubmitHandler<TodoFormProps> = () => {
-    addTodo();
+  const onSubmit: SubmitHandler<TodoFormData> = (data) => {
+    addTodo(data.content);
+    reset();
   };
+
+  const content = watch("content");
+  const isFieldEmpty = !content;
 
   return (
     <Container sx={{ pt: 3 }}>
@@ -26,15 +31,10 @@ const TodoForm = ({ setContent, addTodo, content }: TodoFormProps) => {
           <TextField
             label="content"
             {...register("content", validationRules)}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            error={!!errors.content}
+            helperText={errors.content?.message}
           />
-          {errors.content && (
-            <span data-testid="error-content" className="text-red">
-              {errors.content?.message}
-            </span>
-          )}
-          <Button type="submit" variant="contained" disabled={!content}>
+          <Button type="submit" variant="contained" disabled={isFieldEmpty}>
             追加
           </Button>
         </Stack>
