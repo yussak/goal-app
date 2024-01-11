@@ -5,9 +5,10 @@ on:
   push:
     paths:
       - "frontend/**"
-    branches:
-      # todo:relesase/20240102のように日付指定した時にリリースさせる
-      - release
+      # 一時的にコメントアウト
+    # branches:
+    #   # todo:relesase/20240102のように日付指定した時にリリースさせる
+    #   - release
 
 env:
   AWS_REGION: ap-northeast-1
