@@ -1,14 +1,12 @@
-# TODO:ECRビルドをさ分ある時だけ実行にしたい
 name: Deploy Frontend to Amazon ECS
 
 on:
   push:
     paths:
       - "frontend/**"
-      # 一時的にコメントアウト
-    # branches:
-    #   # todo:relesase/20240102のように日付指定した時にリリースさせる
-    #   - release
+    branches:
+      # todo:relesase/20240102のように日付指定した時にリリースさせる
+      - release/*
 
 defaults:
   run:
