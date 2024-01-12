@@ -6,8 +6,10 @@ import MilestoneForm from "@/components/form/MilestoneForm";
 import MilestoneList from "@/components/MilestoneList";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { checkAuth } from "@/utils/checkAuth";
 
 export default function GoalDetail() {
+  checkAuth();
   const [goal, setGoal] = useState<Goal | null>(null);
 
   const [milestones, setMilestones] = useState<Milestone[]>([]);

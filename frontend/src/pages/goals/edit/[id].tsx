@@ -1,11 +1,13 @@
 import EditGoalForm from "@/components/form/EditGoalForm";
 import { GoalFormData } from "@/types";
 import { axios } from "@/utils/axios";
+import { checkAuth } from "@/utils/checkAuth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function EditGoal() {
+  checkAuth();
   const router = useRouter();
   const id = router.query.id;
 

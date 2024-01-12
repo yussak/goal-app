@@ -1,4 +1,8 @@
+import { checkAuth } from "@/utils/checkAuth";
+
 export default function About() {
+  checkAuth();
+
   return (
     <>
       <div>about</div>
