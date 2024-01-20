@@ -14,7 +14,7 @@ export default function Sidebar() {
       {session?.user ? (
         <>
           <li>
-            <Link href="/goals/create">create goal</Link>
+            <Link href="/goals/create">Add goal</Link>
           </li>
           <li>
             <Link href="/goals">Goals</Link>
@@ -45,7 +45,7 @@ export default function Sidebar() {
               variant="outlined"
               onClick={() => signOut({ callbackUrl: "/auth/login" })}
             >
-              ログアウト
+              logout
             </Button>
           </li>
         </>
