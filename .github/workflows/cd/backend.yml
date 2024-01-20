@@ -1,5 +1,5 @@
 name: Deploy Backend to Amazon ECS
-
+# todo:migrateはCICD煮含める予定
 on:
   push:
     paths:
@@ -45,6 +45,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./backend
+          file: ./backend/Dockerfile.prod
           push: true
           tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.BACKEND_TAG }}-latest
 
