@@ -1,14 +1,59 @@
 import Link from "next/link";
 import { Goal } from "@/types";
 import { useSession } from "next-auth/react";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  List,
+  ListItem,
+  ListItemButton,
+} from "@mui/material";
+import { useState } from "react";
 
 type GoalListProps = {
   goals: Goal[];
   onDelete: (id: string) => void;
 };
 
+export type SimpleDialogProps = {
+  open: boolean;
+  selectedValue: Goal | null;
+  onClose: (value: Goal | null) => void;
+};
+
+function SimpleDialog(props: SimpleDialogProps) {
+  const { onClose, selectedValue, open } = props;
+
+  const handleClose = () => {
+    onClose(selectedValue);
+  };
+
+  return (
+    <Dialog onClose={onClose} open={open}>
+      <DialogTitle>Set backup account</DialogTitle>
+      <List sx={{ pt: 0 }}>
+        <ListItem disableGutters>
+          <ListItemButton autoFocus>{selectedValue?.id}</ListItemButton>
+        </ListItem>
+      </List>
+    </Dialog>
+  );
+}
+
 const GoalList = ({ goals, onDelete }: GoalListProps) => {
   const { data: session } = useSession();
+  const [open, setOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState<Goal | null>(null);
+
+  const handleClickOpen = (value: Goal) => {
+    setSelectedValue(value);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return goals && goals.length > 0 ? (
     <ul>
@@ -28,7 +73,18 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             </p>
             {session?.user?.id === goal.user_id ? (
               <p>
-                <button onClick={() => onDelete(goal.id)}>delete</button>
+                <Button
+                  variant="outlined"
+                  onClick={() => handleClickOpen(goal)}
+                >
+                  Open simple dialog
+                </Button>
+                <SimpleDialog
+                  selectedValue={selectedValue}
+                  open={open}
+                  onClose={handleClose}
+                />
+                {/* <button onClick={() => onDelete(goal.id)}>delete</button> */}
               </p>
             ) : (
               ""
