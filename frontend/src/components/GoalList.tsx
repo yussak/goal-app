@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Goal } from "@/types";
 import { useSession } from "next-auth/react";
+import { DeleteDialog } from "./DeleteDialog";
 
 type GoalListProps = {
   goals: Goal[];
@@ -21,17 +22,15 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>progress: {goal.progress}</p>
             <p>id: {goal.id}</p>
             <p>user_id（デバッグ用）: {goal.user_id}</p>
-            <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
-            <p>UpdatedAt: {goal.UpdatedAt.toLocaleString()}</p>
+            {/* <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
+            <p>UpdatedAt: {goal.UpdatedAt.toLocaleString()}</p> */}
             <p>
               <Link href={`/goals/${goal.id}`}>detail</Link>
             </p>
-            {session?.user?.id === goal.user_id ? (
+            {session?.user?.id === goal.user_id && (
               <p>
-                <button onClick={() => onDelete(goal.id)}>delete</button>
+                <DeleteDialog selectedValue={goal} onDelete={onDelete} />
               </p>
-            ) : (
-              ""
             )}
           </li>
         );

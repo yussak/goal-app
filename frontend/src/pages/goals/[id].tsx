@@ -126,6 +126,7 @@ export default function GoalDetail() {
       <h2>目標詳細</h2>
       {goal && (
         <>
+          {/* todo:このページでも削除可能にしたい */}
           <Link href={`/goals/edit/${goal.id}`}>edit</Link>
           <p>content: {goal.content}</p>
           <p>purpose: {goal.purpose}</p>
@@ -134,17 +135,14 @@ export default function GoalDetail() {
           {/* <p>user_id(デバッグ用): {goal.user_id}</p> */}
           {/* <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p> */}
           {/* <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p> */}
+          <Link href="/goals">一覧に戻る</Link>
         </>
       )}
       {session?.user && (
         <>
           <h3>中目標を追加</h3>
           {milestones.length < 5 ? (
-            <MilestoneForm
-              // setContent={setMilestoneContent}
-              addMilestone={addMilestone}
-              // content={milestoneContent}
-            />
+            <MilestoneForm addMilestone={addMilestone} />
           ) : (
             <p>中目標は5個までです</p>
           )}

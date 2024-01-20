@@ -4,7 +4,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
-  IconButton,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -13,6 +12,7 @@ import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import TodoList from "./TodoList";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { DeleteDialog } from "./DeleteDialog";
 
 type MilestoneListProps = {
   milestones: Milestone[];
@@ -76,7 +76,7 @@ const MilestoneList = ({
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography>
+                <Typography component="div">
                   {isAllCompleted ? (
                     <span className="text-border">{milestone.content}</span>
                   ) : (
@@ -87,14 +87,14 @@ const MilestoneList = ({
               <AccordionDetails>
                 {/* <div> cannot appear as a descendant of <p> の対策の為divタグに変更している*/}
                 <Typography component="div">
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => onDeleteMilestone(milestone.id)}
-                    startIcon={<DeleteOutlineIcon />}
-                  >
-                    delete
-                  </Button>
+                  {session?.user?.id === milestone.user_id && (
+                    <p>
+                      <DeleteDialog
+                        selectedValue={milestone}
+                        onDelete={onDeleteMilestone}
+                      />
+                    </p>
+                  )}
                   {/* <p>milestone_id（デバッグ用）: {milestone.id}</p> */}
                   {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
                   {milestoneTodos.length < 5 ? (
