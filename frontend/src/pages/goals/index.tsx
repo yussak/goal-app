@@ -22,7 +22,7 @@ export default function Goals() {
 
   const deleteGoal = async (id: string) => {
     // 意図的にエラー出してダイアログ消えないことを確認するコード
-    // throw new Error("Error in deleting goal");
+    throw new Error("Error in deleting goal");
     try {
       await axios.delete(`/goal/${id}`);
       mutate(`/${user_id}/goals`);
