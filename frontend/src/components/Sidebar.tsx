@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,15 +9,9 @@ export default function Sidebar() {
 
   return (
     <ul>
+      {/* ログイン時のみ表示 */}
       {session?.user ? (
         <>
-          <li>
-            {/* ログイン時のみ表示 */}
-            {/* ログアウト時にログイン画面にリダイレクト */}
-            <button onClick={() => signOut({ callbackUrl: "/auth/login" })}>
-              ログアウト
-            </button>
-          </li>
           <li>
             <Link href="/goals/create">create goal</Link>
           </li>
@@ -37,11 +32,23 @@ export default function Sidebar() {
       )}
       {/* 常に表示 */}
       <li>
-        <Link href="/">Home</Link>
-      </li>
-      <li>
         <Link href="/about">About</Link>
       </li>
+      {/* ログイン時のみ表示 */}
+      {session?.user && (
+        <>
+          <li>
+            {/* ログイン時のみ表示 */}
+            {/* ログアウト時にログイン画面にリダイレクト */}
+            <Button
+              variant="outlined"
+              onClick={() => signOut({ callbackUrl: "/auth/login" })}
+            >
+              ログアウト
+            </Button>
+          </li>
+        </>
+      )}
     </ul>
   );
 }
