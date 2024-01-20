@@ -127,7 +127,6 @@ export default function GoalDetail() {
       {goal && (
         <>
           {/* todo:このページでも削除可能にしたい */}
-          {/* todo:一覧に戻るリンク用意 */}
           <Link href={`/goals/edit/${goal.id}`}>edit</Link>
           <p>content: {goal.content}</p>
           <p>purpose: {goal.purpose}</p>
@@ -136,6 +135,7 @@ export default function GoalDetail() {
           {/* <p>user_id(デバッグ用): {goal.user_id}</p> */}
           {/* <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p> */}
           {/* <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p> */}
+          <Link href="/goals">一覧に戻る</Link>
         </>
       )}
       {session?.user && (
