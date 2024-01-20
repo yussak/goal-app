@@ -95,14 +95,6 @@ const MilestoneList = ({
                       />
                     </p>
                   )}
-                  {/* <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => onDeleteMilestone(milestone.id)}
-                    startIcon={<DeleteOutlineIcon />}
-                  >
-                    delete
-                  </Button> */}
                   {/* <p>milestone_id（デバッグ用）: {milestone.id}</p> */}
                   {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
                   {milestoneTodos.length < 5 ? (
