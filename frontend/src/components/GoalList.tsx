@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Goal } from "@/types";
 import { useSession } from "next-auth/react";
-import { SimpleDialog } from "./DeleteDialog";
+import { DeleteDialog } from "./DeleteDialog";
 
 type GoalListProps = {
   goals: Goal[];
@@ -29,7 +29,7 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             </p>
             {session?.user?.id === goal.user_id && (
               <p>
-                <SimpleDialog selectedValue={goal} onDelete={onDelete} />
+                <DeleteDialog selectedValue={goal} onDelete={onDelete} />
               </p>
             )}
           </li>

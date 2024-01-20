@@ -14,12 +14,12 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-export type SimpleDialogProps = {
+export type DeleteDialogProps = {
   selectedValue: Goal | null;
   onDelete: (id: string) => void;
 };
 
-export function SimpleDialog(props: SimpleDialogProps) {
+export function DeleteDialog(props: DeleteDialogProps) {
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<Goal | null>(null);
 
