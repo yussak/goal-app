@@ -16,14 +16,15 @@ const MilestoneForm = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<MilestoneFormProps>();
+    formState: { errors, isValid },
+  } = useForm<MilestoneFormProps>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<MilestoneFormProps> = () => {
     addMilestone();
   };
 
   return (
+    // todo:バケツリレーなおしたらonChangeなど消す。たぶんそれしてからじゃないとisValidが聞かなそう
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2} direction="row">
@@ -38,7 +39,7 @@ const MilestoneForm = ({
               {errors.content?.message}
             </span>
           )}
-          <Button type="submit" variant="contained" disabled={!content}>
+          <Button type="submit" variant="contained" disabled={!isValid}>
             追加
           </Button>
         </Stack>
