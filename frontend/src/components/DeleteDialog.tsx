@@ -9,19 +9,21 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Goal } from "@/types";
+import { Goal, Milestone } from "@/types";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
 export type DeleteDialogProps = {
-  selectedValue: Goal | null;
+  selectedValue: Goal | Milestone | null;
   onDelete: (id: string) => void;
 };
 
 export function DeleteDialog(props: DeleteDialogProps) {
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<Goal | null>(null);
+  const [selectedValue, setSelectedValue] = useState<Goal | Milestone | null>(
+    null
+  );
 
   const [openSB, setOpenSB] = useState(false);
 
@@ -36,7 +38,7 @@ export function DeleteDialog(props: DeleteDialogProps) {
     setOpenSB(false);
   };
 
-  const handleClickOpen = (value: Goal | null) => {
+  const handleClickOpen = (value: Goal | Milestone | null) => {
     setSelectedValue(value);
     setOpen(true);
   };
@@ -70,6 +72,9 @@ export function DeleteDialog(props: DeleteDialogProps) {
     </>
   );
 
+  // 表示を切り替えるため、削除対象が目標かマイルストーン可判定する
+  const isGoal = selectedValue && "loss" in selectedValue;
+
   return (
     <>
       <Button
@@ -77,13 +82,17 @@ export function DeleteDialog(props: DeleteDialogProps) {
         onClick={() => handleClickOpen(props?.selectedValue)}
         startIcon={<DeleteOutlineIcon />}
       >
-        目標を削除
+        削除
       </Button>
       <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>目標を削除してよろしいですか？</DialogTitle>
+        <DialogTitle>
+          {isGoal ? "目標" : "マイルストーン"}を削除してよろしいですか？
+        </DialogTitle>
         <DialogContent>
           <Typography gutterBottom component="div">
-            目標を削除すると、それに紐づくマイルストーン、TODOも削除されます。
+            {isGoal
+              ? "目標を削除すると、それに紐づくマイルストーン、TODOも削除されます。"
+              : "マイルストーンを削除すると、それに紐づくTODOも削除されます。"}
           </Typography>
           {/* <Typography gutterBottom component="div">デバッグ用：{selectedValue?.id}</Typography>
             <Typography gutterBottom component="div">
@@ -92,7 +101,7 @@ export function DeleteDialog(props: DeleteDialogProps) {
         </DialogContent>
         <DialogActions>
           <Button color="error" onClick={handleDelete}>
-            目標を削除
+            {isGoal ? "目標" : "マイルストーン"}を削除
           </Button>
           <Button
             onClick={() => {
@@ -111,7 +120,7 @@ export function DeleteDialog(props: DeleteDialogProps) {
         action={SBaction}
       >
         <Alert onClose={handleCloseSB} severity="success" variant="filled">
-          目標を削除しました
+          削除しました
         </Alert>
       </Snackbar>
     </>

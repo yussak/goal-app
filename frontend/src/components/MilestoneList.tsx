@@ -12,6 +12,7 @@ import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import TodoList from "./TodoList";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { DeleteDialog } from "./DeleteDialog";
 
 type MilestoneListProps = {
   milestones: Milestone[];
@@ -86,14 +87,22 @@ const MilestoneList = ({
               <AccordionDetails>
                 {/* <div> cannot appear as a descendant of <p> の対策の為divタグに変更している*/}
                 <Typography component="div">
-                  <Button
+                  {session?.user?.id === milestone.user_id && (
+                    <p>
+                      <DeleteDialog
+                        selectedValue={milestone}
+                        onDelete={onDeleteMilestone}
+                      />
+                    </p>
+                  )}
+                  {/* <Button
                     variant="outlined"
                     color="secondary"
                     onClick={() => onDeleteMilestone(milestone.id)}
                     startIcon={<DeleteOutlineIcon />}
                   >
                     delete
-                  </Button>
+                  </Button> */}
                   {/* <p>milestone_id（デバッグ用）: {milestone.id}</p> */}
                   {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
                   {milestoneTodos.length < 5 ? (

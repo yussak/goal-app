@@ -126,6 +126,8 @@ export default function GoalDetail() {
       <h2>目標詳細</h2>
       {goal && (
         <>
+          {/* todo:このページでも削除可能にしたい */}
+          {/* todo:一覧に戻るリンク用意 */}
           <Link href={`/goals/edit/${goal.id}`}>edit</Link>
           <p>content: {goal.content}</p>
           <p>purpose: {goal.purpose}</p>
