@@ -26,6 +26,10 @@ export type GoalFormData = {
   loss: string;
 };
 
+export type MilestoneFormData = {
+  content: string;
+};
+
 export type TodoFormData = {
   content: string;
 };

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
-import { Goal, Milestone, Todo } from "@/types";
+import { Goal, Milestone, MilestoneFormData, Todo } from "@/types";
 import MilestoneForm from "@/components/form/MilestoneForm";
 import MilestoneList from "@/components/MilestoneList";
 import Link from "next/link";
@@ -13,7 +13,6 @@ export default function GoalDetail() {
   const [goal, setGoal] = useState<Goal | null>(null);
 
   const [milestones, setMilestones] = useState<Milestone[]>([]);
-  const [milestoneContent, setMilestoneContent] = useState<string>("");
 
   const { data: session } = useSession();
 
@@ -44,17 +43,15 @@ export default function GoalDetail() {
     }
   };
 
-  const addMilestone = async () => {
+  const addMilestone = async (data: MilestoneFormData) => {
     const params = {
-      goal_id: id,
-      content: milestoneContent,
+      ...data,
       user_id: session?.user?.id,
     };
     try {
       const res = await axios.post(`/goals/${id}/milestones`, params);
       // TODO:これ無駄が多い気がする。state使ったら良くなりそうなので確認（他のところも同じく
       await getMilestones();
-      setMilestoneContent("");
     } catch (error) {
       console.error(error);
     }
@@ -144,9 +141,9 @@ export default function GoalDetail() {
           <h3>中目標を追加</h3>
           {milestones.length < 5 ? (
             <MilestoneForm
-              setContent={setMilestoneContent}
+              // setContent={setMilestoneContent}
               addMilestone={addMilestone}
-              content={milestoneContent}
+              // content={milestoneContent}
             />
           ) : (
             <p>中目標は5個までです</p>
