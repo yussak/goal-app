@@ -3,6 +3,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
+  IconButton,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -10,6 +12,7 @@ import TodoForm from "./form/TodoForm";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import TodoList from "./TodoList";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 type MilestoneListProps = {
   milestones: Milestone[];
@@ -67,9 +70,6 @@ const MilestoneList = ({
         return (
           // todo:milestone中身をコンポーネントに切り出す
           <li key={index}>
-            <button onClick={() => onDeleteMilestone(milestone.id)}>
-              delete
-            </button>
             <Accordion defaultExpanded={isAllCompleted}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -87,6 +87,14 @@ const MilestoneList = ({
               <AccordionDetails>
                 {/* <div> cannot appear as a descendant of <p> の対策の為divタグに変更している*/}
                 <Typography component="div">
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => onDeleteMilestone(milestone.id)}
+                    startIcon={<DeleteOutlineIcon />}
+                  >
+                    delete
+                  </Button>
                   {/* <p>milestone_id（デバッグ用）: {milestone.id}</p> */}
                   {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
                   {milestoneTodos.length < 5 ? (

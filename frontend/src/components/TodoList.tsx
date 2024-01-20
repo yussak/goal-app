@@ -1,5 +1,6 @@
 import { Todo } from "@/types";
-import { Checkbox } from "@mui/material";
+import { Button, Checkbox, IconButton } from "@mui/material";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 type TodoListProps = {
   todos: Todo[];
@@ -35,11 +36,18 @@ const TodoList = ({
                 {todo.is_completed ? (
                   <span className="text-border">content: {todo.content}</span>
                 ) : (
-                  <span>content: {todo.content}</span>
+                  <span>
+                    content: {todo.content}{" "}
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => onDeleteTodo(todo.id)}
+                    >
+                      <DeleteOutlineIcon />
+                    </IconButton>
+                  </span>
                 )}
               </div>
               {/* <p>進捗状況（デバッグ用）: {todo.is_completed.toString()}</p> */}
-              <button onClick={() => onDeleteTodo(todo.id)}>delete</button>
             </li>
           ))}
         </ul>
