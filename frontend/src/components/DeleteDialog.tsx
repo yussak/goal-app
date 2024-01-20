@@ -25,9 +25,9 @@ export function DeleteDialog(props: DeleteDialogProps) {
     null
   );
 
-  const [openSB, setOpenSB] = useState(false);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
 
-  const handleCloseSB = (
+  const handleCloseSnackBar = (
     event: React.SyntheticEvent | Event,
     reason?: string
   ) => {
@@ -35,7 +35,7 @@ export function DeleteDialog(props: DeleteDialogProps) {
       return;
     }
 
-    setOpenSB(false);
+    setOpenSnackBar(false);
   };
 
   const handleClickOpen = (value: Goal | Milestone | null) => {
@@ -52,20 +52,20 @@ export function DeleteDialog(props: DeleteDialogProps) {
       try {
         await props.onDelete(selectedValue?.id);
         setOpen(false);
-        setOpenSB(true);
+        setOpenSnackBar(true);
       } catch (error) {
         console.error(error);
       }
     }
   };
 
-  const SBaction = (
+  const SnackBaraction = (
     <>
       <IconButton
         size="small"
         aria-label="close"
         color="inherit"
-        onClick={handleCloseSB}
+        onClick={handleCloseSnackBar}
       >
         <CloseIcon fontSize="small" />
       </IconButton>
@@ -114,12 +114,16 @@ export function DeleteDialog(props: DeleteDialogProps) {
       </Dialog>
 
       <Snackbar
-        open={openSB}
+        open={openSnackBar}
         autoHideDuration={6000}
-        onClose={handleCloseSB}
-        action={SBaction}
+        onClose={handleCloseSnackBar}
+        action={SnackBaraction}
       >
-        <Alert onClose={handleCloseSB} severity="success" variant="filled">
+        <Alert
+          onClose={handleCloseSnackBar}
+          severity="success"
+          variant="filled"
+        >
           削除しました
         </Alert>
       </Snackbar>
