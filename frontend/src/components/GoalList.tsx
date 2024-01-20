@@ -27,12 +27,10 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>
               <Link href={`/goals/${goal.id}`}>detail</Link>
             </p>
-            {session?.user?.id === goal.user_id ? (
+            {session?.user?.id === goal.user_id && (
               <p>
                 <SimpleDialog selectedValue={goal} onDelete={onDelete} />
               </p>
-            ) : (
-              ""
             )}
           </li>
         );
