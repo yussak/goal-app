@@ -11,18 +11,14 @@ const TodoForm = ({ addTodoChild }: TodoFormProps) => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
-    formState: { errors },
-  } = useForm<TodoFormData>();
+    formState: { errors, isValid },
+  } = useForm<TodoFormData>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<TodoFormData> = (data) => {
     addTodoChild(data.content);
     reset();
   };
-
-  const content = watch("content");
-  const isFieldEmpty = !content;
 
   return (
     <Container sx={{ pt: 3 }}>
@@ -34,7 +30,7 @@ const TodoForm = ({ addTodoChild }: TodoFormProps) => {
             error={!!errors.content}
             helperText={errors.content?.message}
           />
-          <Button type="submit" variant="contained" disabled={isFieldEmpty}>
+          <Button type="submit" variant="contained" disabled={!isValid}>
             追加
           </Button>
         </Stack>

@@ -1,26 +1,23 @@
+import { MilestoneFormData } from "@/types";
 import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type MilestoneFormProps = {
-  setContent: (content: string) => void;
-  addMilestone: () => void;
-  content: string;
+  addMilestone: (data: MilestoneFormData) => void;
 };
 
-const MilestoneForm = ({
-  setContent,
-  addMilestone,
-  content,
-}: MilestoneFormProps) => {
+const MilestoneForm = ({ addMilestone }: MilestoneFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<MilestoneFormProps>();
+    reset,
+    formState: { errors, isValid },
+  } = useForm<MilestoneFormData>({ mode: "onChange" });
 
-  const onSubmit: SubmitHandler<MilestoneFormProps> = () => {
-    addMilestone();
+  const onSubmit: SubmitHandler<MilestoneFormData> = (data) => {
+    addMilestone(data);
+    reset();
   };
 
   return (
@@ -30,15 +27,13 @@ const MilestoneForm = ({
           <TextField
             label="content"
             {...register("content", validationRules)}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
           />
           {errors.content && (
             <span data-testid="error-content" className="text-red">
               {errors.content?.message}
             </span>
           )}
-          <Button type="submit" variant="contained" disabled={!content}>
+          <Button type="submit" variant="contained" disabled={!isValid}>
             追加
           </Button>
         </Stack>
