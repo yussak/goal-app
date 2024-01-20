@@ -11,19 +11,12 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<GoalFormData>();
+    formState: { errors, isValid },
+  } = useForm<GoalFormData>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<GoalFormData> = (data) => {
     addGoal(data);
   };
-
-  // 値が空の時はdisabledにする
-  const purpose = watch("purpose");
-  const content = watch("content");
-  const loss = watch("loss");
-  const isAnyFieldEmpty = !purpose || !content || !loss;
 
   const renderTextField = (
     name: string,
@@ -53,7 +46,7 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
         {renderTextField("content", register, errors)}
         <p>やらないとどうなるかを書いてみましょう</p>
         {renderTextField("loss", register, errors)}
-        <Button type="submit" variant="contained" disabled={isAnyFieldEmpty}>
+        <Button type="submit" variant="contained" disabled={!isValid}>
           追加
         </Button>
       </form>
