@@ -142,11 +142,7 @@ export default function GoalDetail() {
         <>
           <h3>中目標を追加</h3>
           {milestones.length < 5 ? (
-            <MilestoneForm
-              // setContent={setMilestoneContent}
-              addMilestone={addMilestone}
-              // content={milestoneContent}
-            />
+            <MilestoneForm addMilestone={addMilestone} />
           ) : (
             <p>中目標は5個までです</p>
           )}
