@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -49,6 +50,9 @@ export default function Sidebar() {
           </li>
         </>
       )}
+      <li>
+        <LanguageSwitcher />
+      </li>
     </ul>
   );
 }
