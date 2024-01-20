@@ -80,7 +80,7 @@ export function SimpleDialog(props: SimpleDialogProps) {
         目標を削除
       </Button>
       <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>目標を削除してよろしaerasdfいですか？</DialogTitle>
+        <DialogTitle>目標を削除してよろしいですか？</DialogTitle>
         <DialogContent>
           <Typography gutterBottom component="div">
             目標を削除すると、それに紐づくマイルストーン、TODOも削除されます。
