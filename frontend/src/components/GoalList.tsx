@@ -4,12 +4,13 @@ import { useSession } from "next-auth/react";
 import {
   Button,
   Dialog,
+  DialogActions,
+  DialogContent,
   DialogTitle,
-  List,
-  ListItem,
-  ListItemButton,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 type GoalListProps = {
   goals: Goal[];
@@ -50,20 +51,33 @@ function SimpleDialog(props: SimpleDialogProps) {
       <Button
         variant="outlined"
         onClick={() => handleClickOpen(props?.selectedValue)}
+        startIcon={<DeleteOutlineIcon />}
       >
-        Open simple dialog
+        目標を削除
       </Button>
       <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Set backup account</DialogTitle>
-        <List sx={{ pt: 0 }}>
-          <ListItem disableGutters>
-            <ListItemButton autoFocus>{selectedValue?.id}</ListItemButton>
-          </ListItem>
-          <ListItem disableGutters>
-            <ListItemButton autoFocus>{selectedValue?.content}</ListItemButton>
-          </ListItem>
-          <Button onClick={handleDelete}>delete</Button>
-        </List>
+        <DialogTitle>目標を削除してよろしいですか？</DialogTitle>
+        <DialogContent>
+          <Typography gutterBottom>
+            目標を削除すると、それに紐づくマイルストーン、TODOも削除されます。
+          </Typography>
+          {/* <Typography gutterBottom>デバッグ用：{selectedValue?.id}</Typography>
+          <Typography gutterBottom>
+            デバッグ用：{selectedValue?.content}
+          </Typography> */}
+        </DialogContent>
+        <DialogActions>
+          <Button color="error" onClick={handleDelete}>
+            目標を削除
+          </Button>
+          <Button
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
+            cancel
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );
