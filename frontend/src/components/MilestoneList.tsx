@@ -75,7 +75,7 @@ const MilestoneList = ({
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography>
+                <Typography component="div">
                   {isAllCompleted ? (
                     <span className="text-border">{milestone.content}</span>
                   ) : (
