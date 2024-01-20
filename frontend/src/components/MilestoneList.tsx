@@ -85,7 +85,8 @@ const MilestoneList = ({
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>
+                {/* <div> cannot appear as a descendant of <p> の対策の為divタグに変更している*/}
+                <Typography component="div">
                   {/* <p>milestone_id（デバッグ用）: {milestone.id}</p> */}
                   {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
                   {milestoneTodos.length < 5 ? (
@@ -94,7 +95,7 @@ const MilestoneList = ({
                       addTodoChild={(content) => addTodo(milestone.id, content)}
                     />
                   ) : (
-                    <p>todoは5個まで追加できます</p>
+                    <span>todoは5個まで追加できます</span>
                   )}
 
                   {/* todosをマイルストーンのものに絞って渡す */}
@@ -112,7 +113,7 @@ const MilestoneList = ({
       })}
     </ul>
   ) : (
-    <p>中目標はありません</p>
+    <span>中目標はありません</span>
   );
 };
 
