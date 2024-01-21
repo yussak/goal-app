@@ -37,6 +37,19 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Install goalng-migrate
+        run: |
+          go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
+      - name: Retrieve DB Hostname from SSM
+        run: |
+          echo "DB_HOST=$(aws ssm get-parameter --name /db/hostname --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+
+      # todo:本番デプロイ時に実行できるかを確認
+      - name: Run DB migration
+        run: |
+          migrate -path db/migrations -database "mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@tcp(${{ env.DB_HOST }})/${{ secrets.DB_NAME }}" up
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
