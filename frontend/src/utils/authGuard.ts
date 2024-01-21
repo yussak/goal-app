@@ -3,10 +3,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 export function authGuard() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
-
-  console.log("sta", status);
 
   // todo:ローディング画面実装→app routerでやりたい
   // todo:以下だと中身が見えるので対応→そのためにもローディングが必要かもしれない
@@ -28,5 +26,5 @@ export function authGuard() {
     ) {
       router.push("/");
     }
-  }, [session, status, router.pathname]);
+  }, [status, router]);
 }
