@@ -1,54 +1,51 @@
+import { signupFormData } from "@/types";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
 
 type SignupFormProps = {
-  setName: (name: string) => void;
-  setEmail: (email: string) => void;
-  setPassword: (password: string) => void;
-  register: (e: React.FormEvent) => void;
-  name: string;
-  email: string;
-  password: string;
+  signup: (data: signupFormData) => void;
 };
 
-const SignupForm = ({
-  setName,
-  setEmail,
-  setPassword,
-  register,
-  name,
-  email,
-  password,
-}: SignupFormProps) => {
+const SignupForm = ({ signup }: SignupFormProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<signupFormData>({ mode: "onChange" });
+
+  // todo:バリデーション追加
   return (
     <Container sx={{ pt: 3 }}>
-      <Stack spacing={2}>
-        <TextField
-          label="name"
-          type="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <TextField
-          label="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <TextField
-          label="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <Button variant="contained" type="submit" onClick={register}>
-          新規登録
-        </Button>
-      </Stack>
-      <Link href="/auth/login">ログインはこちら</Link>
+      <form onSubmit={handleSubmit(signup)} noValidate>
+        <Stack spacing={2}>
+          <TextField
+            label="name"
+            type="name"
+            {...register("name", { required: true })}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+          />
+          <TextField
+            label="email"
+            type="email"
+            {...register("email", { required: true })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+          <TextField
+            label="password"
+            type="password"
+            {...register("password", { required: true })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+          <Button variant="contained" type="submit" disabled={!isValid}>
+            新規登録
+          </Button>
+        </Stack>
+        <Link href="/auth/login">ログインはこちら</Link>
+      </form>
     </Container>
   );
 };

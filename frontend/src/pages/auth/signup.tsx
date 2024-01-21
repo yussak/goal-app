@@ -1,44 +1,27 @@
-import { useState } from "react";
 import { axios } from "@/utils/axios";
 import SignupForm from "@/components/form/SignupForm";
 import { signIn } from "next-auth/react";
+import { signupFormData } from "@/types";
 
-// TODO: バリデーション追加→空欄（requiredでできてそうだが揃えたい）、文字数・形式
 export default function signup() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const register = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const signup = async (data: signupFormData) => {
     const user = {
-      name: name,
-      email: email,
-      password: password,
+      name: data.name,
+      email: data.email,
+      password: data.password,
     };
 
     try {
       await axios.post("/auth/signup", user);
       signIn("credentials", {
         redirect: false,
-        email: email,
-        password: password,
+        email: data.email,
+        password: data.password,
       });
     } catch (error) {
       console.error("error: ", error);
     }
   };
 
-  return (
-    <SignupForm
-      setName={setName}
-      setEmail={setEmail}
-      setPassword={setPassword}
-      register={register}
-      name={name}
-      email={email}
-      password={password}
-    />
-  );
+  return <SignupForm signup={signup} />;
 }
