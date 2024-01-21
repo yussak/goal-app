@@ -40,9 +40,9 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
   return (
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <p>達成したいことを書きましょう（必須）</p>
+        <p>達成したいことをSMARTに書きましょう（必須）</p>
         {renderTextField("purpose", register, errors)}
-        <p>それをSMARTに書きましょう（必須）</p>
+        <p>その理由を書きましょう（必須）</p>
         {renderTextField("content", register, errors)}
         <p>やらないとどうなるかを書いてみましょう</p>
         {renderTextField("loss", register, errors)}
