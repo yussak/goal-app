@@ -1,13 +1,13 @@
 import GoalForm from "@/components/form/GoalForm";
 import { GoalFormData } from "@/types";
 import { axios } from "@/utils/axios";
-import { checkAuth } from "@/utils/checkAuth";
+import { authGuard } from "@/utils/authGuard";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { mutate } from "swr";
 
 export default function createGoal() {
-  checkAuth();
+  authGuard();
   const router = useRouter();
   const { data: session } = useSession();
 

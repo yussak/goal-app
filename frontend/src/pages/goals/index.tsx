@@ -5,10 +5,10 @@ import { axios } from "@/utils/axios";
 import { fetcher } from "@/utils/fetcher";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { checkAuth } from "@/utils/checkAuth";
+import { authGuard } from "@/utils/authGuard";
 
 export default function Goals() {
-  checkAuth();
+  authGuard();
   const { t } = useTranslation();
 
   const { data: session } = useSession();
