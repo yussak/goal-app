@@ -7,7 +7,6 @@ RUN apt-get update && \
 
 # goファイルでimportして使用するものはimportに追加してgo mod tidyでいいが、それ以外のものはDockerfileでインストールする
 RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
-# TODO:これ本番環境では不要そう→Dockerfile分ける（golang-migrateも不要そう？
 RUN go install github.com/cosmtrek/air@latest
 
 WORKDIR /app

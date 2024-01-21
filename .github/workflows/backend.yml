@@ -1,5 +1,4 @@
 name: Deploy Backend to Amazon ECS
-# todo:migrateはCICD煮含める予定
 on:
   push:
     paths:
