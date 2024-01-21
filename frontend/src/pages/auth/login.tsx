@@ -1,3 +1,4 @@
+import GuestLoginButton from "@/components/GuestLoginButton";
 import LoginForm from "@/components/form/LoginForm";
 import { loginFormData } from "@/types";
 import { authGuard } from "@/utils/authGuard";
@@ -15,5 +16,10 @@ export default function Login() {
     });
   };
 
-  return <LoginForm loginUser={loginUser} />;
+  return (
+    <>
+      <LoginForm loginUser={loginUser} />
+      <GuestLoginButton />
+    </>
+  );
 }

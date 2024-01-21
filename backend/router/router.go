@@ -13,6 +13,7 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("/auth/login", controller.Login)
 	r.POST("/auth/decodeToken", controller.DecodeToken)
 	r.POST("/auth/logout", controller.Logout)
+	r.POST("/auth/isGuestExisted", controller.IsGuestExisted) // Fixed function name
 
 	r.GET("/:user_id/goals", controller.FetchUserGoals)
 

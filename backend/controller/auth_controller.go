@@ -133,3 +133,21 @@ func Logout(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Logout successfully"})
 }
+
+func IsGuestExisted(c *gin.Context) {
+	var user model.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := db.DB.QueryRow("SELECT id FROM users WHERE email =?", user.Email).Scan(&user.ID)
+	if err == sql.ErrNoRows {
+		c.JSON(http.StatusOK, gin.H{"exists": false})
+	} else if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	} else {
+		c.JSON(http.StatusOK, gin.H{"exists": true})
+	}
+}
