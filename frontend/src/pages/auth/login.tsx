@@ -1,11 +1,11 @@
 import LoginForm from "@/components/form/LoginForm";
 import { loginFormData } from "@/types";
-import { redirectIfAuthenticated } from "@/utils/redirectIfAuthenticated";
+import { authGuard } from "@/utils/authGuard";
 import { signIn } from "next-auth/react";
 
 export default function Login() {
   // ログイン済のときにログインページにアクセスしたらトップページにリダイレクトする
-  redirectIfAuthenticated();
+  authGuard();
 
   const loginUser = async (data: loginFormData) => {
     signIn("credentials", {

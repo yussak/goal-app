@@ -2,10 +2,10 @@ import { axios } from "@/utils/axios";
 import SignupForm from "@/components/form/SignupForm";
 import { signIn } from "next-auth/react";
 import { signupFormData } from "@/types";
-import { redirectIfAuthenticated } from "@/utils/redirectIfAuthenticated";
+import { authGuard } from "@/utils/authGuard";
 
 export default function signup() {
-  redirectIfAuthenticated();
+  authGuard();
 
   const signup = async (data: signupFormData) => {
     const user = {
