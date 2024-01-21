@@ -13,6 +13,7 @@ export function authGuard() {
     if (status === "loading") return;
     if (
       // 未ログインで認証が必要なページにアクセスしたらログインページにリダイレクトする
+      // ログインまたは新規登録ページの時はリダイレクトしない
       status === "unauthenticated" &&
       router.pathname !== "/auth/signup" &&
       router.pathname !== "/auth/login"
