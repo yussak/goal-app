@@ -5,6 +5,7 @@
   - TypeScript
   - MUI
   - Vitest/Testing Library
+  - Redux
   - ESLint/Prettier
 - バックエンド
   - Go/Gin
@@ -16,9 +17,9 @@
   - Terraform
   - MySQL
 
-## ER 図（順次更新）
+## ER 図
 
-![goal-app-erd drawio](https://github.com/YusukeSakuraba/goal-app/assets/69101210/0273e96f-6d50-4e1e-bf8d-f3b93e33f315)
+![ER図](https://storage.googleapis.com/zenn-user-upload/df36d936b4b6-20240121.png)
 
 # アプリの機能紹介
 
