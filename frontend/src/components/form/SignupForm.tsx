@@ -1,4 +1,5 @@
 import { Button, Container, Stack, TextField } from "@mui/material";
+import Link from "next/link";
 
 type SignupFormProps = {
   setName: (name: string) => void;
@@ -47,6 +48,7 @@ const SignupForm = ({
           新規登録
         </Button>
       </Stack>
+      <Link href="/auth/login">ログインはこちら</Link>
     </Container>
   );
 };
