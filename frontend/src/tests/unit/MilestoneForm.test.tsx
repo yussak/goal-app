@@ -28,84 +28,44 @@ describe("Create milestone", () => {
     });
   });
 
-  it("should not submit when invalid values are input", async () => {
+  it("should validate when too short value is input", async () => {
     await user.type(screen.getByRole("textbox", { name: "content" }), "ああ");
 
-    expect(screen.getByRole("button", { name: "追加" })).toBeDisabled();
-    expect(addMilestoneMock).not.toBeCalled();
+    expect(screen.getByTestId(`error-content`)).toHaveTextContent(
+      "3文字以上で入力してください"
+    );
   });
 
-  //   it("should validate when too short values are input", async () => {
-  //     await user.type(screen.getByRole("textbox", { name: "purpose" }), "ああ");
-  //     await user.type(screen.getByRole("textbox", { name: "content" }), "ああ");
-  //     await user.type(screen.getByRole("textbox", { name: "loss" }), "ああ");
+  it("should validate when too long value is input", async () => {
+    await user.type(
+      screen.getByRole("textbox", { name: "content" }),
+      "サンプルテキストサンプルテキスト"
+    );
 
-  //     expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
-  //       "3文字以上で入力してください"
-  //     );
-  //     expect(screen.getByTestId(`error-content`)).toHaveTextContent(
-  //       "3文字以上で入力してください"
-  //     );
-  //     expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
-  //       "3文字以上で入力してください"
-  //     );
-  //   });
+    expect(screen.getByTestId(`error-content`)).toHaveTextContent(
+      "10文字以内で入力してください"
+    );
+  });
 
-  //   it("should validate when too long values are input", async () => {
-  //     await user.type(
-  //       screen.getByRole("textbox", { name: "purpose" }),
-  //       "サンプルテキストサンプルテキスト"
-  //     );
-  //     await user.type(
-  //       screen.getByRole("textbox", { name: "loss" }),
-  //       "サンプルテキストサンプルテキスト"
-  //     );
-  //     await user.type(
-  //       screen.getByRole("textbox", { name: "content" }),
-  //       "サンプルテキストサンプルテキスト"
-  //     );
-  //     // await user.click(screen.getByRole("button", { name: "追加" }));
+  it("should submit when invalid value is fixed", async () => {
+    // バリデーションエラーになる値を入力
+    await user.type(
+      screen.getByRole("textbox", { name: "content" }),
+      "サンプルテキストサンプルテキスト"
+    );
 
-  //     // expect(screen.getByRole("button", { name: "追加" })).not.toBeDisabled();
+    expect(screen.getByRole("button", { name: "追加" })).toBeDisabled();
 
-  //     expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
-  //       "10文字以内で入力してください"
-  //     );
-  //     expect(screen.getByTestId(`error-content`)).toHaveTextContent(
-  //       "10文字以内で入力してください"
-  //     );
-  //     expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
-  //       "10文字以内で入力してください"
-  //     );
-  //   });
+    // リセットして正しい値を入力し直す
+    await user.clear(screen.getByRole("textbox", { name: "content" }));
 
-  //   it("should submit when invalid values are fixed", async () => {
-  //     // バリデーションエラーになる値を入力
-  //     // contentは空
-  //     await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
-  //     await user.type(
-  //       screen.getByRole("textbox", { name: "loss" }),
-  //       "ロスですロスですロスです"
-  //     );
+    await user.type(screen.getByRole("textbox", { name: "content" }), "テスト");
 
-  //     expect(screen.getByRole("button", { name: "追加" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "追加" })).not.toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "追加" }));
 
-  //     // リセットして正しい値を入力し直す
-  //     await user.clear(screen.getByRole("textbox", { name: "purpose" }));
-  //     await user.clear(screen.getByRole("textbox", { name: "content" }));
-  //     await user.clear(screen.getByRole("textbox", { name: "loss" }));
-
-  //     await user.type(screen.getByRole("textbox", { name: "purpose" }), "テスト");
-  //     await user.type(screen.getByRole("textbox", { name: "content" }), "テスト");
-  //     await user.type(screen.getByRole("textbox", { name: "loss" }), "テスト");
-
-  //     expect(screen.getByRole("button", { name: "追加" })).not.toBeDisabled();
-  //     await user.click(screen.getByRole("button", { name: "追加" }));
-
-  //     expect(addMilestoneMock).toBeCalledWith({
-  //       purpose: "テスト",
-  //       content: "テスト",
-  //       loss: "テスト",
-  //     });
-  //   });
+    expect(addMilestoneMock).toBeCalledWith({
+      content: "テスト",
+    });
+  });
 });
