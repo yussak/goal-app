@@ -1,19 +1,22 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import GoalForm from "@/components/form/GoalForm";
-import userEvent from "@testing-library/user-event";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 
 describe("Create goal", () => {
   const addGoalMock = vi.fn();
+  let user: UserEvent;
+
+  beforeEach(() => {
+    render(<GoalForm addGoal={addGoalMock} />);
+    user = userEvent.setup();
+  });
 
   afterEach(() => {
     addGoalMock.mockReset();
   });
 
   it("should submit when correct values are input", async () => {
-    render(<GoalForm addGoal={addGoalMock} />);
-    const user = userEvent.setup();
-
     // 各フィールドに入力
     await user.type(
       screen.getByRole("textbox", { name: "purpose" }),
@@ -36,9 +39,6 @@ describe("Create goal", () => {
   });
 
   it("should not submit when invalid values are input", async () => {
-    render(<GoalForm addGoal={addGoalMock} />);
-    const user = userEvent.setup();
-
     // contentは空
     await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
     await user.type(
@@ -51,9 +51,6 @@ describe("Create goal", () => {
   });
 
   it("should validate when too short values are input", async () => {
-    render(<GoalForm addGoal={addGoalMock} />);
-    const user = userEvent.setup();
-
     await user.type(screen.getByRole("textbox", { name: "purpose" }), "ああ");
     await user.type(screen.getByRole("textbox", { name: "content" }), "ああ");
     await user.type(screen.getByRole("textbox", { name: "loss" }), "ああ");
@@ -70,9 +67,6 @@ describe("Create goal", () => {
   });
 
   it("should validate when too long values are input", async () => {
-    render(<GoalForm addGoal={addGoalMock} />);
-    const user = userEvent.setup();
-
     await user.type(
       screen.getByRole("textbox", { name: "purpose" }),
       "サンプルテキストサンプルテキスト"
@@ -101,9 +95,6 @@ describe("Create goal", () => {
   });
 
   it("should submit when invalid values are fixed", async () => {
-    render(<GoalForm addGoal={addGoalMock} />);
-    const user = userEvent.setup();
-
     // バリデーションエラーになる値を入力
     // contentは空
     await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
