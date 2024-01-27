@@ -1,7 +1,6 @@
 // TODO:d.tsを使うべきか調べる
-// todo: キャメルなどそろえる
+// todo: キャメルケースにそろえる
 
-// type interfaceの違いを調べたい
 export type User = {
   id: string;
   name: string;
