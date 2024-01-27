@@ -13,9 +13,9 @@ import (
 
 func FetchMilestones(c *gin.Context) {
 	milestones := []model.Milestone{}
-	goal_id := c.Param("id")
+	goalId := c.Param("id")
 
-	rows, err := db.DB.Query("SELECT id, user_id, goal_id, content FROM milestones WHERE goal_id = ?", goal_id)
+	rows, err := db.DB.Query("SELECT id, user_id, goal_id, content FROM milestones WHERE goal_id = ?", goalId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

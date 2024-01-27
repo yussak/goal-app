@@ -11,19 +11,19 @@ export default function CreateGoal() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const user_id = session?.user && session.user.id;
+  const userId = session?.user && session.user.id;
 
   const addGoal = async (data: GoalFormData) => {
     const params = {
       ...data,
-      user_id: user_id,
+      userId: userId,
     };
     try {
       const res = await axios.post("/goal", params);
 
       const newGoalId = res.data.id;
       router.push(`/goals/${newGoalId}`);
-      mutate(`/${user_id}/goals`);
+      mutate(`/${userId}/goals`);
     } catch (error) {
       console.error(error);
     }

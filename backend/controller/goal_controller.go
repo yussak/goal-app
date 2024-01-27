@@ -15,12 +15,12 @@ import (
 
 func FetchUserGoals(c *gin.Context) {
 
-	user_id := c.Param("user_id")
-	fmt.Println("c.Param", c.Param("user_id"))
+	userId := c.Param("userId")
+	fmt.Println("c.Param", c.Param("userId"))
 
 	goals := []model.Goal{}
 
-	rows, err := db.DB.Query("SELECT * FROM goals WHERE user_id = ?", user_id)
+	rows, err := db.DB.Query("SELECT * FROM goals WHERE user_id = ?", userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

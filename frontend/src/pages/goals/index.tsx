@@ -13,9 +13,9 @@ export default function Goals() {
 
   const { data: session } = useSession();
 
-  const user_id = session?.user ? session.user.id : null;
+  const userId = session?.user ? session.user.id : null;
 
-  const { data: goals, error } = useSWR(`/${user_id}/goals`, fetcher);
+  const { data: goals, error } = useSWR(`/${userId}/goals`, fetcher);
   if (error) {
     console.error(error);
   }
@@ -25,7 +25,7 @@ export default function Goals() {
     // throw new Error("Error in deleting goal");
     try {
       await axios.delete(`/goal/${id}`);
-      mutate(`/${user_id}/goals`);
+      mutate(`/${userId}/goals`);
     } catch (error) {
       console.error(error);
     }

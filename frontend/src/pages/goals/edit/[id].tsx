@@ -42,7 +42,7 @@ export default function EditGoal() {
   const editGoal = async (data: GoalFormData) => {
     const params = {
       ...data,
-      user_id: session?.user?.id,
+      userId: session?.user?.id,
     };
 
     try {

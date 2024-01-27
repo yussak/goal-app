@@ -3,7 +3,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Button,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -11,7 +10,6 @@ import TodoForm from "./form/TodoForm";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import TodoList from "./TodoList";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { DeleteDialog } from "./DeleteDialog";
 
 type MilestoneListProps = {
@@ -33,17 +31,17 @@ const MilestoneList = ({
 }: MilestoneListProps) => {
   const { data: session } = useSession();
 
-  const addTodo = async (parent_id: string, content: string) => {
+  const addTodo = async (parentId: string, content: string) => {
     const params = {
-      parent_id: parent_id,
-      user_id: session?.user?.id,
+      parentId: parentId,
+      userId: session?.user?.id,
       content: content,
     };
 
     try {
-      const res = await axios.post(`/milestones/${parent_id}/todos`, params);
+      const res = await axios.post(`/milestones/${parentId}/todos`, params);
       // 親側で更新
-      addTodosToState(parent_id, res.data);
+      addTodosToState(parentId, res.data);
     } catch (error) {
       console.error(error);
     }
@@ -54,7 +52,7 @@ const MilestoneList = ({
     if (todos.length === 0) return false;
 
     for (const todo of todos) {
-      if (!todo.is_completed) {
+      if (!todo.isCompleted) {
         return false;
       }
     }
@@ -87,7 +85,7 @@ const MilestoneList = ({
               <AccordionDetails>
                 {/* <div> cannot appear as a descendant of <p> の対策の為divタグに変更している*/}
                 <Typography component="div">
-                  {session?.user?.id === milestone.user_id && (
+                  {session?.user?.id === milestone.userId && (
                     <p>
                       <DeleteDialog
                         selectedValue={milestone}

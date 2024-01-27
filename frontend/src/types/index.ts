@@ -1,15 +1,13 @@
-// TODO:d.tsを使うべきか調べる
-// todo: キャメルケースにそろえる
+// キャメルケースにそろえる
 
 export type User = {
   id: string;
   name: string;
 };
 
-// smart分をキャメルに変えた方がよさそう
 export type Goal = {
   id: string;
-  user_id: string;
+  userId: string;
   CreatedAt: Date;
   UpdatedAt: Date;
   content: string;
@@ -36,8 +34,8 @@ export type TodoFormData = {
 
 export type Milestone = {
   id: string;
-  user_id: string;
-  goal_id: string;
+  userId: string;
+  goalId: string;
   CreatedAt: Date;
   UpdatedAt: Date;
   content: string;
@@ -45,10 +43,10 @@ export type Milestone = {
 
 export type Todo = {
   id: string;
-  parent_id: string;
-  user_id: string;
+  parentId: string;
+  userId: string;
   content: string;
-  is_completed: boolean;
+  isCompleted: boolean;
   CreatedAt: Date;
   UpdatedAt: Date;
 };

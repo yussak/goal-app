@@ -13,9 +13,9 @@ import (
 
 func FetchTodos(c *gin.Context) {
 	todos := []model.Todo{}
-	parent_id := c.Param("id")
+	parentId := c.Param("id")
 
-	rows, err := db.DB.Query("SELECT id, content, is_completed FROM todos WHERE parent_id = ?", parent_id)
+	rows, err := db.DB.Query("SELECT id, content, is_completed FROM todos WHERE parent_id = ?", parentId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

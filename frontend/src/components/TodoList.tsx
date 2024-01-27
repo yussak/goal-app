@@ -28,12 +28,12 @@ const TodoList = ({
             <li key={index}>
               <div>
                 <Checkbox
-                  checked={todo.is_completed}
+                  checked={todo.isCompleted}
                   onChange={(e) =>
                     handleCheckboxChange(todo.id, e.target.checked)
                   }
                 />
-                {todo.is_completed ? (
+                {todo.isCompleted ? (
                   <span className="text-border">content: {todo.content}</span>
                 ) : (
                   <span>
@@ -47,7 +47,7 @@ const TodoList = ({
                   </span>
                 )}
               </div>
-              {/* <p>進捗状況（デバッグ用）: {todo.is_completed.toString()}</p> */}
+              {/* <p>進捗状況（デバッグ用）: {todo.isCompleted.toString()}</p> */}
             </li>
           ))}
         </ul>

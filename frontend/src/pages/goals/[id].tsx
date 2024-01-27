@@ -48,7 +48,7 @@ export default function GoalDetail() {
   const addMilestone = async (data: MilestoneFormData) => {
     const params = {
       ...data,
-      user_id: session?.user?.id,
+      userId: session?.user?.id,
     };
     try {
       const res = await axios.post(`/goals/${id}/milestones`, params);
@@ -114,9 +114,9 @@ export default function GoalDetail() {
     }
   };
 
-  const updateTodoCheck = async (todo_id: string, is_completed: boolean) => {
+  const updateTodoCheck = async (todo_id: string, isCompleted: boolean) => {
     try {
-      await axios.put(`/todos/${todo_id}/is_completed`, { is_completed });
+      await axios.put(`/todos/${todo_id}/isCompleted`, { isCompleted });
       fetchTodos();
     } catch (error) {
       console.error(error);
@@ -137,7 +137,7 @@ export default function GoalDetail() {
           <p>loss: {goal.loss}</p>
           <p>progress: {goal.progress}</p>
           <p>phase: {goal.phase}</p>
-          {/* <p>user_id(デバッグ用): {goal.user_id}</p> */}
+          {/* <p>userId(デバッグ用): {goal.userId}</p> */}
           {/* <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p> */}
           {/* <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p> */}
           <Link href="/goals">目標一覧に戻る</Link>

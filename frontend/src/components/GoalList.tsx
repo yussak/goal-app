@@ -22,13 +22,13 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>phase: {goal.phase}</p>
             <p>progress: {goal.progress}</p>
             {/* <p>id（デバッグ用）: {goal.id}</p> */}
-            {/* <p>user_id（デバッグ用）: {goal.user_id}</p> */}
+            {/* <p>userId（デバッグ用）: {goal.userId}</p> */}
             {/* <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
             <p>UpdatedAt: {goal.UpdatedAt.toLocaleString()}</p> */}
             <p>
               <Link href={`/goals/${goal.id}`}>detail</Link>
             </p>
-            {session?.user?.id === goal.user_id && (
+            {session?.user?.id === goal.userId && (
               <p>
                 <DeleteDialog selectedValue={goal} onDelete={onDelete} />
               </p>

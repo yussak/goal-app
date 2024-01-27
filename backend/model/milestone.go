@@ -4,9 +4,9 @@ import "time"
 
 type Milestone struct {
 	ID        string    `json:"id"`
-	UserID    string    `json:"user_id"`
-	GoalID    string    `json:"goal_id"`
+	UserID    string    `json:"userId"`
+	GoalID    string    `json:"goalId"`
 	Content   string    `json:"content"`
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
+	CreatedAt time.Time `db:"createdAt"`
+	UpdatedAt time.Time `db:"updatedAt"`
 }
