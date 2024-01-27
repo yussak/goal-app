@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "alb_log" {
   }
 }
 
-resource "aws_vpc" "example" {
+resource "aws_vpc" "app" {
   cidr_block = "10.0.0.0/16"
 
   # DNSサーバーによる名前解決を有効にする
@@ -55,7 +55,7 @@ resource "aws_vpc" "example" {
 
 # パブリックサブネット
 resource "aws_subnet" "public_0" {
-  vpc_id = aws_vpc.example.id
+  vpc_id = aws_vpc.app.id
   # CIDRブロックはとくにこだわりがなければVPCでは/16、サブネットでは/24にするとわかりやすい
   cidr_block = "10.0.1.0/24"
   # そのサブネットで起動したインスタンスにパブリックIPアドレスを自動的に割り当てる
@@ -64,7 +64,7 @@ resource "aws_subnet" "public_0" {
 }
 
 resource "aws_subnet" "public_1" {
-  vpc_id                  = aws_vpc.example.id
+  vpc_id                  = aws_vpc.app.id
   cidr_block              = "10.0.2.0/24"
   map_public_ip_on_launch = true
   availability_zone       = "ap-northeast-1c"
@@ -72,19 +72,19 @@ resource "aws_subnet" "public_1" {
 
 # igw
 # VPCとインターネット間で通信できるようにする
-resource "aws_internet_gateway" "example" {
-  vpc_id = aws_vpc.example.id
+resource "aws_internet_gateway" "app" {
+  vpc_id = aws_vpc.app.id
 }
 
 # igwだけではネットに接続できない。ネットワークにデータを流すためルーティング情報を管理するルートテーブルを用意
 resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.example.id
+  vpc_id = aws_vpc.app.id
 }
 
 # ルート
 resource "aws_route" "public" {
   route_table_id         = aws_route_table.public.id
-  gateway_id             = aws_internet_gateway.example.id
+  gateway_id             = aws_internet_gateway.app.id
   destination_cidr_block = "0.0.0.0/0"
 }
 
@@ -105,7 +105,7 @@ resource "aws_route_table_association" "public_1" {
 
 # プライベートサブネット
 resource "aws_subnet" "private_0" {
-  vpc_id            = aws_vpc.example.id
+  vpc_id            = aws_vpc.app.id
   cidr_block        = "10.0.65.0/24"
   availability_zone = "ap-northeast-1a"
   # パブリックIPアドレスは不要
@@ -113,7 +113,7 @@ resource "aws_subnet" "private_0" {
 }
 
 resource "aws_subnet" "private_1" {
-  vpc_id                  = aws_vpc.example.id
+  vpc_id                  = aws_vpc.app.id
   cidr_block              = "10.0.66.0/24"
   availability_zone       = "ap-northeast-1c"
   map_public_ip_on_launch = false
@@ -121,11 +121,11 @@ resource "aws_subnet" "private_1" {
 
 # ルートテーブルと関連付け
 resource "aws_route_table" "private_0" {
-  vpc_id = aws_vpc.example.id
+  vpc_id = aws_vpc.app.id
 }
 
 resource "aws_route_table" "private_1" {
-  vpc_id = aws_vpc.example.id
+  vpc_id = aws_vpc.app.id
 }
 
 # ルート
@@ -156,29 +156,29 @@ resource "aws_route_table_association" "private_1" {
 # NATゲートウェイにはEIPが必要
 resource "aws_eip" "nat_gateway_0" {
   vpc        = true
-  depends_on = [aws_internet_gateway.example]
+  depends_on = [aws_internet_gateway.app]
 }
 
 resource "aws_eip" "nat_gateway_1" {
   vpc        = true
-  depends_on = [aws_internet_gateway.example]
+  depends_on = [aws_internet_gateway.app]
 }
 
 # NATゲートウェイ
 resource "aws_nat_gateway" "nat_gateway_0" {
   allocation_id = aws_eip.nat_gateway_0.id
   subnet_id     = aws_subnet.public_0.id
-  depends_on    = [aws_internet_gateway.example]
+  depends_on    = [aws_internet_gateway.app]
 }
 
 resource "aws_nat_gateway" "nat_gateway_1" {
   allocation_id = aws_eip.nat_gateway_1.id
   subnet_id     = aws_subnet.public_1.id
-  depends_on    = [aws_internet_gateway.example]
+  depends_on    = [aws_internet_gateway.app]
 }
 
-resource "aws_lb" "example" {
-  name               = "example"
+resource "aws_lb" "app" {
+  name               = "app"
   load_balancer_type = "application"
   internal           = false
   idle_timeout       = 60
@@ -205,13 +205,13 @@ resource "aws_lb" "example" {
 }
 
 output "alb_dns_name" {
-  value = aws_lb.example.dns_name
+  value = aws_lb.app.dns_name
 }
 
 module "http_sg" {
   source      = "./security_group"
   name        = "http-sg"
-  vpc_id      = aws_vpc.example.id
+  vpc_id      = aws_vpc.app.id
   port        = 80
   cidr_blocks = ["0.0.0.0/0"]
 }
@@ -219,7 +219,7 @@ module "http_sg" {
 module "https_sg" {
   source      = "./security_group"
   name        = "https-sg"
-  vpc_id      = aws_vpc.example.id
+  vpc_id      = aws_vpc.app.id
   port        = 443
   cidr_blocks = ["0.0.0.0/0"]
 }
@@ -227,13 +227,13 @@ module "https_sg" {
 module "http_redirect_sg" {
   source      = "./security_group"
   name        = "http-redirect-sg"
-  vpc_id      = aws_vpc.example.id
+  vpc_id      = aws_vpc.app.id
   port        = 8080
   cidr_blocks = ["0.0.0.0/0"]
 }
 
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.example.arn
+  load_balancer_arn = aws_lb.app.arn
   port              = "80"
   protocol          = "HTTP"
 
@@ -250,43 +250,43 @@ resource "aws_lb_listener" "http" {
 
 # ホストゾーン
 # DNSレコードを束ねるリソースで、Route53でドメイン登録した場合は自動的に作成される。そのホストゾーンは以下で参照する
-data "aws_route53_zone" "example" {
+data "aws_route53_zone" "main" {
   name = "pf-goal-app.net"
 }
 
 # DNSレコードの定義
 # 設定したドメインでALBにアクセスできるようになる
-resource "aws_route53_record" "example" {
-  zone_id = data.aws_route53_zone.example.zone_id
-  name    = data.aws_route53_zone.example.name
+resource "aws_route53_record" "main" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = data.aws_route53_zone.main.name
   type    = "A"
 
   alias {
-    name                   = aws_lb.example.dns_name
-    zone_id                = aws_lb.example.zone_id
+    name                   = aws_lb.app.dns_name
+    zone_id                = aws_lb.app.zone_id
     evaluate_target_health = true
   }
 }
 
 resource "aws_route53_record" "api" {
-  zone_id = data.aws_route53_zone.example.zone_id
+  zone_id = data.aws_route53_zone.main.zone_id
   name    = "api.pf-goal-app.net"
   type    = "A"
 
   alias {
-    name                   = aws_lb.example.dns_name
-    zone_id                = aws_lb.example.zone_id
+    name                   = aws_lb.app.dns_name
+    zone_id                = aws_lb.app.zone_id
     evaluate_target_health = true
   }
 }
 
 output "domain_name" {
-  value = aws_route53_record.example.name
+  value = aws_route53_record.main.name
 }
 
 # SSL証明書の作成
-resource "aws_acm_certificate" "example" {
-  domain_name = aws_route53_record.example.name
+resource "aws_acm_certificate" "app" {
+  domain_name = aws_route53_record.main.name
 
   # ドメイン名を追加したい場合、以下に追加する。例えば["test.example.com"]
   subject_alternative_names = ["api.pf-goal-app.net"]
@@ -303,9 +303,9 @@ resource "aws_acm_certificate" "example" {
 
 # SSL証明書の検証
 # DNS検証用のDNSレコードを追加
-resource "aws_route53_record" "example_certificate" {
+resource "aws_route53_record" "app_certificate" {
   for_each = {
-    for dvo in aws_acm_certificate.example.domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.app.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       type   = dvo.resource_record_type
       record = dvo.resource_record_value
@@ -315,20 +315,20 @@ resource "aws_route53_record" "example_certificate" {
   name    = each.value.name
   type    = each.value.type
   records = [each.value.record]
-  zone_id = data.aws_route53_zone.example.id
+  zone_id = data.aws_route53_zone.main.id
   ttl     = 60
 }
 
-resource "aws_acm_certificate_validation" "example" {
-  certificate_arn         = aws_acm_certificate.example.arn
-  validation_record_fqdns = [for record in aws_route53_record.example_certificate : record.fqdn]
+resource "aws_acm_certificate_validation" "app" {
+  certificate_arn         = aws_acm_certificate.app.arn
+  validation_record_fqdns = [for record in aws_route53_record.app_certificate : record.fqdn]
 }
 
 resource "aws_lb_listener" "https" {
-  load_balancer_arn = aws_lb.example.arn
+  load_balancer_arn = aws_lb.app.arn
   port              = "443"
   protocol          = "HTTPS"
-  certificate_arn   = aws_acm_certificate.example.arn
+  certificate_arn   = aws_acm_certificate.app.arn
   ssl_policy        = "ELBSecurityPolicy-2016-08"
 
   default_action {
@@ -343,7 +343,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_listener" "redirect_http_to_https" {
-  load_balancer_arn = aws_lb.example.arn
+  load_balancer_arn = aws_lb.app.arn
   port              = "8080"
   protocol          = "HTTP"
 
@@ -363,7 +363,7 @@ resource "aws_lb_listener" "redirect_http_to_https" {
 resource "aws_lb_target_group" "frontend" {
   name                 = "tg-frontend"
   target_type          = "ip"
-  vpc_id               = aws_vpc.example.id
+  vpc_id               = aws_vpc.app.id
   port                 = 3000
   protocol             = "HTTP"
   deregistration_delay = 300
@@ -383,7 +383,7 @@ resource "aws_lb_target_group" "frontend" {
     protocol = "HTTP"
   }
 
-  depends_on = [aws_lb.example]
+  depends_on = [aws_lb.app]
 }
 
 # リスナールール
@@ -408,7 +408,7 @@ resource "aws_lb_listener_rule" "frontend" {
 resource "aws_lb_target_group" "backend" {
   name                 = "tg-backend"
   target_type          = "ip"
-  vpc_id               = aws_vpc.example.id
+  vpc_id               = aws_vpc.app.id
   port                 = 5000
   protocol             = "HTTP"
   deregistration_delay = 300
@@ -428,7 +428,7 @@ resource "aws_lb_target_group" "backend" {
     protocol = "HTTP"
   }
 
-  depends_on = [aws_lb.example]
+  depends_on = [aws_lb.app]
 }
 
 resource "aws_lb_listener_rule" "backend" {
@@ -448,15 +448,15 @@ resource "aws_lb_listener_rule" "backend" {
 }
 
 # # クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
-resource "aws_ecs_cluster" "example" {
-  name = "example"
+resource "aws_ecs_cluster" "app" {
+  name = "app-cluster"
 }
 
 # ECSサービスは起動するタスクの数を定義でき、指定した数のタスクを維持する。何らかの理由でタスクが終了しても自動で新しいタスクを起動する
 resource "aws_ecs_service" "backend" {
   name            = "backend"
-  cluster         = aws_ecs_cluster.example.arn
-  task_definition = aws_ecs_task_definition.example.arn
+  cluster         = aws_ecs_cluster.app.arn
+  task_definition = aws_ecs_task_definition.app.arn
 
   # ECSサービスが維持するタスク数
   # 1を指定するとコンテナが異常終了するとECSサービスがタスクを再起動するまでアクセスできなくなるので2以上を指定
@@ -493,15 +493,15 @@ resource "aws_ecs_service" "backend" {
 module "backend_sg" {
   source      = "./security_group"
   name        = "backend-sg"
-  vpc_id      = aws_vpc.example.id
+  vpc_id      = aws_vpc.app.id
   port        = 5000
-  cidr_blocks = [aws_vpc.example.cidr_block]
+  cidr_blocks = [aws_vpc.app.cidr_block]
 }
 
 resource "aws_ecs_service" "frontend" {
   name            = "frontend"
-  cluster         = aws_ecs_cluster.example.arn
-  task_definition = aws_ecs_task_definition.example.arn
+  cluster         = aws_ecs_cluster.app.arn
+  task_definition = aws_ecs_task_definition.app.arn
 
   desired_count = 2
 
@@ -534,9 +534,9 @@ resource "aws_ecs_service" "frontend" {
 module "frontend_sg" {
   source      = "./security_group"
   name        = "frontend-sg"
-  vpc_id      = aws_vpc.example.id
+  vpc_id      = aws_vpc.app.id
   port        = 3000
-  cidr_blocks = [aws_vpc.example.cidr_block]
+  cidr_blocks = [aws_vpc.app.cidr_block]
 }
 
 # cloudwatch ログ
@@ -587,9 +587,9 @@ module "ecs_task_execution_role" {
 
 # タスク：コンテナの実行単位
 # タスクはタスク定義で作られる
-resource "aws_ecs_task_definition" "example" {
+resource "aws_ecs_task_definition" "app" {
   # タスク定義名のプレフィックス
-  family                   = "example"
+  family                   = "app-task"
   cpu                      = "256"
   memory                   = "512"
   network_mode             = "awsvpc"
@@ -612,7 +612,7 @@ data "aws_iam_policy" "ecs_events_role_policy" {
 }
 
 # カスタマーキー
-resource "aws_kms_key" "example" {
+resource "aws_kms_key" "app" {
   # 使用用途
   description         = "Customer Master Keyテストです!!"
   enable_key_rotation = true
@@ -623,9 +623,9 @@ resource "aws_kms_key" "example" {
 }
 
 # カスタマーキーにはUUIDが割り当てられるが、わかりづらい。なのでエイリアスを設定し、用途をわかりやすくする
-resource "aws_kms_alias" "exasmple" {
-  name          = "alias/example"
-  target_key_id = aws_kms_key.example.key_id
+resource "aws_kms_alias" "app" {
+  name          = "alias/app"
+  target_key_id = aws_kms_key.app.key_id
 }
 
 # SSMパラメータストア
@@ -658,14 +658,14 @@ resource "aws_ssm_parameter" "db_password" {
 
 resource "aws_ssm_parameter" "db_hostname" {
   name        = "/db/hostname"
-  value       = aws_db_instance.example.address
+  value       = aws_db_instance.goaldb.address
   type        = "String"
   description = "DBのhost名"
 }
 
 resource "aws_ssm_parameter" "db_dbname" {
   name        = "/db/dbname"
-  value       = aws_db_instance.example.db_name
+  value       = aws_db_instance.goaldb.db_name
   type        = "String"
   description = "DB名"
 }
@@ -682,8 +682,8 @@ resource "aws_ssm_parameter" "nextauth_secret" {
 
 # MySQLを使用
 # MySQLのmy.cnfファイルに定義するようなDBの設定を以下のDBパラメータグループに書く
-resource "aws_db_parameter_group" "example" {
-  name   = "example"
+resource "aws_db_parameter_group" "app" {
+  name   = "db-parameter-group"
   family = "mysql8.0"
 
   parameter {
@@ -700,8 +700,8 @@ resource "aws_db_parameter_group" "example" {
 # DBオプショングループ（DBエンジンにオプションを追加できる）
 # 以下ではMariaDB監査プラグインを追加している
 # ユーザーのログインや実行したクエリなどのアクティビティを記録できる
-resource "aws_db_option_group" "example" {
-  name                 = "example"
+resource "aws_db_option_group" "app" {
+  name                 = "db-option-group"
   engine_name          = "mysql"
   major_engine_version = "8.0"
 
@@ -711,15 +711,15 @@ resource "aws_db_option_group" "example" {
 }
 
 # DBを駆動させるサブネット
-resource "aws_db_subnet_group" "example" {
-  name = "example"
+resource "aws_db_subnet_group" "app" {
+  name = "db-sg"
   # マルチAZの設定をするため、異なるアベイラビリティゾーンを含める
   subnet_ids = [aws_subnet.private_0.id, aws_subnet.private_1.id]
 }
 
 # DBインスタンス
-resource "aws_db_instance" "example" {
-  identifier = "example"
+resource "aws_db_instance" "goaldb" {
+  identifier = "goaldb"
   db_name    = "goaldb"
 
   engine         = "mysql"
@@ -733,12 +733,12 @@ resource "aws_db_instance" "example" {
   storage_type      = "gp2"
   storage_encrypted = true
 
-  kms_key_id = aws_kms_key.example.arn
+  kms_key_id = aws_kms_key.app.arn
 
   username = aws_ssm_parameter.db_username.value
 
   # このパスワードは使わず、以下のコマンド（例）で上書きする。ssmの/db/passwordと値を合わせる
-  # aws rds modify-db-instance --db-instance-identifier 'example' \
+  # aws rds modify-db-instance --db-instance-identifier 'goaldb' \
   # --master-user-password 'newPassword123!'
   password = "password"
 
@@ -770,9 +770,9 @@ resource "aws_db_instance" "example" {
 
   vpc_security_group_ids = [module.mysql_sg.security_group_id]
 
-  parameter_group_name = aws_db_option_group.example.name
-  option_group_name    = aws_db_option_group.example.name
-  db_subnet_group_name = aws_db_subnet_group.example.name
+  parameter_group_name = aws_db_option_group.app.name
+  option_group_name    = aws_db_option_group.app.name
+  db_subnet_group_name = aws_db_subnet_group.app.name
 
   lifecycle {
     ignore_changes = [password]
@@ -784,20 +784,20 @@ resource "aws_db_instance" "example" {
 module "mysql_sg" {
   source      = "./security_group"
   name        = "mysql-sg"
-  vpc_id      = aws_vpc.example.id
+  vpc_id      = aws_vpc.app.id
   port        = 3306
-  cidr_blocks = [aws_vpc.example.cidr_block]
+  cidr_blocks = [aws_vpc.app.cidr_block]
 }
 
 
 # ECRリポジトリ
-resource "aws_ecr_repository" "example" {
-  name = "example"
+resource "aws_ecr_repository" "app" {
+  name = "app-repo"
 }
 
 # ECRライフサイクルポリシー
-resource "aws_ecr_lifecycle_policy" "example" {
-  repository = aws_ecr_repository.example.name
+resource "aws_ecr_lifecycle_policy" "app" {
+  repository = aws_ecr_repository.app.name
 
   policy = <<EOF
   {

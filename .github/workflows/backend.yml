@@ -13,10 +13,10 @@ defaults:
 env:
   AWS_REGION: ap-northeast-1
 
-  ECR_REPOSITORY: example
+  ECR_REPOSITORY: app-repo
   BACKEND_TAG: backend
 
-  ECS_CLUSTER: example
+  ECS_CLUSTER: app-cluster
   ECS_SERVICE_BACKEND: backend
 
 jobs:
