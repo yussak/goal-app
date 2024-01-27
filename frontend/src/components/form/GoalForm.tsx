@@ -2,12 +2,15 @@ import { GoalFormData } from "@/types/GoalForm";
 import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "next-i18next";
 
 type GoalFormProps = {
   addGoal: (data: GoalFormData) => void;
 };
 
 const GoalForm = ({ addGoal }: GoalFormProps) => {
+  const { t } = useTranslation();
+
   const {
     register,
     handleSubmit,
@@ -40,11 +43,11 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
   return (
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <p>達成したいことをSMARTに書きましょう（必須）</p>
+        <p>{t("goal_create.label1")}</p>
         {renderTextField("content", register, errors)}
-        <p>目的を書きましょう（必須）</p>
+        <p>{t("goal_create.label2")}</p>
         {renderTextField("purpose", register, errors)}
-        <p>やらないとどうなるかを書いてみましょう</p>
+        <p>{t("goal_create.label3")}</p>
         {renderTextField("loss", register, errors)}
         <Button type="submit" variant="contained" disabled={!isValid}>
           追加
