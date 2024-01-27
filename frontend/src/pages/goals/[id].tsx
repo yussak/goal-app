@@ -7,6 +7,8 @@ import MilestoneList from "@/components/MilestoneList";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { authGuard } from "@/utils/authGuard";
+import { Button } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function GoalDetail() {
   authGuard();
@@ -127,7 +129,9 @@ export default function GoalDetail() {
       {goal && (
         <>
           {/* todo:このページでも削除可能にしたい */}
-          <Link href={`/goals/edit/${goal.id}`}>edit</Link>
+          <Button href={`/goals/edit/${goal.id}`} startIcon={<EditIcon />}>
+            edit
+          </Button>
           <p>content: {goal.content}</p>
           <p>purpose: {goal.purpose}</p>
           <p>loss: {goal.loss}</p>
