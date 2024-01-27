@@ -12,7 +12,7 @@ type EditGoalFormProps = {
 const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     setValue,
     register,
   } = useForm<GoalFormData>({
@@ -48,7 +48,7 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
             error={!!errors.loss}
             helperText={errors.loss?.message}
           />
-          <Button type="submit" variant="contained">
+          <Button type="submit" variant="contained" disabled={!isValid}>
             更新
           </Button>
         </Stack>
