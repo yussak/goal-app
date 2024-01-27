@@ -19,6 +19,16 @@ afterEach(() => {
 });
 
 describe("goals/create.tsx", () => {
+  it("should redirect to login page if session is null", () => {
+    render(
+      <SessionProvider session={null}>
+        <CreateGoal />
+      </SessionProvider>
+    );
+
+    expect(mockRouter.push).toHaveBeenCalledWith("/auth/login");
+  });
+
   it("should get user id if session is not null", () => {
     const mockSession = {
       expires: new Date(Date.now() + 2 * 86400).toISOString(),
@@ -31,15 +41,5 @@ describe("goals/create.tsx", () => {
     );
 
     expect(mockSession?.user.id).toBe("testId");
-  });
-
-  it("should redirect to login page if session is null", () => {
-    render(
-      <SessionProvider session={null}>
-        <CreateGoal />
-      </SessionProvider>
-    );
-
-    expect(mockRouter.push).toHaveBeenCalledWith("/auth/login");
   });
 });
