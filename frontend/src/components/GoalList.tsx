@@ -20,8 +20,8 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>purpose: {goal.purpose}</p>
             <p>loss: {goal.loss}</p>
             <p>progress: {goal.progress}</p>
-            <p>id: {goal.id}</p>
-            <p>user_id（デバッグ用）: {goal.user_id}</p>
+            {/* <p>id（デバッグ用）: {goal.id}</p> */}
+            {/* <p>user_id（デバッグ用）: {goal.user_id}</p> */}
             {/* <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
             <p>UpdatedAt: {goal.UpdatedAt.toLocaleString()}</p> */}
             <p>
