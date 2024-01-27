@@ -28,17 +28,12 @@ describe("Create milestone", () => {
     });
   });
 
-  //   it("should not submit when invalid values are input", async () => {
-  //     // contentは空
-  //     await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
-  //     await user.type(
-  //       screen.getByRole("textbox", { name: "loss" }),
-  //       "ロスですロスですロスです"
-  //     );
+  it("should not submit when invalid values are input", async () => {
+    await user.type(screen.getByRole("textbox", { name: "content" }), "ああ");
 
-  //     expect(screen.getByRole("button", { name: "追加" })).toBeDisabled();
-  //     expect(addMilestoneMock).not.toBeCalled();
-  //   });
+    expect(screen.getByRole("button", { name: "追加" })).toBeDisabled();
+    expect(addMilestoneMock).not.toBeCalled();
+  });
 
   //   it("should validate when too short values are input", async () => {
   //     await user.type(screen.getByRole("textbox", { name: "purpose" }), "ああ");
