@@ -139,7 +139,7 @@ export default function GoalDetail() {
           {/* <p>user_id(デバッグ用): {goal.user_id}</p> */}
           {/* <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p> */}
           {/* <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p> */}
-          <Link href="/goals">一覧に戻る</Link>
+          <Link href="/goals">目標一覧に戻る</Link>
         </>
       )}
       {session?.user && (
