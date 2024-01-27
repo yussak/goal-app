@@ -41,9 +41,9 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <p>達成したいことをSMARTに書きましょう（必須）</p>
-        {renderTextField("purpose", register, errors)}
-        <p>その理由を書きましょう（必須）</p>
         {renderTextField("content", register, errors)}
+        <p>目的を書きましょう（必須）</p>
+        {renderTextField("purpose", register, errors)}
         <p>やらないとどうなるかを書いてみましょう</p>
         {renderTextField("loss", register, errors)}
         <Button type="submit" variant="contained" disabled={!isValid}>
