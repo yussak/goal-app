@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { mutate } from "swr";
 
-export default function createGoal() {
+export default function CreateGoal() {
   authGuard();
   const router = useRouter();
   const { data: session } = useSession();
