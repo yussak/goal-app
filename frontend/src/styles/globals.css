@@ -5,6 +5,10 @@
   border-bottom: 1px solid black;
 }
 
+li {
+  list-style: none;
+}
+
 .layout {
   display: flex;
 }
