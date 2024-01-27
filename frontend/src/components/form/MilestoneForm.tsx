@@ -27,12 +27,10 @@ const MilestoneForm = ({ addMilestone }: MilestoneFormProps) => {
           <TextField
             label="content"
             {...register("content", validationRules)}
+            error={!!errors.content}
+            helperText={errors.content?.message}
+            data-testid="error-content"
           />
-          {errors.content && (
-            <span data-testid="error-content" className="text-red">
-              {errors.content?.message}
-            </span>
-          )}
           <Button type="submit" variant="contained" disabled={!isValid}>
             追加
           </Button>
