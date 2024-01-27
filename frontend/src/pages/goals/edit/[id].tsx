@@ -16,7 +16,6 @@ export default function EditGoal() {
     purpose: "",
     loss: "",
   });
-  console.log("goalData", goalData);
 
   const { data: session } = useSession();
 
