@@ -16,13 +16,7 @@ export default function EditGoal() {
     purpose: "",
     loss: "",
   });
-
-  const handleSetGoalData = <K extends keyof GoalFormData>(
-    key: K,
-    value: GoalFormData[K]
-  ) => {
-    SetGoalData((prev) => ({ ...prev, [key]: value }));
-  };
+  console.log("goalData", goalData);
 
   const { data: session } = useSession();
 
@@ -63,12 +57,7 @@ export default function EditGoal() {
   return (
     <>
       <h2>目標編集</h2>
-
-      <EditGoalForm
-        editGoal={editGoal}
-        SetGoalData={handleSetGoalData}
-        goalData={goalData}
-      />
+      <EditGoalForm editGoal={editGoal} goalData={goalData} />
     </>
   );
 }
