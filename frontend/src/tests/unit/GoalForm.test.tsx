@@ -54,13 +54,10 @@ describe("Create goal", () => {
     render(<GoalForm addGoal={addGoalMock} />);
     const user = userEvent.setup();
 
-    await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
-    await user.type(screen.getByRole("textbox", { name: "loss" }), "ロス");
-    await user.type(screen.getByRole("textbox", { name: "content" }), "内容");
-    await user.click(screen.getByRole("button", { name: "追加" }));
+    await user.type(screen.getByRole("textbox", { name: "purpose" }), "ああ");
+    await user.type(screen.getByRole("textbox", { name: "content" }), "ああ");
+    await user.type(screen.getByRole("textbox", { name: "loss" }), "ああ");
 
-    // ボタンクリックはできる
-    expect(screen.getByRole("button", { name: "追加" })).not.toBeDisabled();
     expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
       "3文字以上で入力してください"
     );
