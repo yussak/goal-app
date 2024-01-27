@@ -19,6 +19,7 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <p>content: {goal.content}</p>
             <p>purpose: {goal.purpose}</p>
             <p>loss: {goal.loss}</p>
+            <p>phase: {goal.phase}</p>
             <p>progress: {goal.progress}</p>
             {/* <p>id（デバッグ用）: {goal.id}</p> */}
             {/* <p>user_id（デバッグ用）: {goal.user_id}</p> */}

@@ -16,6 +16,7 @@ export type Goal = {
   purpose: string;
   loss: string;
   progress: number;
+  phase: string;
 };
 
 // フォーム用に用意した方がいい

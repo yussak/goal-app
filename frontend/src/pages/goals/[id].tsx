@@ -136,6 +136,7 @@ export default function GoalDetail() {
           <p>purpose: {goal.purpose}</p>
           <p>loss: {goal.loss}</p>
           <p>progress: {goal.progress}</p>
+          <p>phase: {goal.phase}</p>
           {/* <p>user_id(デバッグ用): {goal.user_id}</p> */}
           {/* <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p> */}
           {/* <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p> */}
