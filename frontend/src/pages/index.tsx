@@ -1,7 +1,19 @@
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
+
 export default function Home() {
+  const { t } = useTranslation("common");
   return (
     <>
-      <h1>This is top page</h1>
+      <h1>{t("index.title")}</h1>
     </>
   );
+}
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 }
