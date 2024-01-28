@@ -12,5 +12,13 @@
     "title": "Your Goal List"
   },
   "japanese": "Japanese",
-  "english": "English"
+  "english": "English",
+  "sidebar": {
+    "link1": "Add Goal",
+    "link2": "Goals",
+    "link3": "Signup",
+    "link4": "Login",
+    "link5": "About",
+    "link6": "Logout"
+  }
 }

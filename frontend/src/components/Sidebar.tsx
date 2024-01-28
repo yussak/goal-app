@@ -3,10 +3,12 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTranslation } from "next-i18next";
 
 export default function Sidebar() {
   const router = useRouter();
   const { data: session } = useSession();
+  const { t } = useTranslation("common");
 
   return (
     <ul>
@@ -14,26 +16,26 @@ export default function Sidebar() {
       {session?.user ? (
         <>
           <li>
-            <Link href="/goals/create">Add goal</Link>
+            <Link href="/goals/create">{t("sidebar.link1")}</Link>
           </li>
           <li>
-            <Link href="/goals">Goals</Link>
+            <Link href="/goals">{t("sidebar.link2")}</Link>
           </li>
         </>
       ) : (
         <>
           {/* 美ログイン時のみ表示 */}
           <li>
-            <Link href="/auth/signup">signup</Link>
+            <Link href="/auth/signup">{t("sidebar.link3")}</Link>
           </li>
           <li>
-            <Link href="/auth/login">login</Link>
+            <Link href="/auth/login">{t("sidebar.link4")}</Link>
           </li>
         </>
       )}
       {/* 常に表示 */}
       <li>
-        <Link href="/about">About</Link>
+        <Link href="/about">{t("sidebar.link5")}</Link>
       </li>
       {/* ログイン時のみ表示 */}
       {session?.user && (
@@ -45,7 +47,7 @@ export default function Sidebar() {
               variant="outlined"
               onClick={() => signOut({ callbackUrl: "/auth/login" })}
             >
-              logout
+              {t("sidebar.link6")}
             </Button>
           </li>
         </>
