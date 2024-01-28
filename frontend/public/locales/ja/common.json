@@ -11,8 +11,8 @@
   "goal_index": {
     "title": "あなたの目標一覧"
   },
-  "goal_edit": {
-    "title1": "目標編集",
+  "goal_detail": {
+    "title1": "目標詳細",
     "button1": "編集する",
     "link1": "目標一覧へ戻る",
     "title2": "中目標を追加",
