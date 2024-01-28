@@ -6,7 +6,6 @@ const AuthGuard = ({ children }: { children: ReactNode }): any => {
   const { status } = useSession();
   const router = useRouter();
 
-  // todo:以下だと中身が見えるので対応→そのためにもローディングが必要かもしれない
   useEffect(() => {
     if (
       // 未ログインで認証が必要なページにアクセスしたらログインページにリダイレクトする
