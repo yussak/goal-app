@@ -1,12 +1,10 @@
 import { Button } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useTranslation } from "next-i18next";
 
 export default function Sidebar() {
-  const router = useRouter();
   const { data: session } = useSession();
   const { t } = useTranslation("common");
 
