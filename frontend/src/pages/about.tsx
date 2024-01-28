@@ -1,4 +1,8 @@
-export default function About() {
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
+
+const About = () => {
+  const { t } = useTranslation();
   return (
     <>
       <h1>goal-appの使い方</h1>
@@ -19,4 +23,14 @@ export default function About() {
       <p>グラフで一覧表示できたり</p>
     </>
   );
+};
+
+export default About;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 }
