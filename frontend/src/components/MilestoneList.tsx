@@ -11,6 +11,7 @@ import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import TodoList from "./TodoList";
 import { DeleteDialog } from "./DeleteDialog";
+import { useTranslation } from "next-i18next";
 
 type MilestoneListProps = {
   milestones: Milestone[];
@@ -30,6 +31,7 @@ const MilestoneList = ({
   addTodosToState,
 }: MilestoneListProps) => {
   const { data: session } = useSession();
+  const { t } = useTranslation();
 
   const addTodo = async (parentId: string, content: string) => {
     const params = {
@@ -97,11 +99,11 @@ const MilestoneList = ({
                   {/* <p>goal_id（デバッグ用）: {milestone.goal_id}</p> */}
                   {milestoneTodos.length < 5 ? (
                     <TodoForm
-                      // 子コンポーネントにaddTodoChildを渡してcontentを受け取る。そのcontentを親（当コンポーネント）のaddTodoで受け取る。その際にmilestone.idも渡し、実行ている
+                      // 子コンポーネントにaddTodoChildを渡してcontentを受け取る。そのcontentを親（当コンポーネント）のaddTodoで受け取る。その際にmilestone.idも渡し、実行している
                       addTodoChild={(content) => addTodo(milestone.id, content)}
                     />
                   ) : (
-                    <span>todoは5個まで追加できます</span>
+                    <span> {t("milestone_list.text1")}</span>
                   )}
 
                   {/* todosをマイルストーンのものに絞って渡す */}
@@ -119,7 +121,7 @@ const MilestoneList = ({
       })}
     </ul>
   ) : (
-    <span>中目標はありません</span>
+    <span>{t("milestone_list.text2")}</span>
   );
 };
 

@@ -11,6 +11,25 @@
   "goal_index": {
     "title": "あなたの目標一覧"
   },
+  "goal_edit": {
+    "title1": "目標編集",
+    "button1": "編集する",
+    "link1": "目標一覧へ戻る",
+    "title2": "中目標を追加",
+    "text1": "中目標は5個までです",
+    "title3": "中目標一覧"
+  },
+  "milestone_form": {
+    "button1": "追加"
+  },
+  "milestone_list": {
+    "button1": "削除",
+    "text1": "Todoは5個までです",
+    "text2": "中目標はありません"
+  },
+  "todo_form": {
+    "button1": "Add"
+  },
   "japanese": "日本語",
   "english": "英語",
   "sidebar": {

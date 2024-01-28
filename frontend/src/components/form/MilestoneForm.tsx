@@ -2,12 +2,15 @@ import { MilestoneFormData } from "@/types";
 import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "next-i18next";
 
 type MilestoneFormProps = {
   addMilestone: (data: MilestoneFormData) => void;
 };
 
 const MilestoneForm = ({ addMilestone }: MilestoneFormProps) => {
+  const { t } = useTranslation();
+
   const {
     register,
     handleSubmit,
@@ -32,7 +35,7 @@ const MilestoneForm = ({ addMilestone }: MilestoneFormProps) => {
             data-testid="error-content"
           />
           <Button type="submit" variant="contained" disabled={!isValid}>
-            追加
+            {t("milestone_form.button1")}
           </Button>
         </Stack>
       </form>

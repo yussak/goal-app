@@ -9,6 +9,8 @@ import { useSession } from "next-auth/react";
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { CustomNextPage } from "@/types/custom-next-page";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 const GoalDetail: CustomNextPage = () => {
   const [goal, setGoal] = useState<Goal | null>(null);
@@ -19,6 +21,7 @@ const GoalDetail: CustomNextPage = () => {
   const [todos, setTodos] = useState<{ [key: string]: Todo[] }>({});
   const router = useRouter();
   const id = router.query.id;
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (router.isReady) {
@@ -120,12 +123,12 @@ const GoalDetail: CustomNextPage = () => {
 
   return (
     <>
-      <h2>目標詳細</h2>
+      <h2>{t("goal_edit.title1")}</h2>
       {goal && (
         <>
           {/* todo:このページでも削除可能にしたい */}
           <Button href={`/goals/edit/${goal.id}`} startIcon={<EditIcon />}>
-            edit
+            {t("goal_edit.button1")}
           </Button>
           <p>content: {goal.content}</p>
           <p>purpose: {goal.purpose}</p>
@@ -135,20 +138,20 @@ const GoalDetail: CustomNextPage = () => {
           {/* <p>userId(デバッグ用): {goal.userId}</p> */}
           {/* <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p> */}
           {/* <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p> */}
-          <Link href="/goals">目標一覧に戻る</Link>
+          <Link href="/goals">{t("goal_edit.link1")}</Link>
         </>
       )}
       {session?.user && (
         <>
-          <h3>中目標を追加</h3>
+          <h3>{t("goal_edit.title2")}</h3>
           {milestones.length < 5 ? (
             <MilestoneForm addMilestone={addMilestone} />
           ) : (
-            <p>中目標は5個までです</p>
+            <p>{t("goal_edit.text1")}</p>
           )}
         </>
       )}
-      <h3>中目標一覧</h3>
+      <h3>{t("goal_edit.title3")}</h3>
       <MilestoneList
         milestones={milestones}
         onDeleteMilestone={deleteMilestone}
@@ -163,3 +166,11 @@ const GoalDetail: CustomNextPage = () => {
 
 export default GoalDetail;
 GoalDetail.requireAuth = true;
+
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
