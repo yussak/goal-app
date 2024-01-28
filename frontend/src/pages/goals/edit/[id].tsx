@@ -3,12 +3,15 @@ import { GoalFormData } from "@/types";
 import { CustomNextPage } from "@/types/custom-next-page";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
 
 const EditGoal: CustomNextPage = () => {
   const router = useRouter();
   const id = router.query.id;
+  const { t } = useTranslation();
 
   const [goalData, SetGoalData] = useState<GoalFormData>({
     content: "",
@@ -54,7 +57,7 @@ const EditGoal: CustomNextPage = () => {
 
   return (
     <>
-      <h2>目標編集</h2>
+      <h2>{t("goal_edit.title")}</h2>
       <EditGoalForm editGoal={editGoal} goalData={goalData} />
     </>
   );
@@ -62,3 +65,11 @@ const EditGoal: CustomNextPage = () => {
 
 export default EditGoal;
 EditGoal.requireAuth = true;
+
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}

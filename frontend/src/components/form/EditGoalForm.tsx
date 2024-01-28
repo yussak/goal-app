@@ -3,6 +3,7 @@ import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "next-i18next";
 
 type EditGoalFormProps = {
   editGoal: (data: GoalFormData) => void;
@@ -10,6 +11,8 @@ type EditGoalFormProps = {
 };
 
 const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
+  const { t } = useTranslation();
+
   const {
     handleSubmit,
     formState: { errors, isValid },
@@ -49,7 +52,7 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
             helperText={errors.loss?.message}
           />
           <Button type="submit" variant="contained" disabled={!isValid}>
-            更新
+            {t("edit_goal_form.button")}
           </Button>
         </Stack>
       </form>

@@ -19,6 +19,12 @@
     "text1": "中目標は5個までです",
     "title3": "中目標一覧"
   },
+  "goal_edit": {
+    "title": "目標編集"
+  },
+  "edit_goal_form": {
+    "button": "更新"
+  },
   "milestone_form": {
     "button1": "追加"
   },
