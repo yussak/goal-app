@@ -2,11 +2,8 @@ import { axios } from "@/utils/axios";
 import SignupForm from "@/components/form/SignupForm";
 import { signIn } from "next-auth/react";
 import { signupFormData } from "@/types";
-import { authGuard } from "@/utils/authGuard";
 
-export default function signup() {
-  authGuard();
-
+const Signup = () => {
   const signup = async (data: signupFormData) => {
     const user = {
       name: data.name,
@@ -27,4 +24,6 @@ export default function signup() {
   };
 
   return <SignupForm signup={signup} />;
-}
+};
+
+export default Signup;

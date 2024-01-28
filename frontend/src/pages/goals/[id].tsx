@@ -6,22 +6,17 @@ import MilestoneForm from "@/components/form/MilestoneForm";
 import MilestoneList from "@/components/MilestoneList";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { authGuard } from "@/utils/authGuard";
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { CustomNextPage } from "@/types/custom-next-page";
 
-export default function GoalDetail() {
-  authGuard();
+const GoalDetail: CustomNextPage = () => {
   const [goal, setGoal] = useState<Goal | null>(null);
-
   const [milestones, setMilestones] = useState<Milestone[]>([]);
-
   const { data: session } = useSession();
-
   // todosは「キーがstring、バリューがTodo型の配列」のオブジェクトである
   // 各マイルストーンに対するtodoを扱うためキーを使用している
   const [todos, setTodos] = useState<{ [key: string]: Todo[] }>({});
-
   const router = useRouter();
   const id = router.query.id;
 
@@ -164,4 +159,7 @@ export default function GoalDetail() {
       />
     </>
   );
-}
+};
+
+export default GoalDetail;
+GoalDetail.requireAuth = true;

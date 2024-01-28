@@ -5,10 +5,9 @@ import { axios } from "@/utils/axios";
 import { fetcher } from "@/utils/fetcher";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { authGuard } from "@/utils/authGuard";
+import { CustomNextPage } from "@/types/custom-next-page";
 
-export default function Goals() {
-  authGuard();
+const Goals: CustomNextPage = () => {
   const { t } = useTranslation();
 
   const { data: session } = useSession();
@@ -37,7 +36,11 @@ export default function Goals() {
       <GoalList goals={goals} onDelete={deleteGoal} />
     </>
   );
-}
+};
+
+export default Goals;
+// ログイン時のみこのページを表示可能にする
+Goals.requireAuth = true;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {

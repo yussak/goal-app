@@ -1,13 +1,12 @@
 import EditGoalForm from "@/components/form/EditGoalForm";
 import { GoalFormData } from "@/types";
+import { CustomNextPage } from "@/types/custom-next-page";
 import { axios } from "@/utils/axios";
-import { authGuard } from "@/utils/authGuard";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function EditGoal() {
-  authGuard();
+const EditGoal: CustomNextPage = () => {
   const router = useRouter();
   const id = router.query.id;
 
@@ -59,4 +58,7 @@ export default function EditGoal() {
       <EditGoalForm editGoal={editGoal} goalData={goalData} />
     </>
   );
-}
+};
+
+export default EditGoal;
+EditGoal.requireAuth = true;
