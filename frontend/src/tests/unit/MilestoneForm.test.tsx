@@ -2,6 +2,8 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import MilestoneForm from "@/components/form/MilestoneForm";
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
 
 describe("Create milestone", () => {
   const addMilestoneMock = vi.fn();
@@ -19,8 +21,14 @@ describe("Create milestone", () => {
   it("should submit when correct value is input", async () => {
     await user.type(screen.getByRole("textbox", { name: "content" }), "中目標");
 
-    // 送信ボタンをクリック
-    await user.click(screen.getByRole("button", { name: "追加" }));
+    // // 送信ボタンをクリック
+    // await user.click(screen.getByRole("button", { name: "追加" }));
+    // todo:テスト環境でi18nの初期化ができてないのか"追加"だと通らないので通るようにする
+    await user.click(
+      screen.getByRole("button", {
+        name: "milestone_form.button1",
+      })
+    );
 
     // addMilestoneがユーザーが入力したデータで呼び出されたことを確認
     expect(addMilestoneMock).toBeCalledWith({
