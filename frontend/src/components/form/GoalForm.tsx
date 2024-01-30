@@ -31,6 +31,7 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
       <Stack spacing={2}>
         <TextField
           label={name}
+          id={name}
           {...register(name, validationRules)}
           error={!!errors[name]}
           helperText={errors[name]?.message}
@@ -43,11 +44,11 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
   return (
     <Container>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <p>{t("goal_create.label1")}</p>
+        <label htmlFor="content">{t("goal_create.label1")}</label>
         {renderTextField("content", register, errors)}
-        <p>{t("goal_create.label2")}</p>
+        <label htmlFor="purpose">{t("goal_create.label2")}</label>
         {renderTextField("purpose", register, errors)}
-        <p>{t("goal_create.label3")}</p>
+        <label htmlFor="loss">{t("goal_create.label3")}</label>
         {renderTextField("loss", register, errors)}
         <Button type="submit" variant="contained" disabled={!isValid}>
           追加
