@@ -52,7 +52,7 @@ export default function Sidebar() {
             </Link>
           </ListItem>
           <ListItem disablePadding>
-            <Link href="/goals/create">
+            <Link href="/goals/">
               <ListItemButton>
                 <ListItemIcon>
                   <ListIcon />
