@@ -12,6 +12,10 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useTranslation } from "next-i18next";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import HomeIcon from "@mui/icons-material/Home";
+import AddIcon from "@mui/icons-material/Add";
+import ListIcon from "@mui/icons-material/List";
+import InfoIcon from "@mui/icons-material/Info";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Sidebar() {
   const { data: session } = useSession();
@@ -24,7 +28,6 @@ export default function Sidebar() {
         <Link href="/">
           <ListItemButton>
             <ListItemIcon>
-              {/* 仮 */}
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary={t("sidebar.home")} />
@@ -38,8 +41,7 @@ export default function Sidebar() {
             <Link href="/goals/create">
               <ListItemButton>
                 <ListItemIcon>
-                  {/* 仮 */}
-                  <InboxIcon />
+                  <AddIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("sidebar.add_goal")} />
               </ListItemButton>
@@ -49,8 +51,7 @@ export default function Sidebar() {
             <Link href="/goals/create">
               <ListItemButton>
                 <ListItemIcon>
-                  {/* 仮 */}
-                  <InboxIcon />
+                  <ListIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("sidebar.goal_index")} />
               </ListItemButton>
@@ -87,7 +88,7 @@ export default function Sidebar() {
         <Link href="/about">
           <ListItemButton>
             <ListItemIcon>
-              <InboxIcon />
+              <InfoIcon />
             </ListItemIcon>
             <ListItemText primary={t("sidebar.about")} />
           </ListItemButton>
@@ -102,7 +103,7 @@ export default function Sidebar() {
               onClick={() => signOut({ callbackUrl: "/auth/login" })}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <LogoutIcon />
               </ListItemIcon>
               <ListItemText primary={t("sidebar.logout")} />
             </ListItemButton>
