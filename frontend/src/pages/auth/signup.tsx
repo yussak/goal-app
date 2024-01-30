@@ -2,8 +2,12 @@ import { axios } from "@/utils/axios";
 import SignupForm from "@/components/form/SignupForm";
 import { signIn } from "next-auth/react";
 import { signupFormData } from "@/types";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 const Signup = () => {
+  const { t } = useTranslation();
+
   const signup = async (data: signupFormData) => {
     const user = {
       name: data.name,
@@ -27,3 +31,11 @@ const Signup = () => {
 };
 
 export default Signup;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
