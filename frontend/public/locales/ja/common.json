@@ -39,11 +39,12 @@
   "japanese": "日本語",
   "english": "英語",
   "sidebar": {
-    "link1": "目標追加",
-    "link2": "目標一覧",
-    "link3": "新規登録",
-    "link4": "ログイン",
-    "link5": "サービス詳細",
-    "link6": "ログアウト"
+    "home": "ホーム",
+    "add_goal": "目標追加",
+    "goal_index": "目標一覧",
+    "signup": "新規登録",
+    "login": "ログイン",
+    "about": "サービス詳細",
+    "logout": "ログアウト"
   }
 }
