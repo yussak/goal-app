@@ -1,58 +1,108 @@
-import { Button } from "@mui/material";
+import {
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useTranslation } from "next-i18next";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
 
 export default function Sidebar() {
   const { data: session } = useSession();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
 
+  // todo:mapで書き換える
   return (
-    <ul>
+    <List>
       {/* ログイン時のみ表示 */}
       {session?.user ? (
         <>
-          <li>
-            <Link href="/goals/create">{t("sidebar.link1")}</Link>
-          </li>
-          <li>
-            <Link href="/goals">{t("sidebar.link2")}</Link>
-          </li>
+          <ListItem disablePadding>
+            <Link href="/goals/create">
+              <ListItemButton>
+                <ListItemIcon>
+                  {/* 仮 */}
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={t("sidebar.link1")} />
+              </ListItemButton>
+            </Link>
+          </ListItem>
+          <ListItem disablePadding>
+            <Link href="/goals/create">
+              <ListItemButton>
+                <ListItemIcon>
+                  {/* 仮 */}
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={t("sidebar.link2")} />
+              </ListItemButton>
+            </Link>
+          </ListItem>
         </>
       ) : (
         <>
           {/* 美ログイン時のみ表示 */}
-          <li>
-            <Link href="/auth/signup">{t("sidebar.link3")}</Link>
-          </li>
-          <li>
-            <Link href="/auth/login">{t("sidebar.link4")}</Link>
-          </li>
+          <ListItem disablePadding>
+            <Link href="/auth/signup">
+              <ListItemButton>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={t("sidebar.link3")} />
+              </ListItemButton>
+            </Link>
+          </ListItem>
+          <ListItem disablePadding>
+            <Link href="/auth/login">
+              <ListItemButton>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={t("sidebar.link4")} />
+              </ListItemButton>
+            </Link>
+          </ListItem>
         </>
       )}
       {/* 常に表示 */}
-      <li>
-        <Link href="/about">{t("sidebar.link5")}</Link>
-      </li>
+      <ListItem disablePadding>
+        <Link href="/about">
+          <ListItemButton>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={t("sidebar.link5")} />
+          </ListItemButton>
+        </Link>
+      </ListItem>
       {/* ログイン時のみ表示 */}
       {session?.user && (
         <>
-          <li>
-            {/* ログイン時のみ表示 */}
+          <ListItem disablePadding>
             {/* ログアウト時にログイン画面にリダイレクト */}
-            <Button
-              variant="outlined"
+            <ListItemButton
               onClick={() => signOut({ callbackUrl: "/auth/login" })}
             >
-              {t("sidebar.link6")}
-            </Button>
-          </li>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary={t("sidebar.link6")} />
+            </ListItemButton>
+          </ListItem>
         </>
       )}
-      <li>
-        <LanguageSwitcher />
-      </li>
-    </ul>
+      <Divider />
+      <ListItem disablePadding>
+        <ListItemButton>
+          <LanguageSwitcher />
+        </ListItemButton>
+      </ListItem>
+    </List>
   );
 }
