@@ -5,14 +5,11 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  MenuItem,
-  Select,
 } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useTranslation } from "next-i18next";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import ListIcon from "@mui/icons-material/List";
@@ -25,94 +22,67 @@ export default function Sidebar() {
   const { data: session } = useSession();
   const { t } = useTranslation();
 
-  // todo:mapで書き換える
+  const items = [
+    { text: "sidebar.home", icon: <HomeIcon />, link: "/", alwaysShow: true },
+    {
+      text: "sidebar.add_goal",
+      icon: <AddIcon />,
+      link: "/goals/create",
+      alwaysShow: session?.user,
+    },
+    {
+      text: "sidebar.goal_index",
+      icon: <ListIcon />,
+      link: "/goals/",
+      alwaysShow: session?.user,
+    },
+    {
+      text: "sidebar.signup",
+      icon: <AddIcon />,
+      link: "/auth/signup",
+      alwaysShow: !session?.user,
+    },
+    {
+      text: "sidebar.login",
+      icon: <LoginIcon />,
+      link: "/auth/login",
+      alwaysShow: !session?.user,
+    },
+    {
+      text: "sidebar.about",
+      icon: <InfoIcon />,
+      link: "/about",
+      alwaysShow: true,
+    },
+    {
+      text: "sidebar.logout",
+      icon: <LogoutIcon />,
+      onClick: () => signOut({ callbackUrl: "/auth/login" }),
+      alwaysShow: session?.user,
+    },
+  ];
+
   return (
     <List>
-      <ListItem disablePadding>
-        <Link href="/">
-          <ListItemButton>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary={t("sidebar.home")} />
-          </ListItemButton>
-        </Link>
-      </ListItem>
-      {/* ログイン時のみ表示 */}
-      {session?.user ? (
-        <>
-          <ListItem disablePadding>
-            <Link href="/goals/create">
-              <ListItemButton>
-                <ListItemIcon>
-                  <AddIcon />
-                </ListItemIcon>
-                <ListItemText primary={t("sidebar.add_goal")} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-          <ListItem disablePadding>
-            <Link href="/goals/">
-              <ListItemButton>
-                <ListItemIcon>
-                  <ListIcon />
-                </ListItemIcon>
-                <ListItemText primary={t("sidebar.goal_index")} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        </>
-      ) : (
-        <>
-          {/* 美ログイン時のみ表示 */}
-          <ListItem disablePadding>
-            <Link href="/auth/signup">
-              <ListItemButton>
-                <ListItemIcon>
-                  <AddIcon />
-                </ListItemIcon>
-                <ListItemText primary={t("sidebar.signup")} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-          <ListItem disablePadding>
-            <Link href="/auth/login">
-              <ListItemButton>
-                <ListItemIcon>
-                  <LoginIcon />
-                </ListItemIcon>
-                <ListItemText primary={t("sidebar.login")} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        </>
-      )}
-      {/* 常に表示 */}
-      <ListItem disablePadding>
-        <Link href="/about">
-          <ListItemButton>
-            <ListItemIcon>
-              <InfoIcon />
-            </ListItemIcon>
-            <ListItemText primary={t("sidebar.about")} />
-          </ListItemButton>
-        </Link>
-      </ListItem>
-      {/* ログイン時のみ表示 */}
-      {session?.user && (
-        <>
-          <ListItem disablePadding>
-            {/* ログアウト時にログイン画面にリダイレクト */}
-            <ListItemButton
-              onClick={() => signOut({ callbackUrl: "/auth/login" })}
-            >
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary={t("sidebar.logout")} />
-            </ListItemButton>
-          </ListItem>
-        </>
+      {items.map(
+        (item, index) =>
+          item.alwaysShow && (
+            <ListItem key={index} disablePadding>
+              {item.link ? (
+                <Link href={item.link}>
+                  <ListItemButton>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={t(item.text)} />
+                  </ListItemButton>
+                </Link>
+              ) : (
+                <ListItemButton onClick={item.onClick}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={t(item.text)} />
+                </ListItemButton>
+              )}
+            </ListItem>
+          )
       )}
       <Divider />
       <ListItem disablePadding>
