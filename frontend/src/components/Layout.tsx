@@ -1,6 +1,5 @@
-import { styled, useTheme } from "@mui/material/styles";
+import { Theme, styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Divider from "@mui/material/Divider";
@@ -12,6 +11,8 @@ import Head from "next/head";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
+import { CSSObject } from "@emotion/react";
+import MuiDrawer from "@mui/material/Drawer";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -19,25 +20,35 @@ type LayoutProps = {
 
 // todo:ごちゃごちゃしてるので整理。コンポーネント切り出しなどできると思う
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
-  open?: boolean;
-}>(({ theme, open }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create("margin", {
+const openedMixin = (theme: Theme): CSSObject => ({
+  width: drawerWidth,
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: "hidden",
+});
+
+const closedMixin = (theme: Theme): CSSObject => ({
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `-${drawerWidth}px`,
-  ...(open && {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  }),
+  overflowX: "hidden",
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
 }));
 
 interface AppBarProps extends MuiAppBarProps {
@@ -47,25 +58,36 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
+    marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  ...theme.mixins.toolbar,
-  justifyContent: "flex-end",
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
 }));
 
 export default function Layout({ children }: LayoutProps) {
@@ -95,26 +117,17 @@ export default function Layout({ children }: LayoutProps) {
               color="inherit"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
-              sx={{ mr: 2, ...(open && { display: "none" }) }}
+              sx={{
+                marginRight: 5,
+                ...(open && { display: "none" }),
+              }}
             >
               <MenuIcon />
             </IconButton>
             <Header />
           </Toolbar>
         </AppBar>
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: "border-box",
-            },
-          }}
-          variant="persistent"
-          anchor="left"
-          open={open}
-        >
+        <Drawer variant="permanent" open={open}>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === "ltr" ? (
@@ -127,10 +140,10 @@ export default function Layout({ children }: LayoutProps) {
           <Divider />
           <Sidebar />
         </Drawer>
-        <Main open={open}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
           {children}
-        </Main>
+        </Box>
       </Box>
     </>
   );
