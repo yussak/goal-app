@@ -15,6 +15,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import ListIcon from "@mui/icons-material/List";
 import InfoIcon from "@mui/icons-material/Info";
+import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Sidebar() {
@@ -65,7 +66,7 @@ export default function Sidebar() {
             <Link href="/auth/signup">
               <ListItemButton>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <AddIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("sidebar.signup")} />
               </ListItemButton>
@@ -75,7 +76,7 @@ export default function Sidebar() {
             <Link href="/auth/login">
               <ListItemButton>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <LoginIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("sidebar.login")} />
               </ListItemButton>
