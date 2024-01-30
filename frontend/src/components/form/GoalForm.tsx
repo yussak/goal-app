@@ -41,7 +41,7 @@ const GoalForm = ({ addGoal }: GoalFormProps) => {
   };
 
   return (
-    <Container sx={{ pt: 3 }}>
+    <Container>
       <form onSubmit={handleSubmit(onSubmit)}>
         <p>{t("goal_create.label1")}</p>
         {renderTextField("content", register, errors)}
