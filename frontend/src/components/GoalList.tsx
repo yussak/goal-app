@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Goal } from "@/types";
 import { useSession } from "next-auth/react";
 import { DeleteDialog } from "./DeleteDialog";
+import { Card, CardActions, CardContent, Typography } from "@mui/material";
 
 type GoalListProps = {
   goals: Goal[];
@@ -16,23 +17,31 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
       {goals.map((goal, index) => {
         return (
           <li key={index} className="goal-list">
-            <p>content: {goal.content}</p>
-            {/* <p>purpose: {goal.purpose}</p>
+            <Card sx={{ minWidth: 275 }}>
+              <CardContent>
+                <Typography variant="body1">
+                  content: {goal.content}
+                  {/* <p>purpose: {goal.purpose}</p>
             <p>loss: {goal.loss}</p>
             <p>phase: {goal.phase}</p>
             <p>progress: {goal.progress}</p> */}
-            {/* <p>id（デバッグ用）: {goal.id}</p> */}
-            {/* <p>userId（デバッグ用）: {goal.userId}</p> */}
-            {/* <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
+                  {/* <p>id（デバッグ用）: {goal.id}</p> */}
+                  {/* <p>userId（デバッグ用）: {goal.userId}</p> */}
+                  {/* <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
             <p>UpdatedAt: {goal.UpdatedAt.toLocaleString()}</p> */}
-            <p>
-              <Link href={`/goals/${goal.id}`}>detail</Link>
-            </p>
-            {session?.user?.id === goal.userId && (
-              <p>
-                <DeleteDialog selectedValue={goal} onDelete={onDelete} />
-              </p>
-            )}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <span>
+                  <Link href={`/goals/${goal.id}`}>detail</Link>
+                </span>
+                {session?.user?.id === goal.userId && (
+                  <span>
+                    <DeleteDialog selectedValue={goal} onDelete={onDelete} />
+                  </span>
+                )}
+              </CardActions>
+            </Card>
           </li>
         );
       })}
