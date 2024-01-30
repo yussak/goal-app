@@ -5,6 +5,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -17,6 +19,7 @@ import ListIcon from "@mui/icons-material/List";
 import InfoIcon from "@mui/icons-material/Info";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import TranslateIcon from "@mui/icons-material/Translate";
 
 export default function Sidebar() {
   const { data: session } = useSession();
@@ -114,6 +117,9 @@ export default function Sidebar() {
       <Divider />
       <ListItem disablePadding>
         <ListItemButton>
+          <ListItemIcon>
+            <TranslateIcon />
+          </ListItemIcon>
           <LanguageSwitcher />
         </ListItemButton>
       </ListItem>
