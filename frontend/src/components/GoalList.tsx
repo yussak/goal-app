@@ -20,7 +20,7 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
             <Card sx={{ minWidth: 275 }}>
               <CardContent>
                 <Typography variant="body1">
-                  content: {goal.content}
+                  {goal.content}
                   {/* <p>purpose: {goal.purpose}</p>
             <p>loss: {goal.loss}</p>
             <p>phase: {goal.phase}</p>
