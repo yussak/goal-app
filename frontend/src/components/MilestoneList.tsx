@@ -68,7 +68,6 @@ const MilestoneList = ({
         const milestoneTodos = todos[milestone.id] || [];
         const isAllCompleted = isMilestoneCompleted(milestoneTodos);
         return (
-          // todo:milestone中身をコンポーネントに切り出す
           <li key={index}>
             <Accordion defaultExpanded={isAllCompleted}>
               <AccordionSummary
