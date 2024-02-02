@@ -123,9 +123,9 @@ const GoalDetail: CustomNextPage = () => {
 
   return (
     <>
-      <h2>{t("goal_detail.title1")}</h2>
-      {goal && (
+      {goal ? (
         <>
+          <h2>{t("goal_detail.title1")}</h2>
           {/* todo:このページでも削除可能にしたい */}
           <Button href={`/goals/edit/${goal.id}`} startIcon={<EditIcon />}>
             {t("goal_detail.button1")}
@@ -139,27 +139,29 @@ const GoalDetail: CustomNextPage = () => {
           {/* <p>CreatedAt(デバッグ用): {goal.CreatedAt.toString()}</p> */}
           {/* <p>UpdatedAt(デバッグ用): {goal.UpdatedAt.toString()}</p> */}
           <Link href="/goals">{t("goal_detail.link1")}</Link>
-        </>
-      )}
-      {session?.user && (
-        <>
-          <h3>{t("goal_detail.title2")}</h3>
-          {milestones.length < 5 ? (
-            <MilestoneForm addMilestone={addMilestone} />
-          ) : (
-            <p>{t("goal_detail.text1")}</p>
+          {session?.user && (
+            <>
+              <h3>{t("goal_detail.title2")}</h3>
+              {milestones.length < 5 ? (
+                <MilestoneForm addMilestone={addMilestone} />
+              ) : (
+                <p>{t("goal_detail.text1")}</p>
+              )}
+            </>
           )}
+          <h3>{t("goal_detail.title3")}</h3>
+          <MilestoneList
+            milestones={milestones}
+            onDeleteMilestone={deleteMilestone}
+            todos={todos}
+            addTodosToState={addTodosToState}
+            onDeleteTodo={deleteTodo}
+            onUpdateTodoCheck={updateTodoCheck}
+          />
         </>
+      ) : (
+        <p>{t("goal_detail.not_found")}</p>
       )}
-      <h3>{t("goal_detail.title3")}</h3>
-      <MilestoneList
-        milestones={milestones}
-        onDeleteMilestone={deleteMilestone}
-        todos={todos}
-        addTodosToState={addTodosToState}
-        onDeleteTodo={deleteTodo}
-        onUpdateTodoCheck={updateTodoCheck}
-      />
     </>
   );
 };

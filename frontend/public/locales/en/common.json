@@ -14,7 +14,8 @@
     "link1": "Back to Goals Page",
     "title2": "Add Milestone",
     "text1": "Milestone is up to 5.",
-    "title3": "Milestone List"
+    "title3": "Milestone List",
+    "not_found": "Goal not found"
   },
   "goal_edit": {
     "title": "Edit Goal"
