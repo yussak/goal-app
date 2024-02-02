@@ -27,3 +27,8 @@ a {
 .text-border {
   text-decoration: line-through;
 }
+
+.not-found {
+  display: flex;
+  justify-content: center;
+}
