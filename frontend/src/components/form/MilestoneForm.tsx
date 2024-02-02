@@ -26,9 +26,13 @@ const MilestoneForm = ({ addMilestone }: MilestoneFormProps) => {
   return (
     <Container sx={{ pt: 3 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <h3>
+          <label htmlFor="content">{t("goal_detail.title2")}</label>
+        </h3>
         <Stack spacing={2} direction="row">
           <TextField
             label="content"
+            id="content"
             {...register("content", validationRules)}
             error={!!errors.content}
             helperText={errors.content?.message}

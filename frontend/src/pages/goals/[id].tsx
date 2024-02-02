@@ -141,7 +141,6 @@ const GoalDetail: CustomNextPage = () => {
           <Link href="/goals">{t("goal_detail.link1")}</Link>
           {session?.user && (
             <>
-              <h3>{t("goal_detail.title2")}</h3>
               {milestones.length < 5 ? (
                 <MilestoneForm addMilestone={addMilestone} />
               ) : (
