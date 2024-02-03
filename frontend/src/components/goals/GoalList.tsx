@@ -1,9 +1,6 @@
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { DeleteDialog } from "../DeleteDialog";
-import { Card, CardActions, CardContent, Typography } from "@mui/material";
 import { useGoals } from "@/utils/context";
 import { Goal } from "@/types";
+import GoalContent from "./GoalContent";
 
 type GoalListProps = {
   onDelete: (id: string) => void;
@@ -11,38 +8,14 @@ type GoalListProps = {
 
 const GoalList = ({ onDelete }: GoalListProps) => {
   const goals: Goal[] | null = useGoals();
-  const { data: session } = useSession();
+
   return goals && goals.length > 0 ? (
     <ul>
       {goals.map((goal, index) => {
         return (
           <li key={index} className="goal-list">
-            {/* todo:goal中身でコンポーネントに分ける */}
-            <Card sx={{ minWidth: 275 }}>
-              <CardContent>
-                <Typography variant="body1">
-                  {goal.content}
-                  {/* <p>purpose: {goal.purpose}</p>
-              <p>loss: {goal.loss}</p>
-              <p>phase: {goal.phase}</p>
-              <p>progress: {goal.progress}</p> */}
-                  {/* <p>id（デバッグ用）: {goal.id}</p> */}
-                  {/* <p>userId（デバッグ用）: {goal.userId}</p> */}
-                  {/* <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
-              <p>UpdatedAt: {goal.UpdatedAt.toLocaleString()}</p> */}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <span>
-                  <Link href={`/goals/${goal.id}`}>detail</Link>
-                </span>
-                {session?.user?.id === goal.userId && (
-                  <span>
-                    <DeleteDialog selectedValue={goal} onDelete={onDelete} />
-                  </span>
-                )}
-              </CardActions>
-            </Card>
+            {/* todo:onDeleteのバケツリレーをなくす */}
+            <GoalContent goal={goal} onDelete={onDelete} />
           </li>
         );
       })}
