@@ -69,7 +69,7 @@ const MilestoneList = ({
         const isAllCompleted = isMilestoneCompleted(milestoneTodos);
         return (
           <li key={index}>
-            <Accordion defaultExpanded={isAllCompleted}>
+            <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
