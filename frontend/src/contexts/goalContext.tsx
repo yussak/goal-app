@@ -14,6 +14,7 @@ const GoalsContext = createContext<ContextType>({} as ContextType);
 
 export const useGoals = () => useContext(GoalsContext);
 
+// 状態を変更する関数ならcontext, そうじゃないならutilの方針で一旦進める;
 export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { data: session } = useSession();
   const userId = session?.user ? session.user.id : null;
