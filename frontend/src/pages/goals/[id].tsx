@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
 import { Goal, Milestone, MilestoneFormData, Todo } from "@/types";
 import MilestoneForm from "@/components/form/MilestoneForm";
-import MilestoneList from "@/components/MilestoneList";
+import MilestoneList from "@/components/milestones/MilestoneList";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Button } from "@mui/material";

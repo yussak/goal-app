@@ -6,11 +6,11 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import TodoForm from "./form/TodoForm";
+import TodoForm from "../form/TodoForm";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
-import TodoList from "./TodoList";
-import { DeleteDialog } from "./DeleteDialog";
+import TodoList from "../TodoList";
+import { DeleteDialog } from "../DeleteDialog";
 import { useTranslation } from "next-i18next";
 
 type MilestoneListProps = {
@@ -69,6 +69,7 @@ const MilestoneList = ({
         const isAllCompleted = isMilestoneCompleted(milestoneTodos);
         return (
           <li key={index}>
+            {/* todo:分ける */}
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
