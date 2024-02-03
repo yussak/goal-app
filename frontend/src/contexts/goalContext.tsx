@@ -1,9 +1,9 @@
 import { Goal } from "@/types";
 import { FC, ReactNode, createContext, useContext } from "react";
 import useSWR, { mutate } from "swr";
-import { fetcher } from "./fetcher";
+import { fetcher } from "../utils/fetcher";
 import { useSession } from "next-auth/react";
-import { axios } from "./axios";
+import { axios } from "../utils/axios";
 
 type ContextType = {
   goals: Goal[] | null;

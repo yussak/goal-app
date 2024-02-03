@@ -1,4 +1,4 @@
-import { useGoals } from "@/utils/context";
+import { useGoals } from "@/contexts/goalContext";
 import GoalContent from "./GoalContent";
 
 const GoalList = (): JSX.Element => {

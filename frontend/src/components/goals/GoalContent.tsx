@@ -3,7 +3,7 @@ import { DeleteDialog } from "../DeleteDialog";
 import { Card, CardActions, CardContent, Typography } from "@mui/material";
 import Link from "next/link";
 import { Goal } from "@/types";
-import { useGoals } from "@/utils/context";
+import { useGoals } from "@/contexts/goalContext";
 
 type Props = {
   goal: Goal;
