@@ -1,4 +1,4 @@
-import GoalList from "@/components/GoalList";
+import GoalList from "@/components/goals/GoalList";
 import { useTranslation } from "next-i18next";
 import { mutate } from "swr";
 import { axios } from "@/utils/axios";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { DeleteDialog } from "./DeleteDialog";
+import { DeleteDialog } from "../DeleteDialog";
 import { Card, CardActions, CardContent, Typography } from "@mui/material";
 import { useGoals } from "@/utils/context";
 import { Goal } from "@/types";
@@ -17,6 +17,7 @@ const GoalList = ({ onDelete }: GoalListProps) => {
       {goals.map((goal, index) => {
         return (
           <li key={index} className="goal-list">
+            {/* todo:goal中身でコンポーネントに分ける */}
             <Card sx={{ minWidth: 275 }}>
               <CardContent>
                 <Typography variant="body1">
