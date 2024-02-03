@@ -5,6 +5,7 @@ import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { CustomNextPage } from "@/types/custom-next-page";
+import { GoalsProvider } from "@/utils/context";
 
 const Goals: CustomNextPage = () => {
   const { t } = useTranslation();
@@ -24,10 +25,10 @@ const Goals: CustomNextPage = () => {
   };
 
   return (
-    <>
+    <GoalsProvider>
       <h2>{t("goal_index.title")}</h2>
       <GoalList onDelete={deleteGoal} />
-    </>
+    </GoalsProvider>
   );
 };
 
