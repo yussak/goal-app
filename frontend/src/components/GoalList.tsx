@@ -1,17 +1,17 @@
 import Link from "next/link";
-import { Goal } from "@/types";
 import { useSession } from "next-auth/react";
 import { DeleteDialog } from "./DeleteDialog";
 import { Card, CardActions, CardContent, Typography } from "@mui/material";
+import { useGoals } from "@/utils/context";
+import { Goal } from "@/types";
 
 type GoalListProps = {
-  goals: Goal[];
   onDelete: (id: string) => void;
 };
 
-const GoalList = ({ goals, onDelete }: GoalListProps) => {
+const GoalList = ({ onDelete }: GoalListProps) => {
+  const goals: Goal[] | null = useGoals();
   const { data: session } = useSession();
-
   return goals && goals.length > 0 ? (
     <ul>
       {goals.map((goal, index) => {
@@ -22,13 +22,13 @@ const GoalList = ({ goals, onDelete }: GoalListProps) => {
                 <Typography variant="body1">
                   {goal.content}
                   {/* <p>purpose: {goal.purpose}</p>
-            <p>loss: {goal.loss}</p>
-            <p>phase: {goal.phase}</p>
-            <p>progress: {goal.progress}</p> */}
+              <p>loss: {goal.loss}</p>
+              <p>phase: {goal.phase}</p>
+              <p>progress: {goal.progress}</p> */}
                   {/* <p>id（デバッグ用）: {goal.id}</p> */}
                   {/* <p>userId（デバッグ用）: {goal.userId}</p> */}
                   {/* <p>CreatedAt: {goal.CreatedAt.toLocaleString()}</p>
-            <p>UpdatedAt: {goal.UpdatedAt.toLocaleString()}</p> */}
+              <p>UpdatedAt: {goal.UpdatedAt.toLocaleString()}</p> */}
                 </Typography>
               </CardContent>
               <CardActions>
