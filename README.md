@@ -5,7 +5,7 @@
   - TypeScript
   - MUI
   - Vitest/Testing Library
-  - Redux
+  - useContext
   - ESLint/Prettier
 - バックエンド
   - Go/Gin
