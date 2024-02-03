@@ -13,21 +13,11 @@ const Goals: CustomNextPage = () => {
   const { data: session } = useSession();
   const userId = session?.user ? session.user.id : null;
 
-  const deleteGoal = async (id: string) => {
-    // 意図的にエラー出してダイアログ消えないことを確認するコード
-    // throw new Error("Error in deleting goal");
-    try {
-      await axios.delete(`/goal/${id}`);
-      mutate(`/${userId}/goals`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <GoalsProvider>
       <h2>{t("goal_index.title")}</h2>
-      <GoalList onDelete={deleteGoal} />
+      <GoalList />
+      {/* <GoalList onDelete={deleteGoal} /> */}
     </GoalsProvider>
   );
 };

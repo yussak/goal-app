@@ -3,14 +3,15 @@ import { DeleteDialog } from "../DeleteDialog";
 import { Card, CardActions, CardContent, Typography } from "@mui/material";
 import Link from "next/link";
 import { Goal } from "@/types";
+import { useGoals } from "@/utils/context";
 
-type GoalContent = {
+type Props = {
   goal: Goal;
-  onDelete: (id: string) => void;
 };
 
-const GoalContent = ({ goal, onDelete }: GoalContent) => {
+const GoalContent = ({ goal }: Props) => {
   const { data: session } = useSession();
+  const { deleteGoal } = useGoals();
 
   return (
     <Card sx={{ minWidth: 275 }}>
@@ -33,7 +34,7 @@ const GoalContent = ({ goal, onDelete }: GoalContent) => {
         </span>
         {session?.user?.id === goal.userId && (
           <span>
-            <DeleteDialog selectedValue={goal} onDelete={onDelete} />
+            <DeleteDialog selectedValue={goal} onDelete={deleteGoal} />
           </span>
         )}
       </CardActions>
