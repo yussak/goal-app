@@ -17,6 +17,7 @@ const EditGoal: CustomNextPage = () => {
     content: "",
     purpose: "",
     loss: "",
+    phase: "",
   });
 
   const { data: session } = useSession();
@@ -35,6 +36,7 @@ const EditGoal: CustomNextPage = () => {
         content: data.content,
         purpose: data.purpose,
         loss: data.loss,
+        phase: data.phase,
       });
     } catch (error) {
       console.error(error);

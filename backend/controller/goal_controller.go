@@ -154,7 +154,7 @@ func EditGoal(c *gin.Context) {
 	}
 
 	missingFields := []string{}
-	for _, field := range []string{"purpose", "loss", "content"} {
+	for _, field := range []string{"purpose", "loss", "content", "phase"} {
 		if _, ok := params[field]; !ok {
 			missingFields = append(missingFields, field)
 		}
@@ -165,8 +165,8 @@ func EditGoal(c *gin.Context) {
 		return
 	}
 
-	sql := `UPDATE goals SET content = ?, purpose = ?, loss = ? WHERE id = ?`
-	_, execErr := db.DB.Exec(sql, params["content"], params["purpose"], params["loss"], id)
+	sql := `UPDATE goals SET content = ?, purpose = ?, loss = ?, phase = ? WHERE id = ?`
+	_, execErr := db.DB.Exec(sql, params["content"], params["purpose"], params["loss"], params["phase"], id)
 
 	if execErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": execErr.Error()})

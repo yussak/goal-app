@@ -1,8 +1,15 @@
 import { GoalFormData } from "@/types";
 import { validationRules } from "@/utils/validationRules";
-import { Button, Container, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
 
 type EditGoalFormProps = {
@@ -18,6 +25,7 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
     formState: { errors, isValid },
     setValue,
     register,
+    control,
   } = useForm<GoalFormData>({
     defaultValues: goalData,
     mode: "onChange",
@@ -30,6 +38,7 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
     setValue("content", goalData.content);
     setValue("purpose", goalData.purpose);
     setValue("loss", goalData.loss);
+    setValue("phase", goalData.phase);
   }, [goalData]);
 
   return (
@@ -51,6 +60,22 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
             error={!!errors.loss}
             helperText={errors.loss?.message}
           />
+          <Controller
+            control={control}
+            name="phase"
+            defaultValue={goalData.phase}
+            rules={{
+              validate: (value) => ["予定", "WIP", "完了"].includes(value),
+            }}
+            render={({ field }) => (
+              <Select {...field}>
+                <MenuItem value="予定">予定</MenuItem>
+                <MenuItem value="WIP">WIP</MenuItem>
+                <MenuItem value="完了">完了</MenuItem>
+              </Select>
+            )}
+          ></Controller>
+          {errors?.phase && <p>invalid value.</p>}
           <Button type="submit" variant="contained" disabled={!isValid}>
             {t("edit_goal_form.button")}
           </Button>
