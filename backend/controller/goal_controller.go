@@ -14,16 +14,27 @@ import (
 )
 
 func FetchUserGoals(c *gin.Context) {
-
 	userId := c.Param("userId")
 	fmt.Println("c.Param", c.Param("userId"))
 
-	goals := []model.Goal{}
-
-	rows, err := db.DB.Query("SELECT * FROM goals WHERE user_id = ?", userId)
+	goals, err := fetchGoalsFromDB(userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
+	}
+
+	c.JSON(http.StatusOK, goals)
+}
+
+// DBからgoalを取得。関心の分離のため個別に切り出した
+func fetchGoalsFromDB(userId string) ([]model.Goal, error) {
+	goals := []model.Goal{}
+
+	// idに直接値を渡すのでなくパラメータとして渡すことでSQLインジェクションを防止している
+	// "SELECT * FROM goals WHERE user_id = "+ userId だと危ない
+	rows, err := db.DB.Query("SELECT * FROM goals WHERE user_id = ?", userId)
+	if err != nil {
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -31,13 +42,12 @@ func FetchUserGoals(c *gin.Context) {
 		var goal model.Goal
 		err = rows.Scan(&goal.ID, &goal.UserID, &goal.Content, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
+			return nil, err
 		}
 		goals = append(goals, goal)
 	}
 
-	c.JSON(http.StatusOK, goals)
+	return goals, nil
 }
 
 func AddGoal(c *gin.Context) {
