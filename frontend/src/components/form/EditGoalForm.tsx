@@ -69,9 +69,9 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
             }}
             render={({ field }) => (
               <Select {...field}>
-                <MenuItem value="予定">予定</MenuItem>
-                <MenuItem value="WIP">WIP</MenuItem>
-                <MenuItem value="完了">完了</MenuItem>
+                <MenuItem value="予定">{t("goal.phase_scheduled")}</MenuItem>
+                <MenuItem value="WIP">{t("goal.phase_wip")}</MenuItem>
+                <MenuItem value="完了">{t("goal.phase_done")}</MenuItem>
               </Select>
             )}
           ></Controller>

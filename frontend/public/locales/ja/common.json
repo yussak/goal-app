@@ -2,6 +2,11 @@
   "index": {
     "title": "トップページ"
   },
+  "goal": {
+    "phase_scheduled": "予定",
+    "phase_wip": "WIP",
+    "phase_done": "完了"
+  },
   "goal_create": {
     "title": "目標の作成",
     "label1": "達成したいことをSMARTに書きましょう（必須）",

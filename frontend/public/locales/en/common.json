@@ -2,6 +2,11 @@
   "index": {
     "title": "This is Top Page"
   },
+  "goal": {
+    "phase_scheduled": "Scheduled",
+    "phase_wip": "WIP",
+    "phase_done": "Done"
+  },
   "goal_create": {
     "title": "Create Goal",
     "label1": "input SMART about what you want to accomplish (required).",
