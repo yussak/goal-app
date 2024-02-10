@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useTranslation } from "next-i18next";
-import TodoList from "../TodoList";
+import TodoList from "../todos/TodoList";
 import TodoForm from "../form/TodoForm";
 import { DeleteDialog } from "../DeleteDialog";
 import { useMilestone } from "@/contexts/mileContext";
