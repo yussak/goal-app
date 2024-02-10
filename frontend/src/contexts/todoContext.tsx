@@ -1,7 +1,6 @@
-import { Milestone, MilestoneFormData, Todo } from "@/types";
-import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { axios } from "@/utils/axios";
+import { Todo } from "@/types";
 import {
   FC,
   ReactNode,
@@ -35,7 +34,6 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
     fetchTodos();
   }, [milestones]);
 
-  // todo:todo contextに移動
   const fetchTodos = async () => {
     let newTodos = { ...todos };
     for (let milestone of milestones) {
@@ -50,7 +48,6 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setTodos(newTodos);
   };
 
-  // todo:todo contextに移動
   const addTodo = async (parentId: string, content: string) => {
     const params = {
       parentId: parentId,
@@ -67,25 +64,17 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
-  //   todo:分離する必要がないと思うのでまとめるかも
   // addTodo時にstateのtodosを更新する
   // todo:型をちゃんと書く
   const addTodosToState = (milestoneId: string, newTodo: any) => {
     const updatedTodos = {
       ...todos,
-      // todo:コメント残す
       [milestoneId]: [...todos[milestoneId], newTodo],
     };
     setTodos(updatedTodos);
   };
 
-  // todo:todo contextに移動
-
-  // TodoListからバケツリレーしてる
-  // todo:状態管理ツールで書き換えたい
-  // todo:stateでもいけるかもなので確認
   const deleteTodo = async (todoId: string) => {
-    // const deleteTodo = async (todo_id: string) => {
     try {
       await axios.delete(`/todos/${todoId}`);
       await fetchTodos();
@@ -94,7 +83,6 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
-  // todo:todo contextに移動
   const updateTodoCheck = async (todoId: string, isCompleted: boolean) => {
     try {
       await axios.put(`/todos/${todoId}/isCompleted`, { isCompleted });

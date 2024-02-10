@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import { axios } from "@/utils/axios";
-import { Todo } from "@/types";
 import MilestoneForm from "@/components/form/MilestoneForm";
 import MilestoneList from "@/components/milestones/MilestoneList";
 import Link from "next/link";
@@ -17,54 +14,7 @@ const GoalDetail: CustomNextPage = () => {
   const { data: session } = useSession();
   const { goal } = useGoals();
   const { milestones } = useMilestone();
-  // // todosは「キーがstring、バリューがTodo型の配列」のオブジェクトである
-  // // 各マイルストーンに対するtodoを扱うためキーを使用している
-  // const [todos, setTodos] = useState<{ [key: string]: Todo[] }>({});
   const { t } = useTranslation();
-
-  // useEffect(() => {
-  //   fetchTodos();
-  // }, [milestones]);
-
-  // // todo:todo contextに移動
-  // const fetchTodos = async () => {
-  //   let newTodos = { ...todos };
-  //   for (let milestone of milestones) {
-  //     try {
-  //       const { data } = await axios.get(`/milestones/${milestone.id}/todos`);
-  //       newTodos[milestone.id] = data;
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  //   setTodos(newTodos);
-  // };
-
-  // todo:todo contextに移動
-
-  // // todo:todo contextに移動
-
-  // // TodoListからバケツリレーしてる
-  // // todo:状態管理ツールで書き換えたい
-  // // todo:stateでもいけるかもなので確認
-  // const deleteTodo = async (todo_id: string) => {
-  //   try {
-  //     await axios.delete(`/todos/${todo_id}`);
-  //     await fetchTodos();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // // todo:todo contextに移動
-  // const updateTodoCheck = async (todo_id: string, isCompleted: boolean) => {
-  //   try {
-  //     await axios.put(`/todos/${todo_id}/isCompleted`, { isCompleted });
-  //     fetchTodos();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   return (
     <>
@@ -94,12 +44,7 @@ const GoalDetail: CustomNextPage = () => {
             </>
           )}
           <h3>{t("goal_detail.title3")}</h3>
-          <MilestoneList
-          // todos={todos}
-          // addTodosToState={addTodosToState}
-          // onDeleteTodo={deleteTodo}
-          // onUpdateTodoCheck={updateTodoCheck}
-          />
+          <MilestoneList />
         </>
       ) : (
         <p>{t("goal_detail.not_found")}</p>
