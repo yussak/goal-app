@@ -1,4 +1,4 @@
-import { Milestone, Todo } from "@/types";
+import { Todo } from "@/types";
 import {
   Accordion,
   AccordionDetails,
@@ -12,26 +12,24 @@ import { useSession } from "next-auth/react";
 import TodoList from "../TodoList";
 import { DeleteDialog } from "../DeleteDialog";
 import { useTranslation } from "next-i18next";
+import { useMilestone } from "@/contexts/mileContext";
 
 type MilestoneListProps = {
-  milestones: Milestone[];
   todos: { [key: string]: Todo[] };
-  onDeleteMilestone: (id: string) => void;
   onDeleteTodo: (id: string) => void;
   onUpdateTodoCheck: (id: string, checked: boolean) => void;
   addTodosToState: (id: string, newTodo: any) => void;
 };
 
 const MilestoneList = ({
-  milestones,
   todos,
-  onDeleteMilestone,
   onDeleteTodo,
   onUpdateTodoCheck,
   addTodosToState,
 }: MilestoneListProps) => {
   const { data: session } = useSession();
   const { t } = useTranslation();
+  const { milestones, deleteMilestone } = useMilestone();
 
   const addTodo = async (parentId: string, content: string) => {
     const params = {
@@ -69,7 +67,7 @@ const MilestoneList = ({
         const isAllCompleted = isMilestoneCompleted(milestoneTodos);
         return (
           <li key={index}>
-            {/* todo:分ける */}
+            {/* todo:コンポーネントに分ける */}
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -91,7 +89,7 @@ const MilestoneList = ({
                     <p>
                       <DeleteDialog
                         selectedValue={milestone}
-                        onDelete={onDeleteMilestone}
+                        onDelete={deleteMilestone}
                       />
                     </p>
                   )}

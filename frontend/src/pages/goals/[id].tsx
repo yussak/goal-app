@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
-import { Goal, Milestone, MilestoneFormData, Todo } from "@/types";
+import { Goal, Todo } from "@/types";
 import MilestoneForm from "@/components/form/MilestoneForm";
 import MilestoneList from "@/components/milestones/MilestoneList";
 import Link from "next/link";
@@ -11,10 +11,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import { CustomNextPage } from "@/types/custom-next-page";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { useMilestone } from "@/contexts/mileContext";
 
 const GoalDetail: CustomNextPage = () => {
   const [goal, setGoal] = useState<Goal | null>(null);
-  const [milestones, setMilestones] = useState<Milestone[]>([]);
   const { data: session } = useSession();
   // todosは「キーがstring、バリューがTodo型の配列」のオブジェクトである
   // 各マイルストーンに対するtodoを扱うためキーを使用している
@@ -22,11 +22,11 @@ const GoalDetail: CustomNextPage = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
+  const { milestones } = useMilestone();
 
   useEffect(() => {
     if (router.isReady) {
       getGoalDetails();
-      getMilestones();
     }
   }, [router.isReady]);
 
@@ -34,45 +34,13 @@ const GoalDetail: CustomNextPage = () => {
     fetchTodos();
   }, [milestones]);
 
+  // todo:goal contextに移動
   const getGoalDetails = async () => {
     try {
       const { data } = await axios.get(`/goals/${id}`);
       setGoal(data);
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const addMilestone = async (data: MilestoneFormData) => {
-    const params = {
-      ...data,
-      userId: session?.user?.id,
-    };
-    try {
-      const res = await axios.post(`/goals/${id}/milestones`, params);
-      // TODO:これ無駄が多い気がする。state使ったら良くなりそうなので確認（他のところも同じく
-      await getMilestones();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getMilestones = async () => {
-    try {
-      const { data } = await axios.get(`/goals/${id}/milestones`);
-      setMilestones(data);
-      fetchTodos();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const deleteMilestone = async (milestone_id: string) => {
-    try {
-      await axios.delete(`/milestones/${milestone_id}`);
-      await getMilestones();
-    } catch (error) {
-      console.error("asdf", error);
     }
   };
 
@@ -142,7 +110,7 @@ const GoalDetail: CustomNextPage = () => {
           {session?.user && (
             <>
               {milestones.length < 5 ? (
-                <MilestoneForm addMilestone={addMilestone} />
+                <MilestoneForm />
               ) : (
                 <p>{t("goal_detail.text1")}</p>
               )}
@@ -150,8 +118,6 @@ const GoalDetail: CustomNextPage = () => {
           )}
           <h3>{t("goal_detail.title3")}</h3>
           <MilestoneList
-            milestones={milestones}
-            onDeleteMilestone={deleteMilestone}
             todos={todos}
             addTodosToState={addTodosToState}
             onDeleteTodo={deleteTodo}

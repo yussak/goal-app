@@ -3,13 +3,11 @@ import { validationRules } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
+import { useMilestone } from "@/contexts/mileContext";
 
-type MilestoneFormProps = {
-  addMilestone: (data: MilestoneFormData) => void;
-};
-
-const MilestoneForm = ({ addMilestone }: MilestoneFormProps) => {
+const MilestoneForm = () => {
   const { t } = useTranslation();
+  const { addMilestone } = useMilestone();
 
   const {
     register,
