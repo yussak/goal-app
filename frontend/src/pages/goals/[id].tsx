@@ -56,15 +56,15 @@ const GoalDetail: CustomNextPage = () => {
   //   }
   // };
 
-  // todo:todo contextに移動
-  const updateTodoCheck = async (todo_id: string, isCompleted: boolean) => {
-    try {
-      await axios.put(`/todos/${todo_id}/isCompleted`, { isCompleted });
-      fetchTodos();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // // todo:todo contextに移動
+  // const updateTodoCheck = async (todo_id: string, isCompleted: boolean) => {
+  //   try {
+  //     await axios.put(`/todos/${todo_id}/isCompleted`, { isCompleted });
+  //     fetchTodos();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <>
@@ -95,10 +95,10 @@ const GoalDetail: CustomNextPage = () => {
           )}
           <h3>{t("goal_detail.title3")}</h3>
           <MilestoneList
-            // todos={todos}
-            // addTodosToState={addTodosToState}
-            // onDeleteTodo={deleteTodo}
-            onUpdateTodoCheck={updateTodoCheck}
+          // todos={todos}
+          // addTodosToState={addTodosToState}
+          // onDeleteTodo={deleteTodo}
+          // onUpdateTodoCheck={updateTodoCheck}
           />
         </>
       ) : (

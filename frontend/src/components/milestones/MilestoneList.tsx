@@ -25,13 +25,13 @@ type MilestoneListProps = {
 const MilestoneList = ({
   // todos,
   onDeleteTodo,
-  onUpdateTodoCheck,
+  // onUpdateTodoCheck,
   addTodosToState,
 }: MilestoneListProps) => {
   const { data: session } = useSession();
   const { t } = useTranslation();
   const { milestones, deleteMilestone } = useMilestone();
-  const { todos, addTodo, deleteTodo } = useTodos();
+  const { todos, addTodo, deleteTodo, updateTodoCheck } = useTodos();
 
   // // todo:todo contextに移動
   // const addTodo = async (parentId: string, content: string) => {
@@ -113,7 +113,7 @@ const MilestoneList = ({
                     todos={milestoneTodos}
                     milestoneId={milestone.id}
                     onDeleteTodo={deleteTodo}
-                    onUpdateTodoCheck={onUpdateTodoCheck}
+                    onUpdateTodoCheck={updateTodoCheck}
                   />
                 </Typography>
               </AccordionDetails>

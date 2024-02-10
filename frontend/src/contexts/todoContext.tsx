@@ -17,6 +17,7 @@ type ContextType = {
   todos: { [key: string]: Todo[] };
   addTodo: (parentId: string, content: string) => void;
   deleteTodo: (todoId: string) => void;
+  updateTodoCheck: (todoId: string, isCompleted: boolean) => void;
 };
 
 const TodoContext = createContext<ContextType>({} as ContextType);
@@ -93,11 +94,22 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  // todo:todo contextに移動
+  const updateTodoCheck = async (todoId: string, isCompleted: boolean) => {
+    try {
+      await axios.put(`/todos/${todoId}/isCompleted`, { isCompleted });
+      fetchTodos();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const value = {
     todos,
     fetchTodos,
     addTodo,
     deleteTodo,
+    updateTodoCheck,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
