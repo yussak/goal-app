@@ -1,6 +1,5 @@
 import { Todo } from "@/types";
-import { Checkbox, IconButton } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import TodoContent from "./TodoContent";
 
 type TodoListProps = {
   todos: Todo[];
@@ -9,54 +8,21 @@ type TodoListProps = {
   milestoneId?: string;
 };
 
-const TodoList = ({
-  todos,
-  // デバッグ用に残す
-  // milestoneId,
-  onDeleteTodo,
-  onUpdateTodoCheck,
-}: TodoListProps) => {
-  const handleCheckboxChange = (todoId: string, checked: boolean) => {
-    onUpdateTodoCheck(todoId, checked);
-  };
-
+const TodoList = ({ todos }: TodoListProps) => {
   return (
-    <div>
-      {/* <h3>Milestone（デバッグ用）: {milestoneId}</h3> */}
+    <>
       {todos.length > 0 ? (
         <ul>
           {todos.map((todo, index) => (
             <li key={index}>
-              {/* todo:contentをコンポーネントに分ける */}
-              <div>
-                <Checkbox
-                  checked={todo.isCompleted}
-                  onChange={(e) =>
-                    handleCheckboxChange(todo.id, e.target.checked)
-                  }
-                />
-                {todo.isCompleted ? (
-                  <span className="text-border">content: {todo.content}</span>
-                ) : (
-                  <span>
-                    content: {todo.content}{" "}
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => onDeleteTodo(todo.id)}
-                    >
-                      <DeleteOutlineIcon />
-                    </IconButton>
-                  </span>
-                )}
-              </div>
-              {/* <p>進捗状況（デバッグ用）: {todo.isCompleted.toString()}</p> */}
+              <TodoContent todo={todo} />
             </li>
           ))}
         </ul>
       ) : (
         <p>このマイルストーンにToDoはありません</p>
       )}
-    </div>
+    </>
   );
 };
 
