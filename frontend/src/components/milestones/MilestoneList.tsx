@@ -1,4 +1,3 @@
-import { Todo } from "@/types";
 import {
   Accordion,
   AccordionDetails,
@@ -17,22 +16,8 @@ import { useTodos } from "@/contexts/todoContext";
 const MilestoneList = () => {
   const { data: session } = useSession();
   const { t } = useTranslation();
-  const { milestones, deleteMilestone } = useMilestone();
+  const { milestones, deleteMilestone, isMilestoneCompleted } = useMilestone();
   const { todos, addTodo, deleteTodo, updateTodoCheck } = useTodos();
-
-  // todo:mile contextに移動
-  // milestoneが持っているtodoが全て完了済みになっているかの判定
-  const isMilestoneCompleted = (todos: Todo[]) => {
-    if (todos.length === 0) return false;
-
-    for (const todo of todos) {
-      if (!todo.isCompleted) {
-        return false;
-      }
-    }
-
-    return true;
-  };
 
   return milestones && milestones.length > 0 ? (
     <ul>
