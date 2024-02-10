@@ -39,7 +39,6 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
     for (let milestone of milestones) {
       try {
         const { data } = await axios.get(`/milestones/${milestone.id}/todos`);
-        console.log("datata", data);
         newTodos[milestone.id] = data;
       } catch (error) {
         console.error(error);
@@ -57,7 +56,7 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     try {
       const res = await axios.post(`/milestones/${parentId}/todos`, params);
-      // 親側で更新
+
       addTodosToState(parentId, res.data);
     } catch (error) {
       console.error(error);
