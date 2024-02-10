@@ -6,13 +6,11 @@ import {
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
+import { useGoals } from "@/contexts/goalContext";
 
-type GoalFormProps = {
-  addGoal: (data: GoalFormData) => void;
-};
-
-const GoalForm = ({ addGoal }: GoalFormProps) => {
+const GoalForm = () => {
   const { t } = useTranslation();
+  const { addGoal } = useGoals();
 
   const {
     register,

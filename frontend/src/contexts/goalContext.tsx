@@ -1,4 +1,4 @@
-import { Goal } from "@/types";
+import { Goal, GoalFormData } from "@/types";
 import {
   FC,
   ReactNode,
@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 type ContextType = {
   goals: Goal[] | null;
   goal: Goal | null;
+  addGoal: (data: GoalFormData) => void;
   deleteGoal: (id: string) => void;
   getGoalDetails: (id: string) => void;
 };
@@ -42,6 +43,22 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, [goalId]);
 
+  const addGoal = async (data: GoalFormData) => {
+    const params = {
+      ...data,
+      userId: userId,
+    };
+    try {
+      const res = await axios.post("/goal", params);
+
+      const newGoalId = res.data.id;
+      router.push(`/goals/${newGoalId}`);
+      mutate(`/${userId}/goals`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const deleteGoal = async (goalId: string) => {
     // 意図的にエラー出してダイアログ消えないことを確認するコード
     // throw new Error("Error in deleting goal");
@@ -65,6 +82,7 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const value = {
     goals: goals || null,
     goal,
+    addGoal,
     deleteGoal,
     getGoalDetails,
   };
