@@ -27,6 +27,7 @@ const TodoList = ({
         <ul>
           {todos.map((todo, index) => (
             <li key={index}>
+              {/* todo:contentをコンポーネントに分ける */}
               <div>
                 <Checkbox
                   checked={todo.isCompleted}
