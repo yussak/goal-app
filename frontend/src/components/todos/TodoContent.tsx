@@ -22,13 +22,11 @@ const TodoContent = ({ todo }: props) => {
       {todo.isCompleted ? (
         <span className="text-border">content: {todo.content}</span>
       ) : (
-        <span>
-          content: {todo.content}{" "}
-          <IconButton aria-label="delete" onClick={() => deleteTodo(todo.id)}>
-            <DeleteOutlineIcon />
-          </IconButton>
-        </span>
+        <span>content: {todo.content}</span>
       )}
+      <IconButton aria-label="delete" onClick={() => deleteTodo(todo.id)}>
+        <DeleteOutlineIcon />
+      </IconButton>
     </>
   );
 };
