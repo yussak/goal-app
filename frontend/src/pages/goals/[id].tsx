@@ -42,19 +42,19 @@ const GoalDetail: CustomNextPage = () => {
 
   // todo:todo contextに移動
 
-  // todo:todo contextに移動
+  // // todo:todo contextに移動
 
-  // TodoListからバケツリレーしてる
-  // todo:状態管理ツールで書き換えたい
-  // todo:stateでもいけるかもなので確認
-  const deleteTodo = async (todo_id: string) => {
-    try {
-      await axios.delete(`/todos/${todo_id}`);
-      await fetchTodos();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // // TodoListからバケツリレーしてる
+  // // todo:状態管理ツールで書き換えたい
+  // // todo:stateでもいけるかもなので確認
+  // const deleteTodo = async (todo_id: string) => {
+  //   try {
+  //     await axios.delete(`/todos/${todo_id}`);
+  //     await fetchTodos();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   // todo:todo contextに移動
   const updateTodoCheck = async (todo_id: string, isCompleted: boolean) => {
@@ -97,7 +97,7 @@ const GoalDetail: CustomNextPage = () => {
           <MilestoneList
             // todos={todos}
             // addTodosToState={addTodosToState}
-            onDeleteTodo={deleteTodo}
+            // onDeleteTodo={deleteTodo}
             onUpdateTodoCheck={updateTodoCheck}
           />
         </>

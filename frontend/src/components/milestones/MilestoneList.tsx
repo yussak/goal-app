@@ -31,7 +31,7 @@ const MilestoneList = ({
   const { data: session } = useSession();
   const { t } = useTranslation();
   const { milestones, deleteMilestone } = useMilestone();
-  const { todos, addTodo } = useTodos();
+  const { todos, addTodo, deleteTodo } = useTodos();
 
   // // todo:todo contextに移動
   // const addTodo = async (parentId: string, content: string) => {
@@ -112,7 +112,7 @@ const MilestoneList = ({
                   <TodoList
                     todos={milestoneTodos}
                     milestoneId={milestone.id}
-                    onDeleteTodo={onDeleteTodo}
+                    onDeleteTodo={deleteTodo}
                     onUpdateTodoCheck={onUpdateTodoCheck}
                   />
                 </Typography>

@@ -16,6 +16,7 @@ type ContextType = {
   fetchTodos: () => void;
   todos: { [key: string]: Todo[] };
   addTodo: (parentId: string, content: string) => void;
+  deleteTodo: (todoId: string) => void;
 };
 
 const TodoContext = createContext<ContextType>({} as ContextType);
@@ -65,6 +66,7 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  //   todo:分離する必要がないと思うのでまとめるかも
   // addTodo時にstateのtodosを更新する
   // todo:型をちゃんと書く
   const addTodosToState = (milestoneId: string, newTodo: any) => {
@@ -76,10 +78,26 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setTodos(updatedTodos);
   };
 
+  // todo:todo contextに移動
+
+  // TodoListからバケツリレーしてる
+  // todo:状態管理ツールで書き換えたい
+  // todo:stateでもいけるかもなので確認
+  const deleteTodo = async (todoId: string) => {
+    // const deleteTodo = async (todo_id: string) => {
+    try {
+      await axios.delete(`/todos/${todoId}`);
+      await fetchTodos();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const value = {
     todos,
     fetchTodos,
     addTodo,
+    deleteTodo,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
