@@ -1,5 +1,5 @@
 import { Todo } from "@/types";
-import { Button, Checkbox, IconButton } from "@mui/material";
+import { Checkbox, IconButton } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 type TodoListProps = {
@@ -11,7 +11,8 @@ type TodoListProps = {
 
 const TodoList = ({
   todos,
-  milestoneId,
+  // デバッグ用に残す
+  // milestoneId,
   onDeleteTodo,
   onUpdateTodoCheck,
 }: TodoListProps) => {
