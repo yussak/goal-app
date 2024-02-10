@@ -15,6 +15,7 @@ import { useMilestone } from "./mileContext";
 type ContextType = {
   fetchTodos: () => void;
   todos: { [key: string]: Todo[] };
+  addTodo: (parentId: string, content: string) => void;
 };
 
 const TodoContext = createContext<ContextType>({} as ContextType);
@@ -26,6 +27,7 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
   // 各マイルストーンに対するtodoを扱うためキーを使用している
   const [todos, setTodos] = useState<{ [key: string]: Todo[] }>({});
   const { milestones } = useMilestone();
+  const { data: session } = useSession();
 
   useEffect(() => {
     fetchTodos();
@@ -46,9 +48,38 @@ export const TodoProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setTodos(newTodos);
   };
 
+  // todo:todo contextに移動
+  const addTodo = async (parentId: string, content: string) => {
+    const params = {
+      parentId: parentId,
+      userId: session?.user?.id,
+      content: content,
+    };
+
+    try {
+      const res = await axios.post(`/milestones/${parentId}/todos`, params);
+      // 親側で更新
+      addTodosToState(parentId, res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // addTodo時にstateのtodosを更新する
+  // todo:型をちゃんと書く
+  const addTodosToState = (milestoneId: string, newTodo: any) => {
+    const updatedTodos = {
+      ...todos,
+      // todo:コメント残す
+      [milestoneId]: [...todos[milestoneId], newTodo],
+    };
+    setTodos(updatedTodos);
+  };
+
   const value = {
-    fetchTodos,
     todos,
+    fetchTodos,
+    addTodo,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

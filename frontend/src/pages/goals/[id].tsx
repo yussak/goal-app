@@ -42,17 +42,6 @@ const GoalDetail: CustomNextPage = () => {
 
   // todo:todo contextに移動
 
-  // addTodo時にstateのtodosを更新する
-  // todo:型をちゃんと書く
-  const addTodosToState = (milestoneId: string, newTodo: any) => {
-    const updatedTodos = {
-      ...todos,
-      // todo:コメント残す
-      [milestoneId]: [...todos[milestoneId], newTodo],
-    };
-    setTodos(updatedTodos);
-  };
-
   // todo:todo contextに移動
 
   // TodoListからバケツリレーしてる
@@ -107,7 +96,7 @@ const GoalDetail: CustomNextPage = () => {
           <h3>{t("goal_detail.title3")}</h3>
           <MilestoneList
             // todos={todos}
-            addTodosToState={addTodosToState}
+            // addTodosToState={addTodosToState}
             onDeleteTodo={deleteTodo}
             onUpdateTodoCheck={updateTodoCheck}
           />

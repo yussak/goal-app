@@ -31,24 +31,24 @@ const MilestoneList = ({
   const { data: session } = useSession();
   const { t } = useTranslation();
   const { milestones, deleteMilestone } = useMilestone();
-  const { todos } = useTodos();
+  const { todos, addTodo } = useTodos();
 
-  // todo:todo contextに移動
-  const addTodo = async (parentId: string, content: string) => {
-    const params = {
-      parentId: parentId,
-      userId: session?.user?.id,
-      content: content,
-    };
+  // // todo:todo contextに移動
+  // const addTodo = async (parentId: string, content: string) => {
+  //   const params = {
+  //     parentId: parentId,
+  //     userId: session?.user?.id,
+  //     content: content,
+  //   };
 
-    try {
-      const res = await axios.post(`/milestones/${parentId}/todos`, params);
-      // 親側で更新
-      addTodosToState(parentId, res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   try {
+  //     const res = await axios.post(`/milestones/${parentId}/todos`, params);
+  //     // 親側で更新
+  //     addTodosToState(parentId, res.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   // todo:mile contextに移動
   // milestoneが持っているtodoが全て完了済みになっているかの判定
