@@ -7,6 +7,7 @@ import AuthGuard from "@/components/AuthGuard";
 import { Session } from "next-auth";
 import { NextComponentType } from "next";
 import { MilestoneProvider } from "@/contexts/mileContext";
+import { GoalsProvider } from "@/contexts/goalContext";
 
 export type CustomAppProps = AppProps<{ session: Session }> & {
   Component: NextComponentType & { requireAuth?: boolean };
@@ -18,18 +19,20 @@ const MyApp = ({
 }: CustomAppProps) => {
   return (
     <SessionProvider session={session}>
-      {/* todo:一部でしか使わないデータも_app.tsxでproviderで囲んでいいのか確認→OKならgoal contextもここに移動する */}
-      <MilestoneProvider>
-        <Layout>
-          {Component.requireAuth ? (
-            <AuthGuard>
+      {/* todo:一部でしか使わないデータも_app.tsxでproviderで囲んでいいのか確認 */}
+      <GoalsProvider>
+        <MilestoneProvider>
+          <Layout>
+            {Component.requireAuth ? (
+              <AuthGuard>
+                <Component {...pageProps} />
+              </AuthGuard>
+            ) : (
               <Component {...pageProps} />
-            </AuthGuard>
-          ) : (
-            <Component {...pageProps} />
-          )}
-        </Layout>
-      </MilestoneProvider>
+            )}
+          </Layout>
+        </MilestoneProvider>
+      </GoalsProvider>
     </SessionProvider>
   );
 };
