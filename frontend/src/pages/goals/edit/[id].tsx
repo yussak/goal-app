@@ -28,6 +28,7 @@ const EditGoal: CustomNextPage = () => {
     }
   }, [router.isReady]);
 
+  // todo:goal contextに移動
   const getGoal = async () => {
     try {
       const { data } = await axios.get(`/goals/${id}`);
@@ -43,6 +44,7 @@ const EditGoal: CustomNextPage = () => {
     }
   };
 
+  // todo:goal contextに移動
   const editGoal = async (data: GoalFormData) => {
     const params = {
       ...data,
