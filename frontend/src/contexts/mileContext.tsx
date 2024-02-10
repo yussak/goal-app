@@ -27,21 +27,21 @@ export const MilestoneProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const id = router.query.id;
+  const goalId = router.query.id;
 
   const { data: session } = useSession();
 
   useEffect(() => {
-    if (router.isReady) {
+    if (goalId) {
       getMilestones();
     }
-  }, [router.isReady]);
+  }, [goalId]);
 
   const [milestones, setMilestones] = useState<Milestone[]>([]);
 
   const getMilestones = async () => {
     try {
-      const { data } = await axios.get(`/goals/${id}/milestones`);
+      const { data } = await axios.get(`/goals/${goalId}/milestones`);
       setMilestones(data);
     } catch (error) {
       console.error(error);
@@ -54,7 +54,7 @@ export const MilestoneProvider: FC<{ children: ReactNode }> = ({
       userId: session?.user?.id,
     };
     try {
-      const res = await axios.post(`/goals/${id}/milestones`, params);
+      const res = await axios.post(`/goals/${goalId}/milestones`, params);
       await getMilestones();
     } catch (error) {
       console.error(error);
