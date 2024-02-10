@@ -1,4 +1,3 @@
-import { Todo } from "@/types";
 import {
   Accordion,
   AccordionDetails,
@@ -7,58 +6,18 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import TodoForm from "../form/TodoForm";
-import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import TodoList from "../TodoList";
 import { DeleteDialog } from "../DeleteDialog";
 import { useTranslation } from "next-i18next";
 import { useMilestone } from "@/contexts/mileContext";
+import { useTodos } from "@/contexts/todoContext";
 
-type MilestoneListProps = {
-  todos: { [key: string]: Todo[] };
-  onDeleteTodo: (id: string) => void;
-  onUpdateTodoCheck: (id: string, checked: boolean) => void;
-  addTodosToState: (id: string, newTodo: any) => void;
-};
-
-const MilestoneList = ({
-  todos,
-  onDeleteTodo,
-  onUpdateTodoCheck,
-  addTodosToState,
-}: MilestoneListProps) => {
+const MilestoneList = () => {
   const { data: session } = useSession();
   const { t } = useTranslation();
-  const { milestones, deleteMilestone } = useMilestone();
-
-  const addTodo = async (parentId: string, content: string) => {
-    const params = {
-      parentId: parentId,
-      userId: session?.user?.id,
-      content: content,
-    };
-
-    try {
-      const res = await axios.post(`/milestones/${parentId}/todos`, params);
-      // 親側で更新
-      addTodosToState(parentId, res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // milestoneが持っているtodoが全て完了済みになっているかの判定
-  const isMilestoneCompleted = (todos: Todo[]) => {
-    if (todos.length === 0) return false;
-
-    for (const todo of todos) {
-      if (!todo.isCompleted) {
-        return false;
-      }
-    }
-
-    return true;
-  };
+  const { milestones, deleteMilestone, isMilestoneCompleted } = useMilestone();
+  const { todos, addTodo, deleteTodo, updateTodoCheck } = useTodos();
 
   return milestones && milestones.length > 0 ? (
     <ul>
@@ -108,8 +67,8 @@ const MilestoneList = ({
                   <TodoList
                     todos={milestoneTodos}
                     milestoneId={milestone.id}
-                    onDeleteTodo={onDeleteTodo}
-                    onUpdateTodoCheck={onUpdateTodoCheck}
+                    onDeleteTodo={deleteTodo}
+                    onUpdateTodoCheck={updateTodoCheck}
                   />
                 </Typography>
               </AccordionDetails>

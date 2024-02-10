@@ -8,6 +8,7 @@ import { Session } from "next-auth";
 import { NextComponentType } from "next";
 import { MilestoneProvider } from "@/contexts/mileContext";
 import { GoalsProvider } from "@/contexts/goalContext";
+import { TodoProvider } from "@/contexts/todoContext";
 
 export type CustomAppProps = AppProps<{ session: Session }> & {
   Component: NextComponentType & { requireAuth?: boolean };
@@ -22,15 +23,17 @@ const MyApp = ({
       {/* todo:一部でしか使わないデータも_app.tsxでproviderで囲んでいいのか確認 */}
       <GoalsProvider>
         <MilestoneProvider>
-          <Layout>
-            {Component.requireAuth ? (
-              <AuthGuard>
+          <TodoProvider>
+            <Layout>
+              {Component.requireAuth ? (
+                <AuthGuard>
+                  <Component {...pageProps} />
+                </AuthGuard>
+              ) : (
                 <Component {...pageProps} />
-              </AuthGuard>
-            ) : (
-              <Component {...pageProps} />
-            )}
-          </Layout>
+              )}
+            </Layout>
+          </TodoProvider>
         </MilestoneProvider>
       </GoalsProvider>
     </SessionProvider>

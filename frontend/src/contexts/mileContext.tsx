@@ -1,4 +1,4 @@
-import { Milestone, MilestoneFormData } from "@/types";
+import { Milestone, MilestoneFormData, Todo } from "@/types";
 import { axios } from "@/utils/axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -16,6 +16,7 @@ type ContextType = {
   getMilestones: () => void;
   addMilestone: (data: MilestoneFormData) => void;
   deleteMilestone: (milestone_id: string) => void;
+  isMilestoneCompleted: (todos: Todo[]) => boolean;
 };
 
 const MilestoneContext = createContext<ContextType>({} as ContextType);
@@ -69,11 +70,23 @@ export const MilestoneProvider: FC<{ children: ReactNode }> = ({
     }
   };
 
+  // milestoneが持っているtodoが全て完了済みになっているかの判定
+  const isMilestoneCompleted = (todos: Todo[]) => {
+    if (todos.length === 0) return false;
+    for (const todo of todos) {
+      if (!todo.isCompleted) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const value = {
     milestones: milestones || null,
     getMilestones,
     addMilestone,
     deleteMilestone,
+    isMilestoneCompleted,
   };
 
   return (
