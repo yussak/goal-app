@@ -29,7 +29,6 @@ export const MilestoneProvider: FC<{ children: ReactNode }> = ({
   const id = router.query.id;
 
   const { data: session } = useSession();
-  const userId = session?.user ? session.user.id : null;
 
   useEffect(() => {
     if (router.isReady) {
