@@ -14,7 +14,8 @@
     "label3": "やらないとどうなるかを書いてみましょう"
   },
   "goal_index": {
-    "title": "あなたの目標一覧"
+    "title": "あなたの目標一覧",
+    "not_found": "目標はありません"
   },
   "goal_detail": {
     "title1": "目標詳細",

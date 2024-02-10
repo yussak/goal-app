@@ -1,8 +1,10 @@
 import { useGoals } from "@/contexts/goalContext";
 import GoalContent from "./GoalContent";
+import { useTranslation } from "next-i18next";
 
 const GoalList = (): JSX.Element => {
   const { goals } = useGoals();
+  const { t } = useTranslation();
 
   return goals && goals.length > 0 ? (
     <ul>
@@ -15,7 +17,7 @@ const GoalList = (): JSX.Element => {
       })}
     </ul>
   ) : (
-    <p>目標はありません</p>
+    <p>{t("goal_index.not_found")}</p>
   );
 };
 

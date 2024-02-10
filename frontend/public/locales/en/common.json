@@ -13,6 +13,10 @@
     "label2": "input why you want to achieve (required)",
     "label3": "input what happens if you don't do it."
   },
+  "goal_index": {
+    "title": "Your Goal List",
+    "not_found": "Goal not found"
+  },
   "goal_detail": {
     "title1": "Goal Detail",
     "button1": "Edit",
@@ -41,9 +45,6 @@
   },
   "delete_dialog": {
     "button1": "Delete"
-  },
-  "goal_index": {
-    "title": "Your Goal List"
   },
   "japanese": "Japanese",
   "english": "English",
