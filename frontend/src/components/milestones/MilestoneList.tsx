@@ -13,16 +13,17 @@ import TodoList from "../TodoList";
 import { DeleteDialog } from "../DeleteDialog";
 import { useTranslation } from "next-i18next";
 import { useMilestone } from "@/contexts/mileContext";
+import { useTodos } from "@/contexts/todoContext";
 
 type MilestoneListProps = {
-  todos: { [key: string]: Todo[] };
+  // todos: { [key: string]: Todo[] };
   onDeleteTodo: (id: string) => void;
   onUpdateTodoCheck: (id: string, checked: boolean) => void;
   addTodosToState: (id: string, newTodo: any) => void;
 };
 
 const MilestoneList = ({
-  todos,
+  // todos,
   onDeleteTodo,
   onUpdateTodoCheck,
   addTodosToState,
@@ -30,7 +31,9 @@ const MilestoneList = ({
   const { data: session } = useSession();
   const { t } = useTranslation();
   const { milestones, deleteMilestone } = useMilestone();
+  const { todos } = useTodos();
 
+  // todo:todo contextに移動
   const addTodo = async (parentId: string, content: string) => {
     const params = {
       parentId: parentId,
@@ -47,6 +50,7 @@ const MilestoneList = ({
     }
   };
 
+  // todo:mile contextに移動
   // milestoneが持っているtodoが全て完了済みになっているかの判定
   const isMilestoneCompleted = (todos: Todo[]) => {
     if (todos.length === 0) return false;

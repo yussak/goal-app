@@ -17,27 +17,30 @@ const GoalDetail: CustomNextPage = () => {
   const { data: session } = useSession();
   const { goal } = useGoals();
   const { milestones } = useMilestone();
-  // todosは「キーがstring、バリューがTodo型の配列」のオブジェクトである
-  // 各マイルストーンに対するtodoを扱うためキーを使用している
-  const [todos, setTodos] = useState<{ [key: string]: Todo[] }>({});
+  // // todosは「キーがstring、バリューがTodo型の配列」のオブジェクトである
+  // // 各マイルストーンに対するtodoを扱うためキーを使用している
+  // const [todos, setTodos] = useState<{ [key: string]: Todo[] }>({});
   const { t } = useTranslation();
 
-  useEffect(() => {
-    fetchTodos();
-  }, [milestones]);
+  // useEffect(() => {
+  //   fetchTodos();
+  // }, [milestones]);
 
-  const fetchTodos = async () => {
-    let newTodos = { ...todos };
-    for (let milestone of milestones) {
-      try {
-        const { data } = await axios.get(`/milestones/${milestone.id}/todos`);
-        newTodos[milestone.id] = data;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    setTodos(newTodos);
-  };
+  // // todo:todo contextに移動
+  // const fetchTodos = async () => {
+  //   let newTodos = { ...todos };
+  //   for (let milestone of milestones) {
+  //     try {
+  //       const { data } = await axios.get(`/milestones/${milestone.id}/todos`);
+  //       newTodos[milestone.id] = data;
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  //   setTodos(newTodos);
+  // };
+
+  // todo:todo contextに移動
 
   // addTodo時にstateのtodosを更新する
   // todo:型をちゃんと書く
@@ -49,6 +52,8 @@ const GoalDetail: CustomNextPage = () => {
     };
     setTodos(updatedTodos);
   };
+
+  // todo:todo contextに移動
 
   // TodoListからバケツリレーしてる
   // todo:状態管理ツールで書き換えたい
@@ -62,6 +67,7 @@ const GoalDetail: CustomNextPage = () => {
     }
   };
 
+  // todo:todo contextに移動
   const updateTodoCheck = async (todo_id: string, isCompleted: boolean) => {
     try {
       await axios.put(`/todos/${todo_id}/isCompleted`, { isCompleted });
@@ -100,7 +106,7 @@ const GoalDetail: CustomNextPage = () => {
           )}
           <h3>{t("goal_detail.title3")}</h3>
           <MilestoneList
-            todos={todos}
+            // todos={todos}
             addTodosToState={addTodosToState}
             onDeleteTodo={deleteTodo}
             onUpdateTodoCheck={updateTodoCheck}
