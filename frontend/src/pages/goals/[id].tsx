@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
-import { Goal, Todo } from "@/types";
+import { Todo } from "@/types";
 import MilestoneForm from "@/components/form/MilestoneForm";
 import MilestoneList from "@/components/milestones/MilestoneList";
 import Link from "next/link";
@@ -12,37 +11,20 @@ import { CustomNextPage } from "@/types/custom-next-page";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { useMilestone } from "@/contexts/mileContext";
+import { useGoals } from "@/contexts/goalContext";
 
 const GoalDetail: CustomNextPage = () => {
-  const [goal, setGoal] = useState<Goal | null>(null);
   const { data: session } = useSession();
+  const { goal } = useGoals();
+  const { milestones } = useMilestone();
   // todosは「キーがstring、バリューがTodo型の配列」のオブジェクトである
   // 各マイルストーンに対するtodoを扱うためキーを使用している
   const [todos, setTodos] = useState<{ [key: string]: Todo[] }>({});
-  const router = useRouter();
-  const id = router.query.id;
   const { t } = useTranslation();
-  const { milestones } = useMilestone();
-
-  useEffect(() => {
-    if (router.isReady) {
-      getGoalDetails();
-    }
-  }, [router.isReady]);
 
   useEffect(() => {
     fetchTodos();
   }, [milestones]);
-
-  // todo:goal contextに移動
-  const getGoalDetails = async () => {
-    try {
-      const { data } = await axios.get(`/goals/${id}`);
-      setGoal(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const fetchTodos = async () => {
     let newTodos = { ...todos };

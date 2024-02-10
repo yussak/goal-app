@@ -1,13 +1,23 @@
 import { Goal } from "@/types";
-import { FC, ReactNode, createContext, useContext } from "react";
+import {
+  FC,
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "../utils/fetcher";
 import { useSession } from "next-auth/react";
 import { axios } from "../utils/axios";
+import { useRouter } from "next/router";
 
 type ContextType = {
   goals: Goal[] | null;
+  goal: Goal | null;
   deleteGoal: (id: string) => void;
+  getGoalDetails: (id: string) => void;
 };
 
 const GoalsContext = createContext<ContextType>({} as ContextType);
@@ -17,19 +27,36 @@ export const useGoals = () => useContext(GoalsContext);
 // 状態を変更する関数ならcontext, そうじゃないならutilの方針で一旦進める;
 export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { data: session } = useSession();
+  const [goal, setGoal] = useState<Goal | null>(null);
   const userId = session?.user ? session.user.id : null;
-
   const { data: goals, error } = useSWR<Goal[]>(`/${userId}/goals`, fetcher);
   if (error) {
     console.error(error);
   }
+  const router = useRouter();
+  const goalId = router.query.id;
 
-  const deleteGoal = async (id: string) => {
+  useEffect(() => {
+    if (goalId) {
+      getGoalDetails(goalId as string);
+    }
+  }, [goalId]);
+
+  const deleteGoal = async (goalId: string) => {
     // 意図的にエラー出してダイアログ消えないことを確認するコード
     // throw new Error("Error in deleting goal");
     try {
-      await axios.delete(`/goal/${id}`);
+      await axios.delete(`/goal/${goalId}`);
       mutate(`/${userId}/goals`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getGoalDetails = async (goalId: string) => {
+    try {
+      const { data } = await axios.get(`/goals/${goalId}`);
+      setGoal(data);
     } catch (error) {
       console.error(error);
     }
@@ -37,7 +64,9 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const value = {
     goals: goals || null,
+    goal,
     deleteGoal,
+    getGoalDetails,
   };
 
   return (
