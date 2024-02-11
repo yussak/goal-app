@@ -11,7 +11,7 @@
   - Go/Gin
   - Air
 - インフラ・開発環境
-  - Docker/Docker-compose
+  - Docker/Docker Compose
   - AWS
   - Github Actions
   - Terraform
