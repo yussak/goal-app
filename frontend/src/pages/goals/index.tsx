@@ -7,12 +7,19 @@ import { axios } from "@/utils/axios";
 import { Goal } from "@/types";
 import { useSession } from "next-auth/react";
 
+const TAB_NAME_LIST = {
+  ALL: "ALL",
+  PLAN: "予定",
+  WIP: "WIP",
+  DONE: "完了",
+};
+
 const Goals: CustomNextPage = () => {
   const { t } = useTranslation();
   const { data: session } = useSession();
   const userId = session?.user ? session.user.id : null;
 
-  const [activeTab, setActiveTab] = useState("ALL");
+  const [activeTab, setActiveTab] = useState(TAB_NAME_LIST.ALL);
   const [goals, setGoals] = useState<Goal[] | null>(null);
 
   useEffect(() => {
@@ -26,13 +33,6 @@ const Goals: CustomNextPage = () => {
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
-  };
-
-  const TAB_NAME_LIST = {
-    ALL: "ALL",
-    PLAN: "予定",
-    WIP: "WIP",
-    DONE: "完了",
   };
 
   return (
