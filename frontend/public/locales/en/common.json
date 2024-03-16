@@ -10,7 +10,7 @@
   "goal_create": {
     "title": "Create Goal",
     "label1": "input SMART about what you want to accomplish (required).",
-    "label2": "input why you want to achieve (required)",
+    "label2": "input why you want to achieve",
     "label3": "input what happens if you could accomplish it."
   },
   "goal_index": {
