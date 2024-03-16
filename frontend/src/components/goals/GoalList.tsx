@@ -1,9 +1,12 @@
-import { useGoals } from "@/contexts/goalContext";
 import GoalContent from "./GoalContent";
 import { useTranslation } from "next-i18next";
+import { Goal } from "@/types";
 
-const GoalList = (): JSX.Element => {
-  const { goals } = useGoals();
+type props = {
+  goals: Goal[] | null;
+};
+
+const GoalList = ({ goals }: props): JSX.Element => {
   const { t } = useTranslation();
 
   return goals && goals.length > 0 ? (

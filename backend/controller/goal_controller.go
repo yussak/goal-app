@@ -2,7 +2,6 @@ package controller
 
 import (
 	"database/sql"
-	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
@@ -15,9 +14,9 @@ import (
 
 func FetchUserGoals(c *gin.Context) {
 	userId := c.Param("userId")
-	fmt.Println("c.Param", c.Param("userId"))
+	phase := c.Query("phase")
 
-	goals, err := fetchGoalsFromDB(userId)
+	goals, err := fetchGoalsFromDB(userId, phase)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -26,16 +25,24 @@ func FetchUserGoals(c *gin.Context) {
 	c.JSON(http.StatusOK, goals)
 }
 
-// DBからgoalを取得。関心の分離のため個別に切り出した
-func fetchGoalsFromDB(userId string) ([]model.Goal, error) {
+// DBからgoalを取得。phaseクエリがある場合にはそれで絞る
+func fetchGoalsFromDB(userId, phase string) ([]model.Goal, error) {
 	goals := []model.Goal{}
 
-	// idに直接値を渡すのでなくパラメータとして渡すことでSQLインジェクションを防止している
-	// "SELECT * FROM goals WHERE user_id = "+ userId だと危ない
-	rows, err := db.DB.Query("SELECT * FROM goals WHERE user_id = ?", userId)
+	var rows *sql.Rows
+	var err error
+
+	if phase == "ALL" {
+		// idに直接値を渡すのでなくプレースホルダとして渡すことでSQLインジェクションを防止している
+		rows, err = db.DB.Query("SELECT * FROM goals WHERE user_id = ?", userId)
+	} else {
+		rows, err = db.DB.Query("SELECT * FROM goals WHERE user_id = ? AND phase = ?", userId, phase)
+	}
+
 	if err != nil {
 		return nil, err
 	}
+
 	defer rows.Close()
 
 	for rows.Next() {

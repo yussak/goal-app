@@ -7,14 +7,12 @@ import {
   useEffect,
   useState,
 } from "react";
-import useSWR, { mutate } from "swr";
-import { fetcher } from "../utils/fetcher";
+import { mutate } from "swr";
 import { useSession } from "next-auth/react";
 import { axios } from "../utils/axios";
 import { useRouter } from "next/router";
 
 type ContextType = {
-  goals: Goal[] | null;
   goal: Goal | null;
   addGoal: (data: GoalFormData) => void;
   deleteGoal: (id: string) => void;
@@ -30,10 +28,6 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { data: session } = useSession();
   const [goal, setGoal] = useState<Goal | null>(null);
   const userId = session?.user ? session.user.id : null;
-  const { data: goals, error } = useSWR<Goal[]>(`/${userId}/goals`, fetcher);
-  if (error) {
-    console.error(error);
-  }
   const router = useRouter();
   const goalId = router.query.id;
 
@@ -80,7 +74,6 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const value = {
-    goals: goals || null,
     goal,
     addGoal,
     deleteGoal,
