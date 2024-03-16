@@ -28,16 +28,30 @@ const Goals: CustomNextPage = () => {
     setActiveTab(tab);
   };
 
+  const TAB_NAME_LIST = {
+    ALL: "ALL",
+    PLAN: "予定",
+    WIP: "WIP",
+    DONE: "完了",
+  };
+
   return (
     <>
       <h2>{t("goal_index.title")}</h2>
       <div>
         <div>
-          {/* todo:タブ名を定数化 */}
-          <button onClick={() => handleTabChange("ALL")}>ALL</button>
-          <button onClick={() => handleTabChange("予定")}>予定</button>
-          <button onClick={() => handleTabChange("WIP")}>WIP</button>
-          <button onClick={() => handleTabChange("完了")}>完了</button>
+          <button onClick={() => handleTabChange(TAB_NAME_LIST.ALL)}>
+            {TAB_NAME_LIST.ALL}
+          </button>
+          <button onClick={() => handleTabChange(TAB_NAME_LIST.PLAN)}>
+            {TAB_NAME_LIST.PLAN}
+          </button>
+          <button onClick={() => handleTabChange(TAB_NAME_LIST.WIP)}>
+            {TAB_NAME_LIST.WIP}
+          </button>
+          <button onClick={() => handleTabChange(TAB_NAME_LIST.DONE)}>
+            {TAB_NAME_LIST.DONE}
+          </button>
         </div>
         <div>
           <GoalList goals={goals} />
