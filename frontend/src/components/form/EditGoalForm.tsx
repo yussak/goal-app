@@ -37,7 +37,7 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
   useEffect(() => {
     setValue("content", goalData.content);
     setValue("purpose", goalData.purpose);
-    setValue("loss", goalData.loss);
+    setValue("benefit", goalData.benefit);
     setValue("phase", goalData.phase);
   }, [goalData]);
 
@@ -56,9 +56,9 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
             helperText={errors.purpose?.message}
           />
           <TextField
-            {...register("loss", validationRules)}
-            error={!!errors.loss}
-            helperText={errors.loss?.message}
+            {...register("benefit", validationRules)}
+            error={!!errors.benefit}
+            helperText={errors.benefit?.message}
           />
           <Controller
             control={control}

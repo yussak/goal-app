@@ -27,7 +27,7 @@ const GoalDetail: CustomNextPage = () => {
           </Button>
           <p>content: {goal.content}</p>
           <p>purpose: {goal.purpose}</p>
-          <p>loss: {goal.loss}</p>
+          <p>benefit: {goal.benefit}</p>
           <p>progress: {goal.progress}</p>
           <p>phase: {goal.phase}</p>
           {/* <p>userId(デバッグ用): {goal.userId}</p> */}

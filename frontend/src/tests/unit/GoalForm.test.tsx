@@ -22,7 +22,10 @@ describe("Create goal", () => {
       screen.getByRole("textbox", { name: "purpose" }),
       "目的です"
     );
-    await user.type(screen.getByRole("textbox", { name: "loss" }), "ロスです");
+    await user.type(
+      screen.getByRole("textbox", { name: "benefit" }),
+      "ロスです"
+    );
     await user.type(
       screen.getByRole("textbox", { name: "content" }),
       "内容です"
@@ -33,7 +36,7 @@ describe("Create goal", () => {
     // addGoalがユーザーが入力したデータで呼び出されたことを確認
     expect(addGoalMock).toBeCalledWith({
       purpose: "目的です",
-      loss: "ロスです",
+      benefit: "ロスです",
       content: "内容です",
     });
   });
@@ -42,7 +45,7 @@ describe("Create goal", () => {
     // contentは空
     await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
     await user.type(
-      screen.getByRole("textbox", { name: "loss" }),
+      screen.getByRole("textbox", { name: "benefit" }),
       "ロスですロスですロスです"
     );
 
@@ -53,7 +56,7 @@ describe("Create goal", () => {
   it("should validate when too short values are input", async () => {
     await user.type(screen.getByRole("textbox", { name: "purpose" }), "ああ");
     await user.type(screen.getByRole("textbox", { name: "content" }), "ああ");
-    await user.type(screen.getByRole("textbox", { name: "loss" }), "ああ");
+    await user.type(screen.getByRole("textbox", { name: "benefit" }), "ああ");
 
     expect(screen.getByTestId(`error-purpose`)).toHaveTextContent(
       "3文字以上で入力してください"
@@ -61,7 +64,7 @@ describe("Create goal", () => {
     expect(screen.getByTestId(`error-content`)).toHaveTextContent(
       "3文字以上で入力してください"
     );
-    expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
+    expect(screen.getByTestId(`error-benefit`)).toHaveTextContent(
       "3文字以上で入力してください"
     );
   });
@@ -72,7 +75,7 @@ describe("Create goal", () => {
       "サンプルテキストサンプルテキスト"
     );
     await user.type(
-      screen.getByRole("textbox", { name: "loss" }),
+      screen.getByRole("textbox", { name: "benefit" }),
       "サンプルテキストサンプルテキスト"
     );
     await user.type(
@@ -89,7 +92,7 @@ describe("Create goal", () => {
     expect(screen.getByTestId(`error-content`)).toHaveTextContent(
       "10文字以内で入力してください"
     );
-    expect(screen.getByTestId(`error-loss`)).toHaveTextContent(
+    expect(screen.getByTestId(`error-benefit`)).toHaveTextContent(
       "10文字以内で入力してください"
     );
   });
@@ -99,7 +102,7 @@ describe("Create goal", () => {
     // contentは空
     await user.type(screen.getByRole("textbox", { name: "purpose" }), "目的");
     await user.type(
-      screen.getByRole("textbox", { name: "loss" }),
+      screen.getByRole("textbox", { name: "benefit" }),
       "ロスですロスですロスです"
     );
 
@@ -108,11 +111,11 @@ describe("Create goal", () => {
     // リセットして正しい値を入力し直す
     await user.clear(screen.getByRole("textbox", { name: "purpose" }));
     await user.clear(screen.getByRole("textbox", { name: "content" }));
-    await user.clear(screen.getByRole("textbox", { name: "loss" }));
+    await user.clear(screen.getByRole("textbox", { name: "benefit" }));
 
     await user.type(screen.getByRole("textbox", { name: "purpose" }), "テスト");
     await user.type(screen.getByRole("textbox", { name: "content" }), "テスト");
-    await user.type(screen.getByRole("textbox", { name: "loss" }), "テスト");
+    await user.type(screen.getByRole("textbox", { name: "benefit" }), "テスト");
 
     expect(screen.getByRole("button", { name: "追加" })).not.toBeDisabled();
     await user.click(screen.getByRole("button", { name: "追加" }));
@@ -120,7 +123,7 @@ describe("Create goal", () => {
     expect(addGoalMock).toBeCalledWith({
       purpose: "テスト",
       content: "テスト",
-      loss: "テスト",
+      benefit: "テスト",
     });
   });
 });

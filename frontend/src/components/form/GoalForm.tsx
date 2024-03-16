@@ -50,8 +50,8 @@ const GoalForm = () => {
         {renderTextField("content", register, requireValidationRules, errors)}
         <label htmlFor="purpose">{t("goal_create.label2")}</label>
         {renderTextField("purpose", register, requireValidationRules, errors)}
-        <label htmlFor="loss">{t("goal_create.label3")}</label>
-        {renderTextField("loss", register, optionalValidationRules, errors)}
+        <label htmlFor="benefit">{t("goal_create.label3")}</label>
+        {renderTextField("benefit", register, optionalValidationRules, errors)}
         <Button type="submit" variant="contained" disabled={!isValid}>
           追加
         </Button>

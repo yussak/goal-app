@@ -73,7 +73,7 @@ export function DeleteDialog(props: DeleteDialogProps) {
   );
 
   // 表示を切り替えるため、削除対象が目標かマイルストーン可判定する
-  const isGoal = selectedValue && "loss" in selectedValue;
+  const isGoal = selectedValue && "benefit" in selectedValue;
 
   return (
     <>

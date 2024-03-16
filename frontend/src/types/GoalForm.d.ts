@@ -1,6 +1,6 @@
 export type GoalFormData = {
   content: string;
   purpose: string;
-  loss: string;
+  benefit: string;
   phase: string;
 };
