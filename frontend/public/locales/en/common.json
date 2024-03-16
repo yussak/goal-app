@@ -56,5 +56,11 @@
     "login": "Login",
     "about": "About",
     "logout": "Logout"
+  },
+  "tab_name": {
+    "all": "ALL",
+    "plan": "PLAN",
+    "wip": "WIP",
+    "done": "DONE"
   }
 }

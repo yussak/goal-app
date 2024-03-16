@@ -41,16 +41,16 @@ const Goals: CustomNextPage = () => {
       <div>
         <div>
           <button onClick={() => handleTabChange(TAB_NAME_LIST.ALL)}>
-            {TAB_NAME_LIST.ALL}
+            {t("tab_name.all")}
           </button>
           <button onClick={() => handleTabChange(TAB_NAME_LIST.PLAN)}>
-            {TAB_NAME_LIST.PLAN}
+            {t("tab_name.plan")}
           </button>
           <button onClick={() => handleTabChange(TAB_NAME_LIST.WIP)}>
-            {TAB_NAME_LIST.WIP}
+            {t("tab_name.wip")}
           </button>
           <button onClick={() => handleTabChange(TAB_NAME_LIST.DONE)}>
-            {TAB_NAME_LIST.DONE}
+            {t("tab_name.done")}
           </button>
         </div>
         <div>
