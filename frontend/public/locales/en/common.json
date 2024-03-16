@@ -11,7 +11,7 @@
     "title": "Create Goal",
     "label1": "input SMART about what you want to accomplish (required).",
     "label2": "input why you want to achieve (required)",
-    "label3": "input what happens if you don't do it."
+    "label3": "input what happens if you could accomplish it."
   },
   "goal_index": {
     "title": "Your Goal List",
