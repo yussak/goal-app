@@ -14,8 +14,6 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("/auth/decodeToken", controller.DecodeToken)
 	r.POST("/auth/logout", controller.Logout)
 
-	// todo:これuserId指定必須じゃないならしないほうがいい気がするので確認
-	r.GET("/goals", controller.GetGoals)
 	r.GET("/:userId/goals", controller.FetchUserGoals)
 
 	r.POST("/goal", controller.AddGoal)
