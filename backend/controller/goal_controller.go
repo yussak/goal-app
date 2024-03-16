@@ -50,6 +50,42 @@ func fetchGoalsFromDB(userId string) ([]model.Goal, error) {
 	return goals, nil
 }
 
+func GetGoals(c *gin.Context) {
+	// goals := []model.Goal{}
+
+	phase := c.Query("phase")
+	fmt.Println("phhh", phase)
+	filteredGoals, err := filterGoalsByPhase(phase)
+	fmt.Println("filteredGoals", filteredGoals)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, filteredGoals)
+}
+
+func filterGoalsByPhase(phase string) ([]model.Goal, error) {
+	goals := []model.Goal{}
+
+	// todo:user_idで絞る
+	rows, err := db.DB.Query("SELECT * FROM goals WHERE phase = ?", phase)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var goal model.Goal
+		err = rows.Scan(&goal.ID, &goal.UserID, &goal.Content, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+		goals = append(goals, goal)
+	}
+
+	return goals, nil
+}
+
 func AddGoal(c *gin.Context) {
 	t := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
