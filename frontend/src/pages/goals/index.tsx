@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 import { axios } from "@/utils/axios";
 import { Goal } from "@/types";
 import { useSession } from "next-auth/react";
+import { Box, Tab, Tabs } from "@mui/material";
 
+// todo: TAB_NAME_LIST TAB_PHASE_LISTをまとめたい
 const TAB_NAME_LIST = {
   ALL: "ALL",
   PLAN: "予定",
@@ -14,50 +16,60 @@ const TAB_NAME_LIST = {
   DONE: "完了",
 };
 
+const TAB_PHASE_LIST = [
+  TAB_NAME_LIST.ALL,
+  TAB_NAME_LIST.PLAN,
+  TAB_NAME_LIST.WIP,
+  TAB_NAME_LIST.DONE,
+];
+
 const Goals: CustomNextPage = () => {
   const { t } = useTranslation();
   const { data: session } = useSession();
   const userId = session?.user ? session.user.id : null;
 
-  const [activeTab, setActiveTab] = useState(TAB_NAME_LIST.ALL);
+  const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
   const [goals, setGoals] = useState<Goal[] | null>(null);
 
   useEffect(() => {
-    fetchGoals(activeTab);
-  }, [activeTab]);
+    fetchGoals(activeTabIndex);
+  }, [activeTabIndex]);
 
-  const fetchGoals = async (phase: string) => {
+  // phaseの指定があればそれに絞ったデータを取得する
+  const fetchGoals = async (index: number) => {
+    const phase = TAB_PHASE_LIST[index];
     const res = await axios.get(`/${userId}/goals?phase=${phase}`);
     setGoals(res.data);
   };
 
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
+  const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
+    setActiveTabIndex(newTab);
   };
 
+  function a11yProps(index: number) {
+    return {
+      id: `simple-tab-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
+    };
+  }
+
   return (
-    <>
+    <div>
       <h2>{t("goal_index.title")}</h2>
-      <div>
-        <div>
-          <button onClick={() => handleTabChange(TAB_NAME_LIST.ALL)}>
-            {t("tab_name.all")}
-          </button>
-          <button onClick={() => handleTabChange(TAB_NAME_LIST.PLAN)}>
-            {t("tab_name.plan")}
-          </button>
-          <button onClick={() => handleTabChange(TAB_NAME_LIST.WIP)}>
-            {t("tab_name.wip")}
-          </button>
-          <button onClick={() => handleTabChange(TAB_NAME_LIST.DONE)}>
-            {t("tab_name.done")}
-          </button>
-        </div>
-        <div>
-          <GoalList goals={goals} />
-        </div>
-      </div>
-    </>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={activeTabIndex}
+          onChange={handleTabChange}
+          aria-label="basic tabs example"
+        >
+          <Tab label={t("tab_name.all")} {...a11yProps(0)} />
+          <Tab label={t("tab_name.plan")} {...a11yProps(1)} />
+          <Tab label={t("tab_name.wip")} {...a11yProps(2)} />
+          <Tab label={t("tab_name.done")} {...a11yProps(3)} />
+        </Tabs>
+        <GoalList goals={goals} />
+      </Box>
+    </div>
   );
 };
 
