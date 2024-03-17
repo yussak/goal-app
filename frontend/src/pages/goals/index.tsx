@@ -8,20 +8,7 @@ import { Goal } from "@/types";
 import { useSession } from "next-auth/react";
 import { Box, Tab, Tabs } from "@mui/material";
 
-// todo: TAB_NAME_LIST TAB_PHASE_LISTをまとめたい
-const TAB_NAME_LIST = {
-  ALL: "ALL",
-  PLAN: "予定",
-  WIP: "WIP",
-  DONE: "完了",
-};
-
-const TAB_PHASE_LIST = [
-  TAB_NAME_LIST.ALL,
-  TAB_NAME_LIST.PLAN,
-  TAB_NAME_LIST.WIP,
-  TAB_NAME_LIST.DONE,
-];
+const TAB_PHASE_LIST = ["all", "plan", "wip", "done"];
 
 const Goals: CustomNextPage = () => {
   const { t } = useTranslation();

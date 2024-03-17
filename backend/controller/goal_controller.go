@@ -32,7 +32,7 @@ func fetchGoalsFromDB(userId, phase string) ([]model.Goal, error) {
 	var rows *sql.Rows
 	var err error
 
-	if phase == "ALL" {
+	if phase == "all" {
 		// idに直接値を渡すのでなくプレースホルダとして渡すことでSQLインジェクションを防止している
 		rows, err = db.DB.Query("SELECT * FROM goals WHERE user_id = ?", userId)
 	} else {
@@ -47,7 +47,7 @@ func fetchGoalsFromDB(userId, phase string) ([]model.Goal, error) {
 
 	for rows.Next() {
 		var goal model.Goal
-		err = rows.Scan(&goal.ID, &goal.UserID, &goal.Content, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
+		err = rows.Scan(&goal.ID, &goal.UserID, &goal.Content, &goal.Purpose, &goal.Benefit, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -70,8 +70,8 @@ func AddGoal(c *gin.Context) {
 
 	req.ID = id.String()
 
-	sql := `INSERT INTO goals(id, user_id, content, purpose, loss, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?)`
-	_, execErr := db.DB.Exec(sql, req.ID, req.UserID, req.Content, req.Purpose, req.Loss, "予定", 0)
+	sql := `INSERT INTO goals(id, user_id, content, purpose, benefit, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?)`
+	_, execErr := db.DB.Exec(sql, req.ID, req.UserID, req.Content, req.Purpose, req.Benefit, "plan", 0)
 
 	if execErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": execErr.Error()})
@@ -137,7 +137,7 @@ func FetchGoalDetails(c *gin.Context) {
 	row := db.DB.QueryRow("SELECT * FROM goals WHERE id = ?", id)
 
 	var goal model.Goal
-	err := row.Scan(&goal.ID, &goal.UserID, &goal.Content, &goal.Purpose, &goal.Loss, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
+	err := row.Scan(&goal.ID, &goal.UserID, &goal.Content, &goal.Purpose, &goal.Benefit, &goal.Phase, &goal.Progress, &goal.CreatedAt, &goal.UpdatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": "No goal with the provided ID."})
@@ -161,7 +161,7 @@ func EditGoal(c *gin.Context) {
 	}
 
 	missingFields := []string{}
-	for _, field := range []string{"purpose", "loss", "content", "phase"} {
+	for _, field := range []string{"purpose", "benefit", "content", "phase"} {
 		if _, ok := params[field]; !ok {
 			missingFields = append(missingFields, field)
 		}
@@ -172,17 +172,17 @@ func EditGoal(c *gin.Context) {
 		return
 	}
 
-	sql := `UPDATE goals SET content = ?, purpose = ?, loss = ?, phase = ? WHERE id = ?`
-	_, execErr := db.DB.Exec(sql, params["content"], params["purpose"], params["loss"], params["phase"], id)
+	sql := `UPDATE goals SET content = ?, purpose = ?, benefit = ?, phase = ? WHERE id = ?`
+	_, execErr := db.DB.Exec(sql, params["content"], params["purpose"], params["benefit"], params["phase"], id)
 
 	if execErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": execErr.Error()})
 		return
 	}
 
-	row := db.DB.QueryRow("SELECT id, user_id, content, purpose, loss, phase FROM goals WHERE id = ?", id)
+	row := db.DB.QueryRow("SELECT id, user_id, content, purpose, benefit, phase FROM goals WHERE id = ?", id)
 	var goal model.Goal
-	if err := row.Scan(&goal.ID, &goal.UserID, &goal.Content, &goal.Purpose, &goal.Loss, &goal.Phase); err != nil {
+	if err := row.Scan(&goal.ID, &goal.UserID, &goal.Content, &goal.Purpose, &goal.Benefit, &goal.Phase); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

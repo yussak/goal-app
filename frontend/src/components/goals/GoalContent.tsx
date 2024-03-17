@@ -19,7 +19,7 @@ const GoalContent = ({ goal }: Props) => {
         <Typography variant="body1">
           {goal.content}
           {/* <p>purpose: {goal.purpose}</p>
-              <p>loss: {goal.loss}</p>
+              <p>benefit: {goal.benefit}</p>
               <p>phase: {goal.phase}</p>
               <p>progress: {goal.progress}</p> */}
           {/* <p>id（デバッグ用）: {goal.id}</p> */}

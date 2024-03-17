@@ -1,5 +1,8 @@
 import { GoalFormData } from "@/types";
-import { validationRules } from "@/utils/validationRules";
+import {
+  optionalValidationRules,
+  requireValidationRules,
+} from "@/utils/validationRules";
 import {
   Button,
   Container,
@@ -37,7 +40,7 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
   useEffect(() => {
     setValue("content", goalData.content);
     setValue("purpose", goalData.purpose);
-    setValue("loss", goalData.loss);
+    setValue("benefit", goalData.benefit);
     setValue("phase", goalData.phase);
   }, [goalData]);
 
@@ -46,32 +49,32 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
           <TextField
-            {...register("content", validationRules)}
+            {...register("content", requireValidationRules)}
             error={!!errors.content}
             helperText={errors.content?.message}
           />
           <TextField
-            {...register("purpose", validationRules)}
+            {...register("purpose", optionalValidationRules)}
             error={!!errors.purpose}
             helperText={errors.purpose?.message}
           />
           <TextField
-            {...register("loss", validationRules)}
-            error={!!errors.loss}
-            helperText={errors.loss?.message}
+            {...register("benefit", optionalValidationRules)}
+            error={!!errors.benefit}
+            helperText={errors.benefit?.message}
           />
           <Controller
             control={control}
             name="phase"
             defaultValue={goalData.phase}
             rules={{
-              validate: (value) => ["予定", "WIP", "完了"].includes(value),
+              validate: (value) => ["plan", "wip", "done"].includes(value),
             }}
             render={({ field }) => (
               <Select {...field}>
-                <MenuItem value="予定">{t("goal.phase_scheduled")}</MenuItem>
-                <MenuItem value="WIP">{t("goal.phase_wip")}</MenuItem>
-                <MenuItem value="完了">{t("goal.phase_done")}</MenuItem>
+                <MenuItem value="plan">{t("goal.phase_scheduled")}</MenuItem>
+                <MenuItem value="wip">{t("goal.phase_wip")}</MenuItem>
+                <MenuItem value="done">{t("goal.phase_done")}</MenuItem>
               </Select>
             )}
           ></Controller>

@@ -12,7 +12,7 @@ export type Goal = {
   UpdatedAt: Date;
   content: string;
   purpose: string;
-  loss: string;
+  benefit: string;
   progress: number;
   phase: string;
 };
@@ -21,7 +21,7 @@ export type Goal = {
 export type GoalFormData = {
   content: string;
   purpose: string;
-  loss: string;
+  benefit: string;
   phase: string;
 };
 

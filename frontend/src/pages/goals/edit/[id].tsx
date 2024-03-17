@@ -16,7 +16,7 @@ const EditGoal: CustomNextPage = () => {
   const [goalData, SetGoalData] = useState<GoalFormData>({
     content: "",
     purpose: "",
-    loss: "",
+    benefit: "",
     phase: "",
   });
 
@@ -35,7 +35,7 @@ const EditGoal: CustomNextPage = () => {
         ...goalData,
         content: data.content,
         purpose: data.purpose,
-        loss: data.loss,
+        benefit: data.benefit,
         phase: data.phase,
       });
     } catch (error) {
