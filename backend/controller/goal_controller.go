@@ -32,7 +32,7 @@ func fetchGoalsFromDB(userId, phase string) ([]model.Goal, error) {
 	var rows *sql.Rows
 	var err error
 
-	if phase == "ALL" {
+	if phase == "all" {
 		// idに直接値を渡すのでなくプレースホルダとして渡すことでSQLインジェクションを防止している
 		rows, err = db.DB.Query("SELECT * FROM goals WHERE user_id = ?", userId)
 	} else {
