@@ -65,13 +65,13 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
             name="phase"
             defaultValue={goalData.phase}
             rules={{
-              validate: (value) => ["予定", "WIP", "完了"].includes(value),
+              validate: (value) => ["plan", "wip", "done"].includes(value),
             }}
             render={({ field }) => (
               <Select {...field}>
-                <MenuItem value="予定">{t("goal.phase_scheduled")}</MenuItem>
-                <MenuItem value="WIP">{t("goal.phase_wip")}</MenuItem>
-                <MenuItem value="完了">{t("goal.phase_done")}</MenuItem>
+                <MenuItem value="plan">{t("goal.phase_scheduled")}</MenuItem>
+                <MenuItem value="wip">{t("goal.phase_wip")}</MenuItem>
+                <MenuItem value="done">{t("goal.phase_done")}</MenuItem>
               </Select>
             )}
           ></Controller>
