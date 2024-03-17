@@ -23,7 +23,7 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
   const goalId = router.query.id;
 
-  // todo:addGoal一箇所でしか使ってないのでここじゃなくそこに書く
+  // 一箇所でしか使ってないのでそこに書く？いや今後作成処理の場所を変える可能性はありそうだが、ここにあれば読み込むだけで済むので残す。ただcontextじゃなくmodulesに移動するとは思う
   const addGoal = async (data: GoalFormData) => {
     const params = {
       ...data,
