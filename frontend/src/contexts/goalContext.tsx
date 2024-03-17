@@ -37,6 +37,7 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, [goalId]);
 
+  // todo:addGoal一箇所でしか使ってないのでここじゃなくそこに書く
   const addGoal = async (data: GoalFormData) => {
     const params = {
       ...data,
