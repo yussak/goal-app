@@ -34,7 +34,6 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
       const newGoalId = res.data.id;
       router.push(`/goals/${newGoalId}`);
-      mutate(`/${userId}/goals`);
     } catch (error) {
       console.error(error);
     }
