@@ -49,7 +49,7 @@ const GoalForm = () => {
         <label htmlFor="content">{t("goal_create.label1")}</label>
         {renderTextField("content", register, requireValidationRules, errors)}
         <label htmlFor="purpose">{t("goal_create.label2")}</label>
-        {renderTextField("purpose", register, requireValidationRules, errors)}
+        {renderTextField("purpose", register, optionalValidationRules, errors)}
         <label htmlFor="benefit">{t("goal_create.label3")}</label>
         {renderTextField("benefit", register, optionalValidationRules, errors)}
         <Button type="submit" variant="contained" disabled={!isValid}>

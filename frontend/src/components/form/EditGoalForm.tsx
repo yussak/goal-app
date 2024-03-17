@@ -1,5 +1,8 @@
 import { GoalFormData } from "@/types";
-import { validationRules } from "@/utils/validationRules";
+import {
+  optionalValidationRules,
+  requireValidationRules,
+} from "@/utils/validationRules";
 import {
   Button,
   Container,
@@ -46,17 +49,17 @@ const EditGoalForm = ({ goalData, editGoal }: EditGoalFormProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
           <TextField
-            {...register("content", validationRules)}
+            {...register("content", requireValidationRules)}
             error={!!errors.content}
             helperText={errors.content?.message}
           />
           <TextField
-            {...register("purpose", validationRules)}
+            {...register("purpose", optionalValidationRules)}
             error={!!errors.purpose}
             helperText={errors.purpose?.message}
           />
           <TextField
-            {...register("benefit", validationRules)}
+            {...register("benefit", optionalValidationRules)}
             error={!!errors.benefit}
             helperText={errors.benefit?.message}
           />
