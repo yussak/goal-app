@@ -8,13 +8,33 @@ import { CustomNextPage } from "@/types/custom-next-page";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { useMilestone } from "@/contexts/mileContext";
-import { useGoals } from "@/contexts/goalContext";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { axios } from "@/utils/axios";
+import { Goal } from "@/types";
 
 const GoalDetail: CustomNextPage = () => {
   const { data: session } = useSession();
-  const { goal } = useGoals();
-  const { milestones } = useMilestone();
   const { t } = useTranslation();
+  const router = useRouter();
+  const id = router.query.id;
+  const [goal, setGoal] = useState<Goal | null>(null);
+  const { milestones } = useMilestone();
+
+  useEffect(() => {
+    if (id) {
+      getGoalDetails(id as string);
+    }
+  }, [id]);
+
+  const getGoalDetails = async (goalId: string) => {
+    try {
+      const { data } = await axios.get(`/goals/${goalId}`);
+      setGoal(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>

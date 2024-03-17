@@ -1,12 +1,5 @@
 import { Goal, GoalFormData } from "@/types";
-import {
-  FC,
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { FC, ReactNode, createContext, useContext, useState } from "react";
 import { mutate } from "swr";
 import { useSession } from "next-auth/react";
 import { axios } from "../utils/axios";
@@ -16,7 +9,6 @@ type ContextType = {
   goal: Goal | null;
   addGoal: (data: GoalFormData) => void;
   deleteGoal: (id: string) => void;
-  getGoalDetails: (id: string) => void;
 };
 
 const GoalsContext = createContext<ContextType>({} as ContextType);
@@ -30,12 +22,6 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const userId = session?.user ? session.user.id : null;
   const router = useRouter();
   const goalId = router.query.id;
-
-  useEffect(() => {
-    if (goalId) {
-      getGoalDetails(goalId as string);
-    }
-  }, [goalId]);
 
   // todo:addGoal一箇所でしか使ってないのでここじゃなくそこに書く
   const addGoal = async (data: GoalFormData) => {
@@ -65,20 +51,10 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
-  const getGoalDetails = async (goalId: string) => {
-    try {
-      const { data } = await axios.get(`/goals/${goalId}`);
-      setGoal(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const value = {
     goal,
     addGoal,
     deleteGoal,
-    getGoalDetails,
   };
 
   return (
