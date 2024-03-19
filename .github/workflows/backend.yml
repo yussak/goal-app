@@ -58,7 +58,9 @@ jobs:
             --services ${{ env.ECS_SERVICE_BACKEND }} \
             --query 'services[0].networkConfiguration' \
             --output json)
-          echo "NETWORK_CONFIG=$NETWORK_CONFIG" >> $GITHUB_ENV
+          echo 'NETWORK_CONFIG<<EOF' >> $GITHUB_ENV
+          echo "$NETWORK_CONFIG" >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
 
       - name: Run database migration task
         run: |
