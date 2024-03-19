@@ -37,6 +37,12 @@ export default function Sidebar() {
       alwaysShow: session?.user,
     },
     {
+      text: "sidebar.daily_report_index",
+      icon: <ListIcon />,
+      link: "/daily_reports/",
+      alwaysShow: session?.user,
+    },
+    {
       text: "sidebar.signup",
       icon: <AddIcon />,
       link: "/auth/signup",
