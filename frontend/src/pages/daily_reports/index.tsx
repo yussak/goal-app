@@ -2,17 +2,66 @@ import { CustomNextPage } from "@/types/custom-next-page";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useSession } from "next-auth/react";
-
-const TAB_PHASE_LIST = ["all", "plan", "wip", "done"];
+import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
+import { Button, Stack, TextField } from "@mui/material";
+import { validationRules } from "@/utils/validationRules";
 
 const DailyReports: CustomNextPage = () => {
   const { t } = useTranslation();
   const { data: session } = useSession();
-  const userId = session?.user ? session.user.id : null;
+
+  type FormData = {
+    content: string;
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<FormData>({ mode: "onChange" });
+
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    console.log("submit");
+  };
+
+  const renderTextField = (
+    name: string,
+    // todo:anyじゃなくしたい
+    register: any,
+    validationRules: any,
+    errors: FieldErrors
+  ) => {
+    return (
+      <Stack spacing={2}>
+        <TextField
+          label={name}
+          id={name}
+          {...register(name, validationRules)}
+          error={!!errors[name]}
+          helperText={errors[name]?.message}
+          data-testid={`error-${name}`}
+        />
+      </Stack>
+    );
+  };
 
   return (
     <div>
+      {/* todo: tで書き換え */}
+      {/* todo:バリデーション追加 */}
+      {/* todo:バリデーションに沿ってボタン制御する */}
+      {/* todo:エラーメッセージを表示する */}
+      {/* todo:フォームを広くする */}
+      {/* todo:追加処理実装 */}
+      {/* todo:すでにその日に追加されているならそれ以上追加できなくする（一日１件だけ追加可能にする） */}
       <h2>日報一覧</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="content">その日学んだことなどを書いてみましょう</label>
+        {renderTextField("content", register, validationRules, errors)}
+        <Button type="submit" variant="contained" disabled={!isValid}>
+          追加
+        </Button>
+      </form>
     </div>
   );
 };
