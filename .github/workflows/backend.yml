@@ -70,7 +70,7 @@ jobs:
             --overrides '{
               "containerOverrides": [{
                 "name": "${{ env.CONTAINER_NAME }}",
-                "command": ["migrate", "-path", "db/migrations", "-database", "mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@tcp(${{ env.DB_HOST }})/${{ secrets.DB_NAME }}", up"]
+                "command": ["migrate", "-path", "db/migrations", "-database", "mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@tcp(${{ env.DB_HOST }})/${{ secrets.DB_NAME }}", "up"]
               }]
             }' \
             --network-configuration '${{ env.NETWORK_CONFIG }}' \
