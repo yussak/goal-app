@@ -5,10 +5,12 @@ import { useSession } from "next-auth/react";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import { Button, Stack, TextField } from "@mui/material";
 import { validationRules } from "@/utils/validationRules";
+import { axios } from "@/utils/axios";
 
 const DailyReports: CustomNextPage = () => {
   const { t } = useTranslation();
   const { data: session } = useSession();
+  const userId = session?.user ? session.user.id : null;
 
   type FormData = {
     content: string;
@@ -21,7 +23,8 @@ const DailyReports: CustomNextPage = () => {
   } = useForm<FormData>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log("submit");
+    console.log("submit", { ...data, userId });
+    axios.post("/report", { ...data, userId });
   };
 
   const renderTextField = (
@@ -47,13 +50,13 @@ const DailyReports: CustomNextPage = () => {
 
   return (
     <div>
-      {/* todo: tで書き換え */}
+      {/* todo:追加処理実装→とりあえず保存はできた */}
+      {/* todo:すでにその日に追加されているならそれ以上追加できなくする（一日１件だけ追加可能にする） */}
       {/* todo:バリデーション追加 */}
       {/* todo:バリデーションに沿ってボタン制御する */}
       {/* todo:エラーメッセージを表示する */}
       {/* todo:フォームを広くする */}
-      {/* todo:追加処理実装 */}
-      {/* todo:すでにその日に追加されているならそれ以上追加できなくする（一日１件だけ追加可能にする） */}
+      {/* todo: tで書き換え */}
       <h2>日報一覧</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="content">その日学んだことなどを書いてみましょう</label>

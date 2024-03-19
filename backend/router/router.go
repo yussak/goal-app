@@ -29,4 +29,7 @@ func SetupRouter(r *gin.Engine) {
 	r.GET("/milestones/:id/todos", controller.FetchTodos)
 	r.DELETE("/todos/:id", controller.DeleteTodo)
 	r.PUT("/todos/:id/isCompleted", controller.UpdateTodoCheck)
+
+	r.POST("/report", controller.AddReport)
+
 }
