@@ -770,7 +770,7 @@ resource "aws_db_instance" "goaldb" {
 
   vpc_security_group_ids = [module.mysql_sg.security_group_id]
 
-  parameter_group_name = aws_db_option_group.app.name
+  parameter_group_name = aws_db_parameter_group.app.name
   option_group_name    = aws_db_option_group.app.name
   db_subnet_group_name = aws_db_subnet_group.app.name
 
