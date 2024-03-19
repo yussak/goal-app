@@ -19,6 +19,10 @@ env:
   ECS_CLUSTER: app-cluster
   ECS_SERVICE_BACKEND: backend
 
+  # todo:この値でいいのか確認
+  ECS_TASK_DEFINITION: app-task
+  CONTAINER_NAME: backend
+
 jobs:
   deploy:
     name: Deploy
@@ -47,10 +51,50 @@ jobs:
         run: |
           echo "DB_HOST=$(aws ssm get-parameter --name /db/hostname --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
 
-      # todo:本番デプロイ時に実行できるかを確認
-      - name: Run DB migration
+      - name: Get ECS service network configuration
         run: |
-          migrate -path db/migrations -database "mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@tcp(${{ env.DB_HOST }})/${{ secrets.DB_NAME }}" up
+          NETWORK_CONFIG=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE_BACKEND }} \
+            --query 'services[0].networkConfiguration' \
+            --output json)
+          echo "NETWORK_CONFIG=$NETWORK_CONFIG" >> $GITHUB_ENV
+
+      - name: Run database migration task
+        run: |
+          aws ecs run-task \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --task-definition ${{ env.ECS_TASK_DEFINITION }} \
+            --overrides '{
+              "containerOverrides": [{
+                "name": "${{ env.CONTAINER_NAME }}",
+                "command": ["migrate -path db/migrations -database "mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@tcp(${{ env.DB_HOST }})/${{ secrets.DB_NAME }}" up"]
+              }]
+            }' \
+            --network-configuration '${{ env.NETWORK_CONFIG }}' \
+            --launch-type FARGATE
+      # todo:本番デプロイ時に実行できるかを確認
+      # - name: Run DB migration
+      # run: |
+      #   migrate -path db/migrations -database "mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@tcp(${{ env.DB_HOST }})/${{ secrets.DB_NAME }}" up
+      # run: |
+      #   migrate -path db/migrations -database "mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@tcp(${{ env.DB_HOST }})/${{ secrets.DB_NAME }}" up
+      #   aws ecs run-task \
+      #   --cluster ${{ env.ECS_CLUSTER }} \
+      #   --task-definition ${{ env.ECS_TASK_DEFINITION }} \
+      #   --overrides '{
+      #     "containerOverrides": [{
+      #       "name": "${{ env.CONTAINER_NAME }}",
+      #       "command": ["migrate", "-path", "/migrations", "-database", "mysql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@tcp(${{ secrets.DB_HOST }})/${{ secrets.DB_NAME }}", "up"]
+      #     }]
+      #   }' \
+      #   --launch-type FARGATE \
+      #   --network-configuration '{
+      #     "awsvpcConfiguration": {
+      #       "subnets": ["${{ secrets.PRIVATE_SUBNET_ID }}"],
+      #       "securityGroups": ["${{ secrets.SECURITY_GROUP_ID }}"]
+      #     }
+      #   }'
 
       - name: Login to Amazon ECR
         id: login-ecr
