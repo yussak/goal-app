@@ -19,12 +19,24 @@ const DailyReports: CustomNextPage = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isValid },
   } = useForm<FormData>({ mode: "onChange" });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log("submit", { ...data, userId });
-    axios.post("/report", { ...data, userId });
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    await addReport(data);
+  };
+
+  const addReport = async (data: FormData) => {
+    try {
+      await axios.post("/report", { ...data, userId });
+    } catch (err: any) {
+      setError("content", {
+        type: "manual",
+        message: err.response.data.error,
+      });
+      console.error(err.response.data.error);
+    }
   };
 
   const renderTextField = (
@@ -51,7 +63,7 @@ const DailyReports: CustomNextPage = () => {
   return (
     <div>
       {/* todo:追加処理実装→とりあえず保存はできた */}
-      {/* todo:すでにその日に追加されているならそれ以上追加できなくする（一日１件だけ追加可能にする） */}
+      {/* todo:すでにその日に追加されているならそれ以上追加できなくする（一日１件だけ追加可能にする）→できた */}
       {/* todo:バリデーション追加 */}
       {/* todo:バリデーションに沿ってボタン制御する */}
       {/* todo:エラーメッセージを表示する */}

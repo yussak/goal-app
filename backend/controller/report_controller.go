@@ -21,11 +21,10 @@ func AddReport(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// JSTにしている
-	JST := time.FixedZone("Asia/Tokyo", 9*60*60)
 
-	// 日報の投稿年月日をJSTで取得
-	req.ReportDate = time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, JST)
+	// 日報の投稿年月日を取得
+	// 以前JSTで取得していたが、GoだけでなくMySQL側も対応が必要そうなのと別にUTCでも問題ない気がしているので以下で進めている
+	req.ReportDate = time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
 
 	// ユーザーIDと日付から重複チェック
 	// 一日一件だけ追加可能にするため、あるユーザーがすでにその日の投稿をしているか確認。していない場合のみ追加可能にする
@@ -47,7 +46,7 @@ func AddReport(c *gin.Context) {
 	_, execErr := db.DB.Exec(sql, req.ID, req.UserID, req.Content, req.ReportDate)
 
 	if execErr != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": execErr.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error4": execErr.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, req)
