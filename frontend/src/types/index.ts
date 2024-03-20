@@ -62,3 +62,12 @@ export type signupFormData = {
   email: string;
   password: string;
 };
+
+export type Report = {
+  id: string;
+  userId: string;
+  CreatedAt: Date;
+  UpdatedAt: Date;
+  content: string;
+  reportDate: Date;
+};
