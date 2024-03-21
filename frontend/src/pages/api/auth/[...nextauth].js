@@ -4,10 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 // todo:本番デプロイ時にこれでログインできるか確認
-// const AUTH_URL = "http://backend:5000/auth/login";
-// const AUTH_URL = process.env.BACKEND_URL + "/auth/login";
-// const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const apiUrl = process.env.BACKEND_URL;
+const API_URL = process.env.BACKEND_URL;
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -16,6 +13,7 @@ export default NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
+    // todo:credentials廃止（フォームなども廃止）
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -40,27 +38,28 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user }) {
       const id = user?.id;
       const name = user?.name;
       const email = user?.email;
       try {
         const userExistsResponse = await axios.get(
-          `${apiUrl}/auth/user-exists?email=${email}`
+          // todo:emailをクエリで渡すのはよくなさそうなので確認
+          `${API_URL}/auth/user-exists?email=${email}`
         );
         const userExists = userExistsResponse.data.exists;
         let response;
-        if (userExists) {
-          response = await axios.post(`${apiUrl}/auth/login`, {
-            email,
-          });
-        } else {
-          response = await axios.post(`${apiUrl}/auth/signup`, {
+
+        if (!userExists) {
+          response = await axios.post(`${API_URL}/auth/signup`, {
             id,
             name,
             email,
           });
         }
+        response = await axios.post(`${API_URL}/auth/login`, {
+          email,
+        });
 
         if (response.status === 200) {
           const userData = response.data.user;
@@ -78,10 +77,10 @@ export default NextAuth({
         return false;
       }
     },
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       return baseUrl;
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user?.id;
         token.name = user?.name;
@@ -89,7 +88,7 @@ export default NextAuth({
       }
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.email = token.email;
