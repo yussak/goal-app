@@ -37,12 +37,6 @@ export default function Sidebar() {
       alwaysShow: session?.user,
     },
     {
-      text: "sidebar.signup",
-      icon: <AddIcon />,
-      link: "/auth/signup",
-      alwaysShow: !session?.user,
-    },
-    {
       text: "sidebar.login",
       icon: <LoginIcon />,
       link: "/auth/login",

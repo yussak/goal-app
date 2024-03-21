@@ -9,9 +9,8 @@ const AuthGuard = ({ children }: { children: ReactNode }): any => {
   useEffect(() => {
     if (
       // 未ログインで認証が必要なページにアクセスしたらログインページにリダイレクトする
-      // ログインまたは新規登録ページの時はリダイレクトしない
+      // ログインページの時はリダイレクトしない
       status === "unauthenticated" &&
-      router.pathname !== "/auth/signup" &&
       router.pathname !== "/auth/login"
     ) {
       router.push("/auth/login");
