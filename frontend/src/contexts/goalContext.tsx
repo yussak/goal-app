@@ -1,9 +1,8 @@
-import { Goal, GoalFormData } from "@/types";
+import { Goal } from "@/types";
 import { FC, ReactNode, createContext, useContext, useState } from "react";
 import { mutate } from "swr";
 import { useSession } from "next-auth/react";
 import { axios } from "../utils/axios";
-import { useRouter } from "next/router";
 
 type ContextType = {
   goal: Goal | null;

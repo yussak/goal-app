@@ -23,7 +23,12 @@ const GoalForm = () => {
   } = useForm<GoalFormData>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<GoalFormData> = async (data) => {
-    await useAddGoal(data, userId, router);
+    try {
+      const newGoalId = await useAddGoal(data, userId, router);
+      router.push(`/goals/${newGoalId}`);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const renderTextField = (
