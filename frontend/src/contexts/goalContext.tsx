@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 
 type ContextType = {
   goal: Goal | null;
-  addGoal: (data: GoalFormData) => void;
   deleteGoal: (id: string) => void;
 };
 
@@ -15,29 +14,11 @@ const GoalsContext = createContext<ContextType>({} as ContextType);
 
 export const useGoals = () => useContext(GoalsContext);
 
-// 状態を変更する関数ならcontext, そうじゃないならutilの方針で一旦進める;
+// 状態を変更する関数ならhooks, そうじゃないならutilの方針で一旦進める
 export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { data: session } = useSession();
   const [goal, setGoal] = useState<Goal | null>(null);
   const userId = session?.user ? session.user.id : null;
-  const router = useRouter();
-  const goalId = router.query.id;
-
-  // 一箇所でしか使ってないのでそこに書く？いや今後作成処理の場所を変える可能性はありそうだが、ここにあれば読み込むだけで済むので残す。ただcontextじゃなくmodulesに移動するとは思う
-  const addGoal = async (data: GoalFormData) => {
-    const params = {
-      ...data,
-      userId: userId,
-    };
-    try {
-      const res = await axios.post("/goal", params);
-
-      const newGoalId = res.data.id;
-      router.push(`/goals/${newGoalId}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const deleteGoal = async (goalId: string) => {
     // 意図的にエラー出してダイアログ消えないことを確認するコード
@@ -52,7 +33,6 @@ export const GoalsProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const value = {
     goal,
-    addGoal,
     deleteGoal,
   };
 

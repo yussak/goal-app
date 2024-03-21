@@ -6,11 +6,15 @@ import {
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
-import { useGoals } from "@/contexts/goalContext";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useAddGoal } from "@/utils/goals";
 
 const GoalForm = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
   const { t } = useTranslation();
-  const { addGoal } = useGoals();
+  const userId = session?.user ? session.user.id : null;
 
   const {
     register,
@@ -18,8 +22,8 @@ const GoalForm = () => {
     formState: { errors, isValid },
   } = useForm<GoalFormData>({ mode: "onChange" });
 
-  const onSubmit: SubmitHandler<GoalFormData> = (data) => {
-    addGoal(data);
+  const onSubmit: SubmitHandler<GoalFormData> = async (data) => {
+    await useAddGoal(data, userId, router);
   };
 
   const renderTextField = (
