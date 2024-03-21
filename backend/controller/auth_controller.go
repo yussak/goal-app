@@ -142,15 +142,3 @@ func DecodeToken(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid token"})
 	}
 }
-
-func Logout(c *gin.Context) {
-	http.SetCookie(c.Writer, &http.Cookie{
-		Name:     "token",
-		Value:    "",
-		Path:     "/",
-		HttpOnly: true,
-		MaxAge:   -1,
-	})
-
-	c.JSON(http.StatusOK, gin.H{"message": "Logout successfully"})
-}
