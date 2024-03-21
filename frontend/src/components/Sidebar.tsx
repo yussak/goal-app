@@ -6,7 +6,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useTranslation } from "next-i18next";
@@ -37,15 +37,9 @@ export default function Sidebar() {
       alwaysShow: session?.user,
     },
     {
-      text: "sidebar.signup",
-      icon: <AddIcon />,
-      link: "/auth/signup",
-      alwaysShow: !session?.user,
-    },
-    {
       text: "sidebar.login",
+      onClick: () => signIn(),
       icon: <LoginIcon />,
-      link: "/auth/login",
       alwaysShow: !session?.user,
     },
     {
