@@ -52,11 +52,6 @@ export type Todo = {
   UpdatedAt: Date;
 };
 
-export type loginFormData = {
-  email: string;
-  password: string;
-};
-
 export type signupFormData = {
   name: string;
   email: string;

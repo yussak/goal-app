@@ -27,7 +27,13 @@ const Signup = () => {
     }
   };
 
-  return <SignupForm signup={signup} />;
+  return (
+    <div>
+      asdf
+      {/* todo:googleログインするならsignup login区別必要なさそうなので確認→email認証あるならわからん */}
+      {/* <SignupForm signup={signup} /> */}
+    </div>
+  );
 };
 
 export default Signup;

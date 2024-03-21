@@ -1,40 +1,17 @@
 import NextAuth from "next-auth";
 import axios from "axios";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
 
 // todo:本番デプロイ時にこれでログインできるか確認
 const API_URL = process.env.BACKEND_URL;
 
+// todo:何をやってるかわからないところはclaudeにきいてコメントを書く
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-    // todo:credentials廃止（フォームなども廃止）
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: { label: "email", type: "text" },
-        password: { label: "Password", type: "password" },
-      },
-      authorize: async (credentials) => {
-        try {
-          const res = await axios.post(AUTH_URL, credentials);
-          if (res.data && res.data.user) {
-            const user = res.data.user;
-            return user;
-          } else {
-            console.error("Unexpected response:", res.data);
-            return Promise.reject("Authorization failed");
-          }
-        } catch (error) {
-          console.error("era-desu", error);
-          return Promise.reject(null);
-        }
-      },
     }),
   ],
   callbacks: {
@@ -43,7 +20,6 @@ export default NextAuth({
       const name = user?.name;
       const email = user?.email;
       try {
-        // todo:emailをクエリで渡すのはよくなさそうなので確認
         const userExistsResponse = await axios.post(
           `${API_URL}/auth/user-exists`,
           { email }
