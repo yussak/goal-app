@@ -4,12 +4,10 @@ import (
 	"database/sql"
 	"math/rand"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/YusukeSakuraba/goal-app/internal/db"
 	"github.com/YusukeSakuraba/goal-app/model"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
 )
@@ -56,16 +54,16 @@ func Signup(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	var user model.User
-	var dbUser model.User
-
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	var dbUser model.User
 	row := db.DB.QueryRow("SELECT * FROM users WHERE email =?", user.Email)
 
 	err := row.Scan(&dbUser.ID, &dbUser.Name, &dbUser.Email)
+	// todo:早期リターン
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// If the email does not exist
@@ -77,21 +75,6 @@ func Login(c *gin.Context) {
 		}
 	}
 
-	// The user is authenticated, add your code here
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":    dbUser.ID,
-		"name":  dbUser.Name,
-		"email": dbUser.Email,
-	})
-
-	// Replace 'your-secret' with your own secret key
-	mySecret := os.Getenv("MY_SECRET")
-	tokenString, err := token.SignedString([]byte(mySecret))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating the token"})
-		return
-	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"message": "User authenticated successfully",
 		"user": gin.H{
@@ -99,6 +82,5 @@ func Login(c *gin.Context) {
 			"name":  dbUser.Name,
 			"email": dbUser.Email,
 		},
-		"token": tokenString,
 	})
 }
