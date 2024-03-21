@@ -19,7 +19,6 @@ export type Goal = {
 
 // フォーム用に用意した方がいい
 export type GoalFormData = {
-  userId: string;
   content: string;
   purpose: string;
   benefit: string;
