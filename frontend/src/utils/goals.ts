@@ -5,8 +5,7 @@ import { mutate } from "swr";
 export const useAddGoal = async (
   // todo:userIdもGoalFormDataに含めるべきでは
   data: GoalFormData,
-  //   todo:nullになることあるのか？
-  userId: string | null,
+  userId: string,
   router: any
   //   router: ReturnType<typeof import("next/router").useRouter>
 ) => {

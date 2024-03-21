@@ -24,6 +24,8 @@ const GoalForm = () => {
   } = useForm<GoalFormData>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<GoalFormData> = async (data) => {
+    if (userId === null) throw new Error("userId is null");
+
     try {
       const newGoalId = await useAddGoal(data, userId, router);
       router.push(`/goals/${newGoalId}`);
