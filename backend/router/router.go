@@ -9,10 +9,11 @@ func SetupRouter(r *gin.Engine) {
 
 	r.GET("/healthcheck", controller.Healthcheck)
 
-	r.GET("/auth/user-exists", controller.UserExists)
+	r.POST("/auth/user-exists", controller.UserExists)
 
 	r.POST("/auth/signup", controller.Signup)
 	r.POST("/auth/login", controller.Login)
+	// todo:これ使うか確認
 	r.POST("/auth/decodeToken", controller.DecodeToken)
 
 	r.GET("/:userId/goals", controller.FetchUserGoals)

@@ -43,9 +43,10 @@ export default NextAuth({
       const name = user?.name;
       const email = user?.email;
       try {
-        const userExistsResponse = await axios.get(
-          // todo:emailをクエリで渡すのはよくなさそうなので確認
-          `${API_URL}/auth/user-exists?email=${email}`
+        // todo:emailをクエリで渡すのはよくなさそうなので確認
+        const userExistsResponse = await axios.post(
+          `${API_URL}/auth/user-exists`,
+          { email }
         );
         const userExists = userExistsResponse.data.exists;
         let response;
