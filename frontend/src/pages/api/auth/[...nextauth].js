@@ -24,6 +24,7 @@ export default NextAuth({
           `${API_URL}/auth/user-exists`,
           { email }
         );
+        // todo:これfunc Loginでuserあるか判定してる気がするがそれ使えないか確認
         const userExists = userExistsResponse.data.exists;
         let response;
 
