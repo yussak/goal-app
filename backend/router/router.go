@@ -9,6 +9,8 @@ func SetupRouter(r *gin.Engine) {
 
 	r.GET("/healthcheck", controller.Healthcheck)
 
+	r.GET("/auth/user-exists", controller.UserExists)
+
 	r.POST("/auth/signup", controller.Signup)
 	r.POST("/auth/login", controller.Login)
 	r.POST("/auth/decodeToken", controller.DecodeToken)

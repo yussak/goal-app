@@ -17,6 +17,20 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+func UserExists(c *gin.Context) {
+	email := c.Query("email")
+
+	var count int
+	err := db.DB.QueryRow("SELECT COUNT(*) FROM users WHERE email = ?", email).Scan(&count)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	exists := count > 0
+	c.JSON(http.StatusOK, gin.H{"exists": exists})
+}
+
 func Signup(c *gin.Context) {
 	var user model.User
 
@@ -89,9 +103,16 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating the token"})
 		return
 	}
-	log.Println("Generated token: ", tokenString)
 
-	c.JSON(http.StatusOK, gin.H{"message": "User authenticated successfully", "user": dbUser, "token": tokenString})
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User authenticated successfully",
+		"user": gin.H{
+			"id":    dbUser.ID,
+			"name":  dbUser.Name,
+			"email": dbUser.Email,
+		},
+		"token": tokenString,
+	})
 }
 
 func DecodeToken(c *gin.Context) {

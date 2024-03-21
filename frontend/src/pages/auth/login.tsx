@@ -15,7 +15,12 @@ const Login = () => {
     });
   };
 
-  return <LoginForm loginUser={loginUser} />;
+  return (
+    <div>
+      <LoginForm loginUser={loginUser} />
+      <button onClick={() => signIn()}>ログイン</button>
+    </div>
+  );
 };
 
 export default Login;
