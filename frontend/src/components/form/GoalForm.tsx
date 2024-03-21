@@ -4,13 +4,12 @@ import {
   requireValidationRules,
 } from "@/utils/validationRules";
 import { Button, Container, Stack, TextField } from "@mui/material";
-import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useAddGoal } from "@/utils/goals";
 
-// todo:値が空でも追加できてしまう気がするので確認
 const GoalForm = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -24,7 +23,10 @@ const GoalForm = () => {
   } = useForm<GoalFormData>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<GoalFormData> = async (data) => {
-    if (userId === null) throw new Error("userId is null");
+    if (!userId) {
+      console.error("userId is undefined");
+      return;
+    }
 
     try {
       const newGoalId = await useAddGoal(data, userId, router);
@@ -34,39 +36,43 @@ const GoalForm = () => {
     }
   };
 
-  const renderTextField = (
-    name: string,
-    // todo:anyじゃなくしたい
-    register: any,
-    validationRules: any,
-    errors: FieldErrors
-  ) => {
-    return (
-      <Stack spacing={2}>
-        <TextField
-          label={name}
-          id={name}
-          {...register(name, validationRules)}
-          error={!!errors[name]}
-          helperText={errors[name]?.message}
-          data-testid={`error-${name}`}
-        />
-      </Stack>
-    );
-  };
-
   return (
     <Container>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="content">{t("goal_create.label1")}</label>
-        {renderTextField("content", register, requireValidationRules, errors)}
-        <label htmlFor="purpose">{t("goal_create.label2")}</label>
-        {renderTextField("purpose", register, optionalValidationRules, errors)}
-        <label htmlFor="benefit">{t("goal_create.label3")}</label>
-        {renderTextField("benefit", register, optionalValidationRules, errors)}
-        <Button type="submit" variant="contained" disabled={!isValid}>
-          追加
-        </Button>
+        <Stack spacing={2}>
+          <label htmlFor="content">{t("goal_create.label1")}</label>
+          <TextField
+            label="content"
+            id="content"
+            {...register("content", requireValidationRules)}
+            error={!!errors.content}
+            helperText={errors.content?.message}
+            data-testid="error-content"
+          />
+
+          <label htmlFor="purpose">{t("goal_create.label2")}</label>
+          <TextField
+            label="purpose"
+            id="purpose"
+            {...register("purpose", optionalValidationRules)}
+            error={!!errors.purpose}
+            helperText={errors.purpose?.message}
+            data-testid="error-purpose"
+          />
+
+          <label htmlFor="benefit">{t("goal_create.label3")}</label>
+          <TextField
+            label="benefit"
+            id="benefit"
+            {...register("benefit", optionalValidationRules)}
+            error={!!errors.benefit}
+            helperText={errors.benefit?.message}
+            data-testid="error-benefit"
+          />
+          <Button type="submit" variant="contained" disabled={!isValid}>
+            追加
+          </Button>
+        </Stack>
       </form>
     </Container>
   );
