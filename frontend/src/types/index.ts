@@ -18,8 +18,8 @@ export type Goal = {
 };
 
 // フォーム用に用意した方がいい
-// todo:userId含めたほうがいい気がするので確認
 export type GoalFormData = {
+  userId: string;
   content: string;
   purpose: string;
   benefit: string;

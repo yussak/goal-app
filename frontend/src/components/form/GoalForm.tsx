@@ -29,7 +29,8 @@ const GoalForm = () => {
     }
 
     try {
-      const newGoalId = await useAddGoal(data, userId, router);
+      const newGoalData = { ...data, userId };
+      const newGoalId = await useAddGoal(newGoalData);
       router.push(`/goals/${newGoalId}`);
     } catch (err) {
       console.error(err);

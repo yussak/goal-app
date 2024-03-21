@@ -2,16 +2,9 @@ import { GoalFormData } from "@/types";
 import { axios } from "./axios";
 import { mutate } from "swr";
 
-export const useAddGoal = async (
-  // todo:userIdもGoalFormDataに含めるべきでは
-  data: GoalFormData,
-  userId: string,
-  router: any
-  //   router: ReturnType<typeof import("next/router").useRouter>
-) => {
+export const useAddGoal = async (data: GoalFormData) => {
   const params = {
     ...data,
-    userId: userId,
   };
 
   try {
