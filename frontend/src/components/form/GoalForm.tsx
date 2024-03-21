@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useAddGoal } from "@/utils/goals";
 
+// todo:値が空でも追加できてしまう気がするので確認
 const GoalForm = () => {
   const { data: session } = useSession();
   const router = useRouter();
