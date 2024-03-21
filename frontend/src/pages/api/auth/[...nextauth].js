@@ -5,7 +5,6 @@ import GoogleProvider from "next-auth/providers/google";
 // todo:本番デプロイ時にこれでログインできるか確認
 const API_URL = process.env.BACKEND_URL;
 
-// todo:何をやってるかわからないところはclaudeにきいてコメントを書く
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
