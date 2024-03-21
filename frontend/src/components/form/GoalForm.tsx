@@ -8,7 +8,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useAddGoal } from "@/utils/goals";
+import { addGoal } from "@/utils/goals";
 
 const GoalForm = () => {
   const { data: session } = useSession();
@@ -30,7 +30,7 @@ const GoalForm = () => {
 
     try {
       const newGoalData = { ...data, userId };
-      const newGoalId = await useAddGoal(newGoalData);
+      const newGoalId = await addGoal(newGoalData);
       router.push(`/goals/${newGoalId}`);
     } catch (err) {
       console.error(err);

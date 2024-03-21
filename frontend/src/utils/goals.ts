@@ -2,7 +2,7 @@ import { GoalFormData } from "@/types";
 import { axios } from "./axios";
 import { mutate } from "swr";
 
-export const useAddGoal = async (data: GoalFormData) => {
+export const addGoal = async (data: GoalFormData) => {
   const params = {
     ...data,
   };
