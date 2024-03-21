@@ -24,10 +24,10 @@ export default NextAuth({
           `${API_URL}/auth/user-exists`,
           { email }
         );
-        // todo:これfunc Loginでuserあるか判定してる気がするがそれ使えないか確認
-        const userExists = userExistsResponse.data.exists;
-        let response;
 
+        const userExists = userExistsResponse.data.exists;
+
+        let response;
         if (!userExists) {
           response = await axios.post(`${API_URL}/auth/signup`, {
             id,

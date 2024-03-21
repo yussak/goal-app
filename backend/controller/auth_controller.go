@@ -13,7 +13,6 @@ import (
 )
 
 // userが存在しているか判定
-// todo:これfunc Loginでuserあるか判定してる気がするがそれ使えないか確認
 func UserExists(c *gin.Context) {
 	var user model.User
 	if err := c.ShouldBindJSON(&user); err != nil {
