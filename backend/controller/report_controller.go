@@ -28,7 +28,7 @@ func AddReport(c *gin.Context) {
 	req.ReportDate = time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
 
 	// ユーザーIDと日付から重複チェック
-	// 一日一件だけ追加可能にするため、あるユーザーがすでにその日の投稿をしているか確認。していない場合のみ追加可能にする
+	// 一日一件だけ追加可能にするため、あるユーザーがすでに今日の投稿をしているか確認。していない場合のみ追加可能にする
 	var count int
 	err := db.DB.QueryRow(`SELECT COUNT(*) FROM daily_reports WHERE user_id = ? AND report_date = ?`, req.UserID, req.ReportDate).Scan(&count)
 	if err != nil {
@@ -37,7 +37,7 @@ func AddReport(c *gin.Context) {
 	}
 
 	if count > 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "既にその日のレポートが存在します"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "既に今日のレポートが存在します"})
 		return
 	}
 
