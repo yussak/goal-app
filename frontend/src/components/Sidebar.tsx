@@ -17,6 +17,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import TranslateIcon from "@mui/icons-material/Translate";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 
 export default function Sidebar() {
   const { data: session } = useSession();
@@ -38,7 +39,7 @@ export default function Sidebar() {
     },
     {
       text: "sidebar.daily_report_index",
-      icon: <ListIcon />,
+      icon: <TextSnippetIcon />,
       link: "/daily_reports/",
       alwaysShow: session?.user,
     },
