@@ -110,3 +110,19 @@ func FetchReportDetails(c *gin.Context) {
 
 	c.JSON(http.StatusOK, report)
 }
+
+func DeleteReport(c *gin.Context) {
+	id := c.Param("reportId")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID must be provided"})
+		return
+	}
+
+	_, err := db.DB.Exec("DELETE FROM daily_reports WHERE id = ?", id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
+}

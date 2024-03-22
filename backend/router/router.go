@@ -36,5 +36,6 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("/report", controller.AddReport)
 	r.GET("/users/:userId/reports", controller.FetchReports)
 	r.GET("/reports/:reportId", controller.FetchReportDetails)
+	r.DELETE("/reports/:reportId", controller.DeleteReport)
 
 }

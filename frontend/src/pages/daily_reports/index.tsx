@@ -59,6 +59,15 @@ const DailyReports: CustomNextPage = () => {
     }
   };
 
+  const handleDelete = async (reportId: string) => {
+    try {
+      await axios.delete(`/reports/${reportId}`);
+      await fetchReports();
+    } catch (err: any) {
+      console.error(err.response.data.error);
+    }
+  };
+
   return (
     <div>
       {/* todo:すでにレポート投稿住みならページ表示時点でボタン押せなくする */}
@@ -91,6 +100,13 @@ const DailyReports: CustomNextPage = () => {
                   <Link href={`/daily_reports/${report.id}`}>
                     {report.content}
                   </Link>
+                  {session?.user?.id === report.userId && (
+                    <span>
+                      <button onClick={() => handleDelete(report.id)}>
+                        削除
+                      </button>
+                    </span>
+                  )}
                 </li>
               </div>
             );
