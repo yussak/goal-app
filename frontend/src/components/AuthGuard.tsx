@@ -11,10 +11,9 @@ const AuthGuard = ({ children }: { children: ReactNode }): any => {
       // 未ログインで認証が必要なページにアクセスしたらログインページにリダイレクトする
       // ログインページの時はリダイレクトしない
       status === "unauthenticated" &&
-      // todo:auth/login廃止したので書き換える
-      router.pathname !== "/auth/login"
+      router.pathname !== "/auth/signin"
     ) {
-      router.push("/auth/login");
+      router.push("/auth/signin");
     }
   }, [router, status]);
   if (status === "loading") return <p> loading</p>;
