@@ -25,7 +25,8 @@ func AddReport(c *gin.Context) {
 
 	// 日報の投稿年月日を取得
 	// 以前JSTで取得していたが、GoだけでなくMySQL側も対応が必要そうなのと別にUTCでも問題ない気がしているので以下で進めている
-	req.ReportDate = time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
+	now := time.Now()
+	req.ReportDate = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
 
 	// ユーザーIDと日付から重複チェック
 	// 一日一件だけ追加可能にするため、あるユーザーがすでに今日の投稿をしているか確認。していない場合のみ追加可能にする
