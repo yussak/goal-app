@@ -25,7 +25,8 @@ const Goals: CustomNextPage = () => {
   // phaseの指定があればそれに絞ったデータを取得する
   const fetchGoals = async (index: number) => {
     const phase = TAB_PHASE_LIST[index];
-    const res = await axios.get(`/${userId}/goals?phase=${phase}`);
+    // todo:try-catchにする
+    const res = await axios.get(`/users/${userId}/goals?phase=${phase}`);
     setGoals(res.data);
   };
 

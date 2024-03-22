@@ -13,10 +13,9 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("/auth/signup", controller.Signup)
 	r.POST("/auth/login", controller.Login)
 
-	r.GET("/:userId/goals", controller.FetchUserGoals)
-
-	r.POST("/goal", controller.AddGoal)
-	r.DELETE("/goal/:id", controller.DeleteGoal)
+	r.GET("/users/:userId/goals", controller.FetchUserGoals)
+	r.POST("/goals", controller.AddGoal)
+	r.DELETE("/goals/:id", controller.DeleteGoal)
 	r.GET("/goals/:id", controller.FetchGoalDetails)
 	r.PUT("/goals/edit/:id", controller.EditGoal)
 
@@ -28,4 +27,10 @@ func SetupRouter(r *gin.Engine) {
 	r.GET("/milestones/:id/todos", controller.FetchTodos)
 	r.DELETE("/todos/:id", controller.DeleteTodo)
 	r.PUT("/todos/:id/isCompleted", controller.UpdateTodoCheck)
+
+	r.POST("/reports", controller.AddReport)
+	r.GET("/users/:userId/reports", controller.FetchReports)
+	r.GET("/reports/:reportId", controller.FetchReportDetails)
+	r.DELETE("/reports/:reportId", controller.DeleteReport)
+
 }

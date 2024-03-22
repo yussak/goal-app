@@ -51,3 +51,13 @@ export type Todo = {
   CreatedAt: Date;
   UpdatedAt: Date;
 };
+
+export type Report = {
+  id: string;
+  userId: string;
+  // todo:createdAtにする（他の分も同様に）
+  CreatedAt: Date;
+  UpdatedAt: Date;
+  content: string;
+  reportDate: Date;
+};
