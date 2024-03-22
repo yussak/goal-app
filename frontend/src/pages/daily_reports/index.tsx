@@ -101,6 +101,8 @@ const DailyReports: CustomNextPage = () => {
                 <Link href={`/daily_reports/${report.id}`}>
                   {report.content}
                 </Link>
+                {/* todo:年月日のみに変える（今時間も入ってる） */}
+                {report.reportDate.toString()}
                 {session?.user?.id === report.userId && (
                   <span>
                     <button onClick={() => handleDelete(report.id)}>
