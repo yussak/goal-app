@@ -24,6 +24,7 @@ const DailyReports: CustomNextPage = () => {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors, isValid },
   } = useForm<FormData>({ mode: "onChange" });
 
@@ -46,11 +47,11 @@ const DailyReports: CustomNextPage = () => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     await addReport(data);
   };
-
   const addReport = async (data: FormData) => {
     try {
       await axios.post("/reports", { ...data, userId });
       await fetchReports();
+      reset();
     } catch (err: any) {
       setError("content", {
         type: "manual",
