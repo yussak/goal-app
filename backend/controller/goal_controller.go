@@ -79,7 +79,6 @@ func AddGoal(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, req)
-	return
 }
 
 func DeleteGoal(c *gin.Context) {
@@ -189,5 +188,4 @@ func EditGoal(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, goal)
-	return
 }
