@@ -51,7 +51,6 @@ func AddReport(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, req)
-	return
 }
 
 func FetchReports(c *gin.Context) {
