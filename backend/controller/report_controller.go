@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"database/sql"
 	"math/rand"
 	"net/http"
 	"time"
@@ -51,4 +52,41 @@ func AddReport(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, req)
 	return
+}
+
+func FetchReports(c *gin.Context) {
+	userId := c.Param("userId")
+
+	reports, err := fetchReportsFromDB(userId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, reports)
+}
+
+func fetchReportsFromDB(userId string) ([]model.DailyReport, error) {
+	reports := []model.DailyReport{}
+
+	var rows *sql.Rows
+	var err error
+
+	rows, err = db.DB.Query("SELECT * FROM daily_reports WHERE user_id = ?", userId)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var report model.DailyReport
+		err = rows.Scan(&report.ID, &report.UserID, &report.ReportDate, &report.Content, &report.CreatedAt, &report.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+		reports = append(reports, report)
+	}
+
+	return reports, nil
 }

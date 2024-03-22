@@ -31,5 +31,6 @@ func SetupRouter(r *gin.Engine) {
 	r.PUT("/todos/:id/isCompleted", controller.UpdateTodoCheck)
 
 	r.POST("/report", controller.AddReport)
+	r.GET("/reports/:userId", controller.FetchReports)
 
 }
