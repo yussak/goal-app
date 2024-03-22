@@ -13,9 +13,12 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("/auth/signup", controller.Signup)
 	r.POST("/auth/login", controller.Login)
 
+	// todo:/users/:userId/goalsに変える
 	r.GET("/:userId/goals", controller.FetchUserGoals)
 
+	// todo:/goalsに変える
 	r.POST("/goal", controller.AddGoal)
+	// todo:/goals/:idに変える
 	r.DELETE("/goal/:id", controller.DeleteGoal)
 	r.GET("/goals/:id", controller.FetchGoalDetails)
 	r.PUT("/goals/edit/:id", controller.EditGoal)
@@ -29,7 +32,9 @@ func SetupRouter(r *gin.Engine) {
 	r.DELETE("/todos/:id", controller.DeleteTodo)
 	r.PUT("/todos/:id/isCompleted", controller.UpdateTodoCheck)
 
+	// todo:/reportsに変える
 	r.POST("/report", controller.AddReport)
-	r.GET("/reports/:userId", controller.FetchReports)
+	r.GET("/users/:userId/reports", controller.FetchReports)
+	r.GET("/reports/:reportId", controller.FetchReportDetails)
 
 }

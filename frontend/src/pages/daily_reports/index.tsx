@@ -8,6 +8,7 @@ import { validationRules } from "@/utils/validationRules";
 import { axios } from "@/utils/axios";
 import { useEffect, useState } from "react";
 import { Report } from "@/types";
+import Link from "next/link";
 
 const DailyReports: CustomNextPage = () => {
   const { t } = useTranslation();
@@ -32,7 +33,7 @@ const DailyReports: CustomNextPage = () => {
 
   const fetchReports = async () => {
     try {
-      const res = await axios.get(`/reports/${userId}`);
+      const res = await axios.get(`/users/${userId}/reports`);
       setReports(res.data);
     } catch (err: any) {
       // この条件がないと毎回「undefined」エラーが出てしまう
@@ -84,7 +85,15 @@ const DailyReports: CustomNextPage = () => {
       <ul>
         {reports &&
           reports.map((report, index) => {
-            return <li key={index}>{report.content}</li>;
+            return (
+              <div>
+                <li key={index}>
+                  <Link href={`/daily_reports/${report.id}`}>
+                    {report.content}
+                  </Link>
+                </li>
+              </div>
+            );
           })}
       </ul>
     </div>

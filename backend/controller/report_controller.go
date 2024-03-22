@@ -90,3 +90,23 @@ func fetchReportsFromDB(userId string) ([]model.DailyReport, error) {
 
 	return reports, nil
 }
+
+func FetchReportDetails(c *gin.Context) {
+	id := c.Param("reportId")
+
+	row := db.DB.QueryRow("SELECT * FROM daily_reports WHERE id = ?", id)
+
+	var report model.DailyReport
+	err := row.Scan(&report.ID, &report.UserID, &report.ReportDate, &report.Content, &report.CreatedAt, &report.UpdatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusNotFound, gin.H{"error": "No report with the provided ID."})
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, report)
+}
