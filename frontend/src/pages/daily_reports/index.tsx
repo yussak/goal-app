@@ -49,7 +49,8 @@ const DailyReports: CustomNextPage = () => {
 
   const addReport = async (data: FormData) => {
     try {
-      await axios.post("/report", { ...data, userId });
+      await axios.post("/reports", { ...data, userId });
+      await fetchReports();
     } catch (err: any) {
       setError("content", {
         type: "manual",
@@ -95,20 +96,18 @@ const DailyReports: CustomNextPage = () => {
         {reports &&
           reports.map((report, index) => {
             return (
-              <div>
-                <li key={index}>
-                  <Link href={`/daily_reports/${report.id}`}>
-                    {report.content}
-                  </Link>
-                  {session?.user?.id === report.userId && (
-                    <span>
-                      <button onClick={() => handleDelete(report.id)}>
-                        削除
-                      </button>
-                    </span>
-                  )}
-                </li>
-              </div>
+              <li key={index}>
+                <Link href={`/daily_reports/${report.id}`}>
+                  {report.content}
+                </Link>
+                {session?.user?.id === report.userId && (
+                  <span>
+                    <button onClick={() => handleDelete(report.id)}>
+                      削除
+                    </button>
+                  </span>
+                )}
+              </li>
             );
           })}
       </ul>

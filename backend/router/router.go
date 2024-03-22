@@ -33,7 +33,7 @@ func SetupRouter(r *gin.Engine) {
 	r.PUT("/todos/:id/isCompleted", controller.UpdateTodoCheck)
 
 	// todo:/reportsに変える
-	r.POST("/report", controller.AddReport)
+	r.POST("/reports", controller.AddReport)
 	r.GET("/users/:userId/reports", controller.FetchReports)
 	r.GET("/reports/:reportId", controller.FetchReportDetails)
 	r.DELETE("/reports/:reportId", controller.DeleteReport)
