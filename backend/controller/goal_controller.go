@@ -2,7 +2,6 @@ package controller
 
 import (
 	"database/sql"
-	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
@@ -70,7 +69,6 @@ func AddGoal(c *gin.Context) {
 	}
 
 	req.ID = id.String()
-	fmt.Println("userresr", req.UserID)
 	sql := `INSERT INTO goals(id, user_id, content, purpose, benefit, phase, progress) VALUES(?, ?, ?, ?, ?, ?, ?)`
 	_, execErr := db.DB.Exec(sql, req.ID, req.UserID, req.Content, req.Purpose, req.Benefit, "plan", 0)
 
