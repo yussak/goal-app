@@ -189,7 +189,7 @@ func EditGoal(c *gin.Context) {
 }
 
 // goalの個数を取得
-func FetchGoalsCount(c *gin.Context) {
+func FetchGoalCount(c *gin.Context) {
 	userId := c.Param("userId")
 
 	var count int
