@@ -201,5 +201,4 @@ func FetchGoalsCount(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"count": count})
-	// c.JSON(http.StatusOK, count)
 }
