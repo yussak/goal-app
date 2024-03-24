@@ -10,10 +10,12 @@ export default function Home() {
   const userId = session?.user.id;
   const [goalCount, setGoalCount] = useState<number>(0);
   const [milestoneCount, setMilestoneCount] = useState<number>(0);
+  const [todoCount, setTodoCount] = useState<number>(0);
 
   useEffect(() => {
     getGoalCount();
     getMileCount();
+    getTodoCount();
   });
 
   // 目標の個数を取得
@@ -28,12 +30,18 @@ export default function Home() {
     setMilestoneCount(data.count);
   };
 
+  // 中目標の個数を取得
+  const getTodoCount = async () => {
+    const { data } = await axios.get(`/users/${userId}/todos/count`);
+    setTodoCount(data.count);
+  };
+
   return (
     <>
       <h1>{t("index.title")}</h1>
       <p>目標の数：{goalCount}</p>
       <p>中目標：{milestoneCount}</p>
-      <p>todo:40</p>
+      <p>todo:{todoCount}</p>
       <p>WIPの目標：4</p>
       <p>完了した目標：８</p>
     </>
