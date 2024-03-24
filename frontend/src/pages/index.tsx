@@ -42,8 +42,8 @@ export default function Home() {
       <p>目標の数：{goalCount}</p>
       <p>中目標：{milestoneCount}</p>
       <p>todo:{todoCount}</p>
-      <p>WIPの目標：4</p>
-      <p>完了した目標：８</p>
+      <p>WIPの目標：4(モック）</p>
+      <p>完了した目標：８(モック）</p>
     </>
   );
 }
