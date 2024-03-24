@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -189,34 +190,35 @@ func EditGoal(c *gin.Context) {
 }
 
 // goalの個数を取得
-// todo:もっといい取得方法ありそう
-func FetchGoalCount(c *gin.Context) {
+// もっといい取得方法ありそう
+func FetchGoalCounts(c *gin.Context) {
 	userId := c.Param("userId")
 
-	var allCount, planCount, wipCount, doneCount int
+	var counts struct {
+		All  int `json:"all"`
+		Plan int `json:"plan"`
+		Wip  int `json:"wip"`
+		Done int `json:"done"`
+	}
+
 	err := db.DB.QueryRow(`
         SELECT 
-            COUNT(*),
+			COUNT(*),
 			COUNT(CASE WHEN phase = 'plan' THEN 1 END) AS plan,
-            COUNT(CASE WHEN phase = 'wip' THEN 1 END) AS wip,
-            COUNT(CASE WHEN phase = 'done' THEN 1 END) AS done
+			COUNT(CASE WHEN phase = 'wip' THEN 1 END) AS wip,
+			COUNT(CASE WHEN phase = 'done' THEN 1 END) AS done
         FROM goals 
         WHERE user_id = ?
-    `, userId).Scan(&allCount, &planCount, &wipCount, &doneCount)
-	// err := db.DB.QueryRow("SELECT COUNT(*) FROM goals WHERE user_id = ?", userId).Scan(&count)
+    `, userId).Scan(&counts.All, &counts.Plan, &counts.Wip, &counts.Done)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		log.Printf("Error fetching goal counts for user %s: %v", userId, err)
+
 		return
 	}
 
-	// c.JSON(http.StatusOK, gin.H{"count": count})
-	c.JSON(http.StatusOK, gin.H{
-		"all":  allCount,
-		"plan": planCount,
-		"wip":  wipCount,
-		"done": doneCount,
-	})
+	c.JSON(http.StatusOK, counts)
 }
 
 // milestoneの個数を取得

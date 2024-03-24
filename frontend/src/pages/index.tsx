@@ -24,7 +24,7 @@ export default function Home() {
 
   // 目標の個数を取得
   const getGoalCount = async () => {
-    const { data } = await axios.get(`/users/${userId}/goals/count`);
+    const { data } = await axios.get(`/users/${userId}/goals/counts`);
     setGoalCount(data.all);
     setPlanGoalCount(data.plan);
     setWipGoalCount(data.wip);
