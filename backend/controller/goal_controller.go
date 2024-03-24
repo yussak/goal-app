@@ -189,6 +189,7 @@ func EditGoal(c *gin.Context) {
 }
 
 // goalの個数を取得
+// todo:もっといい取得方法ありそう
 func FetchGoalCount(c *gin.Context) {
 	userId := c.Param("userId")
 
