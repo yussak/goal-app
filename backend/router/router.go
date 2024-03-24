@@ -13,6 +13,8 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("/auth/signup", controller.Signup)
 	r.POST("/auth/login", controller.Login)
 
+	r.GET("/users/:userId/goals/count", controller.FetchGoalsCount)
+
 	r.GET("/users/:userId/goals", controller.FetchUserGoals)
 	r.POST("/goals", controller.AddGoal)
 	r.DELETE("/goals/:id", controller.DeleteGoal)

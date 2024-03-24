@@ -187,3 +187,19 @@ func EditGoal(c *gin.Context) {
 
 	c.JSON(http.StatusOK, goal)
 }
+
+// goalの個数を取得
+func FetchGoalsCount(c *gin.Context) {
+	userId := c.Param("userId")
+
+	var count int
+	err := db.DB.QueryRow("SELECT COUNT(*) FROM goals WHERE user_id = ?", userId).Scan(&count)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"count": count})
+	// c.JSON(http.StatusOK, count)
+}
