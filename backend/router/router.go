@@ -14,6 +14,7 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("/auth/login", controller.Login)
 
 	r.GET("/users/:userId/goals/count", controller.FetchGoalsCount)
+	r.GET("/users/:userId/milestones/count", controller.FetchMileCount)
 
 	r.GET("/users/:userId/goals", controller.FetchUserGoals)
 	r.POST("/goals", controller.AddGoal)
