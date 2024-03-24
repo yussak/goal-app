@@ -192,15 +192,30 @@ func EditGoal(c *gin.Context) {
 func FetchGoalCount(c *gin.Context) {
 	userId := c.Param("userId")
 
-	var count int
-	err := db.DB.QueryRow("SELECT COUNT(*) FROM goals WHERE user_id = ?", userId).Scan(&count)
+	var allCount, planCount, wipCount, doneCount int
+	err := db.DB.QueryRow(`
+        SELECT 
+            COUNT(*),
+			COUNT(CASE WHEN phase = 'plan' THEN 1 END) AS plan,
+            COUNT(CASE WHEN phase = 'wip' THEN 1 END) AS wip,
+            COUNT(CASE WHEN phase = 'done' THEN 1 END) AS done
+        FROM goals 
+        WHERE user_id = ?
+    `, userId).Scan(&allCount, &planCount, &wipCount, &doneCount)
+	// err := db.DB.QueryRow("SELECT COUNT(*) FROM goals WHERE user_id = ?", userId).Scan(&count)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"count": count})
+	// c.JSON(http.StatusOK, gin.H{"count": count})
+	c.JSON(http.StatusOK, gin.H{
+		"all":  allCount,
+		"plan": planCount,
+		"wip":  wipCount,
+		"done": doneCount,
+	})
 }
 
 // milestoneの個数を取得

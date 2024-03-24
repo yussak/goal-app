@@ -9,6 +9,10 @@ export default function Home() {
   const { data: session } = useSession();
   const userId = session?.user.id;
   const [goalCount, setGoalCount] = useState<number>(0);
+  const [planGoalCount, setPlanGoalCount] = useState<number>(0);
+  const [wipGoalCount, setWipGoalCount] = useState<number>(0);
+  const [doneGoalCount, setDoneGoalCount] = useState<number>(0);
+
   const [milestoneCount, setMilestoneCount] = useState<number>(0);
   const [todoCount, setTodoCount] = useState<number>(0);
 
@@ -21,7 +25,10 @@ export default function Home() {
   // 目標の個数を取得
   const getGoalCount = async () => {
     const { data } = await axios.get(`/users/${userId}/goals/count`);
-    setGoalCount(data.count);
+    setGoalCount(data.all);
+    setPlanGoalCount(data.plan);
+    setWipGoalCount(data.wip);
+    setDoneGoalCount(data.done);
   };
 
   // 中目標の個数を取得
@@ -41,9 +48,10 @@ export default function Home() {
       <h1>{t("index.title")}</h1>
       <p>目標の数：{goalCount}</p>
       <p>中目標：{milestoneCount}</p>
-      <p>todo:{todoCount}</p>
-      <p>WIPの目標：4(モック）</p>
-      <p>完了した目標：８(モック）</p>
+      <p>todo: {todoCount}</p>
+      <p>進行中の目標: {wipGoalCount}</p>
+      <p>予定の目標: {planGoalCount}</p>
+      <p>完了した目標: {doneGoalCount}</p>
     </>
   );
 }
