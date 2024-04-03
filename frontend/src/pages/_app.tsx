@@ -7,7 +7,6 @@ import AuthGuard from "@/components/AuthGuard";
 import { Session } from "next-auth";
 import { NextComponentType } from "next";
 import { MilestoneProvider } from "@/contexts/mileContext";
-import { GoalsProvider } from "@/contexts/goalContext";
 import { TodoProvider } from "@/contexts/todoContext";
 
 export type CustomAppProps = AppProps<{ session: Session }> & {
@@ -21,21 +20,19 @@ const MyApp = ({
   return (
     <SessionProvider session={session}>
       {/* todo:一部でしか使わないデータも_app.tsxでproviderで囲んでいいのか確認 */}
-      <GoalsProvider>
-        <MilestoneProvider>
-          <TodoProvider>
-            <Layout>
-              {Component.requireAuth ? (
-                <AuthGuard>
-                  <Component {...pageProps} />
-                </AuthGuard>
-              ) : (
+      <MilestoneProvider>
+        <TodoProvider>
+          <Layout>
+            {Component.requireAuth ? (
+              <AuthGuard>
                 <Component {...pageProps} />
-              )}
-            </Layout>
-          </TodoProvider>
-        </MilestoneProvider>
-      </GoalsProvider>
+              </AuthGuard>
+            ) : (
+              <Component {...pageProps} />
+            )}
+          </Layout>
+        </TodoProvider>
+      </MilestoneProvider>
     </SessionProvider>
   );
 };
