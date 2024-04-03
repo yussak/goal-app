@@ -7,11 +7,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import { CustomNextPage } from "@/types/custom-next-page";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import { useMilestone } from "@/contexts/mileContext";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { axios } from "@/utils/axios";
 import { Goal } from "@/types";
+import { useMilestones } from "@/hooks/milestone";
 
 const GoalDetail: CustomNextPage = () => {
   const { data: session } = useSession();
@@ -19,7 +19,7 @@ const GoalDetail: CustomNextPage = () => {
   const router = useRouter();
   const id = router.query.id;
   const [goal, setGoal] = useState<Goal | null>(null);
-  const { milestones } = useMilestone();
+  const { milestones } = useMilestones();
 
   useEffect(() => {
     if (id) {

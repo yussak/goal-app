@@ -2,10 +2,12 @@ import { useTranslation } from "next-i18next";
 import { useMilestone } from "@/contexts/mileContext";
 import { useTodos } from "@/contexts/todoContext";
 import MilestoneContent from "./MilestoneContent";
+import { useMilestones } from "@/hooks/milestone";
 
 const MilestoneList = () => {
   const { t } = useTranslation();
-  const { milestones, isMilestoneCompleted } = useMilestone();
+  const { isMilestoneCompleted } = useMilestone();
+  const { milestones } = useMilestones();
   const { todos } = useTodos();
 
   return milestones && milestones.length > 0 ? (
