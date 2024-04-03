@@ -25,9 +25,12 @@ const Goals: CustomNextPage = () => {
   // phaseの指定があればそれに絞ったデータを取得する
   const fetchGoals = async (index: number) => {
     const phase = TAB_PHASE_LIST[index];
-    // todo:try-catchにする
-    const res = await axios.get(`/users/${userId}/goals?phase=${phase}`);
-    setGoals(res.data);
+    try {
+      const { data } = await axios.get(`/users/${userId}/goals?phase=${phase}`);
+      setGoals(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
